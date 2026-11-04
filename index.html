@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KENZO 健藏 - Kho Ứng Dụng & Studio</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg: #07090e; --glass: rgba(20, 27, 45, 0.85); --border: rgba(255, 255, 255, 0.1);
+            --purple: #8b5cf6; --blue: #06b6d4; --pink: #ec4899; --text: #f3f4f6; --text-muted: #9ca3af; --card-bg: rgba(255,255,255,0.02);
+        }
+        body.light-mode {
+            --bg: #f1f5f9; --glass: rgba(255, 255, 255, 0.85); --border: rgba(0, 0, 0, 0.1);
+            --text: #0f172a; --text-muted: #475569; --card-bg: #ffffff;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.3s, color 0.3s; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; line-height: 1.5; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        .flex { display: flex; } .items-center { align-items: center; } .justify-between { justify-content: space-between; }
+        .hidden { display: none !important; }
+        .text-gradient { background: linear-gradient(135deg, #a855f7, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .glass { background: var(--glass); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+      .marquee-container { background: linear-gradient(90deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2)); padding: 8px 0; overflow: hidden; border-bottom: 1px solid var(--border); position: relative; z-index: 39; }
+.marquee-text { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; color: var(--text); font-size: 13px; font-weight: 600; }
+@keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+header { position: sticky; top: 0; z-index: 40; padding: 12px 20px; }
+.header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
+.logo-area { display: flex; align-items: center; gap: 12px; }
+.btn-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; position: relative; }
+.btn-icon:hover { border-color: var(--purple); color: var(--purple); }
+.logo-text { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; }
+
+.search-wrapper { flex: 1; max-width: 400px; position: relative; margin: 0 20px; }
+.search-box { position: relative; width: 100%; }
+.search-box input { width: 100%; padding: 10px 15px 10px 40px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); outline: none; }
+.search-box input:focus { border-color: var(--blue); }
+.search-box i.fa-search { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+.recent-searches { position: absolute; top: 110%; left: 0; width: 100%; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; z-index: 100; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; }
+.recent-searches.active { display: block; }
+.recent-item { padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); }
+.recent-item:hover { background: rgba(139,92,246,0.1); color: var(--purple); }
+
+.noti-badge { position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; background: red; border-radius: 50%; border: 2px solid var(--bg); }
+.noti-dropdown { position: absolute; top: 50px; right: 0; width: 280px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; z-index: 100; display: none; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.noti-dropdown.active { display: block; }
+.noti-header { padding: 12px 15px; font-weight: 800; border-bottom: 1px solid var(--border); font-size: 14px; color: var(--text); }
+.noti-item { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 12px; display: flex; gap: 10px; color: var(--text); }
+.noti-item i { color: var(--blue); margin-top: 3px; }
+      .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; opacity: 0; pointer-events: none; transition: 0.3s; }
+.drawer-overlay.active { opacity: 1; pointer-events: auto; }
+.drawer-panel { position: absolute; top: 0; left: -300px; width: 280px; height: 100%; background: var(--card-bg); padding: 20px; transition: 0.3s; display: flex; flex-direction: column; box-shadow: 5px 0 20px rgba(0,0,0,0.2); overflow-y: auto; }
+.drawer-panel.active { left: 0; }
+.nav-item { padding: 15px; border-radius: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-weight: 600; font-size: 14px; cursor: pointer; border: 1px solid transparent; }
+.nav-item i { font-size: 16px; width: 20px; text-align: center; }
+.nav-item:hover, .nav-item.active { background: rgba(139, 92, 246, 0.15); color: var(--text); border-color: var(--purple); }
+
+main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
+.view { display: none; animation: fadeIn 0.3s ease; }
+.view.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+.skeleton-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 20px; height: 220px; display: flex; flex-direction: column; gap: 10px; }
+.skeleton-box { background: #334155; border-radius: 8px; animation: pulse 1.5s infinite ease-in-out; }
+body.light-mode .skeleton-box { background: #cbd5e1; }
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+.hero { display: grid; grid-template-columns: 1fr; gap: 20px; padding: 25px; border-radius: 20px; border: 1px solid var(--border); background: var(--card-bg); margin-bottom: 30px; }
+@media (min-width: 768px) { .hero { grid-template-columns: 1.2fr 1fr; } }
+.hero h1 { font-size: 28px; margin-bottom: 15px; line-height: 1.3; color: var(--text); }
+.hero p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+.hero-card { padding: 20px; border-radius: 16px; background: var(--bg); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; }
+
+.tabs { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 15px; margin-bottom: 20px; border-bottom: 1px solid var(--border); scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab-btn { padding: 10px 20px; border-radius: 12px; font-size: 13px; font-weight: 600; white-space: nowrap; color: var(--text-muted); background: var(--card-bg); border: 1px solid var(--border); transition: 0.2s; }
+.tab-btn.active { background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; border: none; }
+
+.app-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+@media (min-width: 600px) { .app-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 900px) { .app-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1100px) { .app-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.app-card { padding: 20px; border-radius: 16px; background: var(--card-bg); border: 1px solid var(--border); display: flex; flex-direction: column; justify-content: space-between; transition: 0.3s; position: relative; }
+.app-card:hover { transform: translateY(-5px); border-color: var(--purple); box-shadow: 0 10px 20px rgba(139,92,246,0.2); }
+.app-icon { width: 60px; height: 60px; border-radius: 14px; object-fit: cover; margin-bottom: 12px; border: 1px solid var(--border); }
+.btn-download { background: linear-gradient(135deg, var(--purple), var(--blue)); color: white; padding: 10px 15px; border-radius: 10px; font-weight: 800; font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; transition: 0.2s; }
+.btn-download:hover { opacity: 0.9; transform: scale(1.02); }
+
+.top-chart-item { display: flex; align-items: center; gap: 15px; padding: 15px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; margin-bottom: 10px; }
+.rank-1 { border-color: #fbbf24; box-shadow: 0 0 15px rgba(251,191,36,0.2); }
+.rank-2 { border-color: #94a3b8; }
+.rank-3 { border-color: #b45309; }
+.rank-number { font-size: 24px; font-weight: 900; width: 40px; text-align: center; }
+              .studio-header { text-align: center; margin-bottom: 40px; margin-top: 20px; }
+        .studio-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+        @media (min-width: 768px) { .studio-grid { grid-template-columns: repeat(2, 1fr); } }
+        .king-card { padding: 25px; border-radius: 20px; background: var(--card-bg); border: 1px solid var(--border); transition: 0.3s; position: relative; }
+        .king-card:hover { border-color: var(--purple); box-shadow: 0 10px 30px rgba(139,92,246,0.15); }
+        .avatar { width: 70px; height: 70px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: 900; flex-shrink: 0; }
+        .avatar.neon { background: linear-gradient(135deg, var(--purple), var(--blue), var(--pink)); color: white; }
+        .king-badge { font-size: 10px; font-weight: 900; color: #f59e0b; letter-spacing: 1px; }
+        .king-name { font-size: 20px; font-weight: 900; display: flex; align-items: center; gap: 5px; margin-top: 3px; color: var(--text); }
+        .tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 8px; border: 1px solid; }
+        .tag-purple { color: var(--purple); border-color: rgba(139,92,246,0.3); background: rgba(139,92,246,0.1); }
+        .tag-blue { color: var(--blue); border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.1); }
+        .tag-green { color: #10b981; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1); }
+
+        /* HIỆU ỨNG TÍCH KZ (NEON GLOW) */
+        .verify-icon { width: 22px; height: 22px; flex-shrink: 0; display: inline-block; vertical-align: middle; }
+        .neon-glow { animation: neonPulse 1.5s ease-in-out infinite alternate; }
+        @keyframes neonPulse {
+            0% { filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 4px rgba(6, 182, 212, 0.5)); }
+            100% { filter: drop-shadow(0 0 6px rgba(168, 85, 247, 1)) drop-shadow(0 0 10px rgba(6, 182, 212, 0.9)) drop-shadow(0 0 4px rgba(236, 72, 153, 0.8)); }
+        }
+
+        .modal { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--card-bg); width: 100%; max-width: 500px; padding: 25px; border-radius: 20px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--purple); position: relative; }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: var(--text-muted); font-size: 20px; }
+        .captcha-box { padding: 15px; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; cursor: pointer; margin-top: 15px; }
+        .captcha-checkbox { width: 26px; height: 26px; border: 2px solid #64748b; border-radius: 6px; display: flex; align-items: center; justify-content: center; transition: 0.3s; background: rgba(255,255,255,0.05); }
+        
+        .scan-container { position: relative; overflow: hidden; border-radius: 12px; background: #0f172a; border: 1px solid #334155; padding: 15px; margin-top: 15px; }
+        .scan-line { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: #10b981; box-shadow: 0 0 10px #10b981; animation: scanAnim 2s infinite linear; }
+        @keyframes scanAnim { 0% { top: 0%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 100%; opacity: 0; } }
+
+        .spin-btn { position: fixed; bottom: 80px; right: 20px; width: 50px; height: 50px; background: linear-gradient(135deg, #f59e0b, #ef4444); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; z-index: 900; box-shadow: 0 4px 15px rgba(239,68,68,0.4); animation: bounce 2s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        .wheel-container { width: 200px; height: 200px; border-radius: 50%; border: 4px solid #f59e0b; margin: 20px auto; position: relative; overflow: hidden; transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1); background: conic-gradient(#ef4444 0deg 90deg, #3b82f6 90deg 180deg, #10b981 180deg 270deg, #f59e0b 270deg 360deg); }
+        .wheel-pointer { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); font-size: 30px; color: white; z-index: 10; text-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px); background: #1e293b; border: 1px solid var(--blue); padding: 12px 24px; border-radius: 12px; transition: 0.3s; opacity: 0; z-index: 2000; font-size: 14px; font-weight: 600; color: white; }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .back-to-top { position: fixed; bottom: 20px; right: 20px; width: 45px; height: 45px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 900; opacity: 0; pointer-events: none; transition: 0.3s; }
+        .back-to-top.show { opacity: 1; pointer-events: auto; }
+        .live-noti { position: fixed; bottom: 20px; left: 20px; background: var(--card-bg); border: 1px solid var(--border); padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; z-index: 900; transform: translateY(100px); opacity: 0; transition: 0.5s; pointer-events: none; }
+        .live-noti.show { transform: translateY(0); opacity: 1; }
+        .live-noti img { width: 30px; height: 30px; border-radius: 6px; }
+    </style>
+</head>
+<body>
+  <!-- MÀN HÌNH CHẶN CAPTCHA -->
+<div id="gatewayCaptcha" style="position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+    <div style="background: var(--card-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border); width: 90%; max-width: 350px; text-align: center; box-shadow: 0 10px 40px rgba(139,92,246,0.15);">
+        <div style="width: 60px; height: 60px; border-radius: 50%; background: rgba(6,182,212,0.1); color: #06b6d4; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px auto; border: 1px solid rgba(6,182,212,0.3);">
+            <i class="fa-solid fa-shield-halved" style="font-size: 28px;"></i>
+        </div>
+        <h2 style="color: var(--text); margin-bottom: 8px; font-size: 22px; font-weight: 900;" data-i18n="security_title">Kenzo Security</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 25px;" data-i18n="security_desc">Vui lòng xác minh để truy cập</p>
+        
+        <div class="captcha-box" onclick="verifyGateway()" style="margin-top: 0;">
+            <div class="flex items-center" style="gap: 12px;">
+                <div id="gatewayCheck" class="captcha-checkbox"><i id="gatewayIcon" class="fa-solid fa-check" style="color: transparent; font-size: 14px;"></i></div>
+                <span style="font-size: 14px; color: var(--text); font-weight: 600;" data-i18n="captcha_text">Tôi không phải là người máy</span>
+            </div>
+            <i class="fa-solid fa-lock" style="color: var(--blue); font-size: 20px;"></i>
+        </div>
+    </div>
+</div>
+
+<!-- THANH CHẠY CHỮ -->
+<div class="marquee-container">
+    <div class="marquee-text" data-i18n="marquee_text">🔥 Chào mừng đến với Kenzo Studio - Cập nhật game & app mới mỗi ngày! Bảo mật 100% - Tốc độ không giới hạn!</div>
+</div>
+
+<!-- HEADER -->
+<header class="glass">
+    <div class="header-inner">
+        <div class="logo-area">
+            <button class="btn-icon" onclick="openMenu()"><i class="fa-solid fa-bars"></i></button>
+            <div class="logo-text">
+                <span>KENZO</span><span class="text-gradient">健藏</span>
+                <!-- TÍCH KZ THƯƠNG HIỆU TẠI ĐÂY -->
+                <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
+                    <defs>
+                        <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#a855f7"/>
+                            <stop offset="50%" stop-color="#06b6d4"/>
+                            <stop offset="100%" stop-color="#3b82f6"/>
+                        </linearGradient>
+                    </defs>
+                    <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                    <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
+                </svg>
+            </div>
+        </div>
+        
+        <div class="search-wrapper">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Tìm kiếm APK..." oninput="handleSearch(this.value)" onfocus="showRecent()" onblur="setTimeout(()=>hideRecent(), 200)">
+            </div>
+            <div id="recentSearches" class="recent-searches"></div>
+        </div>
+
+        <div class="flex items-center" style="gap: 8px;">
+            <button class="btn-icon" onclick="toggleLang()" title="Language" style="font-size: 12px; font-weight: bold;" id="langBtn">EN</button>
+            <button class="btn-icon" onclick="toggleTheme()" title="Theme"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+            <div style="position: relative;">
+                <button class="btn-icon" onclick="toggleNoti()"><i class="fa-solid fa-bell"></i><span class="noti-badge"></span></button>
+                <div id="notiDropdown" class="noti-dropdown">
+                    <div class="noti-header" data-i18n="noti_title">Thông báo mới</div>
+                    <div class="noti-item"><i class="fa-solid fa-circle-check"></i> <span data-i18n="noti_1">Hệ thống đã cập nhật Game mới!</span></div>
+                    <div class="noti-item"><i class="fa-solid fa-gift"></i> <span data-i18n="noti_2">Tặng bạn 1 lượt quay may mắn!</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- SIDEBAR -->
+<div id="sideDrawer" class="drawer-overlay" onclick="closeMenu(event)">
+    <div id="drawerPanel" class="drawer-panel" onclick="event.stopPropagation()">
+        <div class="flex justify-between items-center" style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
+            <div class="logo-text">
+                <span>KENZO</span><span class="text-gradient">健藏</span>
+                <!-- TÍCH KZ TRONG MENU -->
+                <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
+                    <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                    <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
+                </svg>
+            </div>
+            <button onclick="closeMenu(event)" style="color: var(--text-muted); font-size: 20px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="nav-home" class="nav-item active" onclick="switchView('home')"><i class="fa-solid fa-house"></i> <span data-i18n="nav_home">Trang Chủ</span></div>
+        <div id="nav-charts" class="nav-item" onclick="switchView('charts')"><i class="fa-solid fa-ranking-star"></i> <span data-i18n="nav_charts">Bảng Xếp Hạng</span></div>
+        <div id="nav-saved" class="nav-item" onclick="switchView('saved')"><i class="fa-solid fa-star"></i> <span data-i18n="nav_saved">Đã Lưu</span></div>
+        <div id="nav-history" class="nav-item" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="nav_history">Lịch Sử Tải</span></div>
+        <div id="nav-studio" class="nav-item" onclick="switchView('studio')"><i class="fa-solid fa-crown"></i> <span data-i18n="nav_studio">Studio</span></div>
+    </div>
+</div>
+<main>
+    <!-- TRANG CHỦ -->
+    <div id="view-home" class="view active">
+        <div class="hero">
+            <div>
+                <h1 data-i18n="hero_title">Tải APK Tốc Độ Cao <br><span class="text-gradient">An Toàn Tuyệt Đối</span></h1>
+                <p data-i18n="hero_desc">Kho ứng dụng Android cao cấp của Kenzo Studio. Cam kết sạch 100%.</p>
+            </div>
+            <div id="heroCard" class="hero-card"></div>
+        </div>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="filterCategory('ALL', this)" data-i18n="tab_all">Tất Cả</button>
+            <button class="tab-btn" onclick="filterCategory('GAME', this)" data-i18n="tab_game">Trò Chơi</button>
+            <button class="tab-btn" onclick="filterCategory('APP', this)" data-i18n="tab_app">Ứng Dụng</button>
+        </div>
+        <div id="appGrid" class="app-grid"></div>
+    </div>
+
+    <!-- TRANG BẢNG XẾP HẠNG -->
+    <div id="view-charts" class="view">
+        <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text);" data-i18n="charts_title">🏆 Bảng Xếp Hạng Tải Nhiều</h2>
+        <div id="chartList"></div>
+    </div>
+
+    <!-- TRANG ĐÃ LƯU -->
+    <div id="view-saved" class="view">
+        <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text);" data-i18n="saved_title">⭐ Ứng Dụng Đã Lưu</h2>
+        <div id="savedGrid" class="app-grid"></div>
+    </div>
+
+    <!-- TRANG LỊCH SỬ TẢI -->
+    <div id="view-history" class="view">
+        <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text);" data-i18n="history_title">🕒 Lịch Sử Tải Xuống</h2>
+        <div id="historyList"></div>
+    </div>
+        <!-- TRANG STUDIO -->
+    <div id="view-studio" class="view">
+        <div class="studio-header">
+            <h1 style="color: var(--text);" data-i18n="studio_title">Đội Ngũ <span class="text-gradient">Sáng Lập</span></h1>
+        </div>
+        <div class="studio-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;">
+            
+            <!-- KING: DTN -->
+            <div class="king-card">
+                <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
+                    <img src="logodtn.png" class="avatar neon" style="object-fit: cover; padding: 0; border: 2px solid var(--purple);"> 
+                    <div>
+                        <span class="king-badge">👑 KING</span>
+                        <h3 class="king-name">DTN
+                            <!-- TÍCH KZ THƯƠNG HIỆU CỦA BẠN -->
+                            <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
+                                <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                                <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
+                            </svg>
+                        </h3>
+                        <p style="font-size: 12px; color: var(--text-muted);">@DTN_207 (telegram)</p>
+                    </div>
+                </div>
+                
+                <!-- 2 Chức vụ -->
+                <div style="margin-bottom: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="font-size: 11px; font-weight: 900; color: #f59e0b;" data-i18n="role_founder">🌟 SÁNG LẬP</span>
+                    <span style="font-size: 11px; font-weight: 900; color: #06b6d4;" data-i18n="role_dev">💻 NHÀ PHÁT TRIỂN</span>
+                </div>
+                
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;" data-i18n="bio_dtn">Nhà sáng lập kiêm chuyên gia lập trình, phát triển công nghệ và Mod Game. Đảm nhận vai trò kỹ thuật chính của Kenzo Studio.</p>
+                
+                <div class="flex" style="gap: 8px; flex-wrap: wrap;">
+                    <span class="tag tag-purple">Sáng Lập</span>
+                    <span class="tag" style="color: #06b6d4; border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.1);">Nhà Phát Triển</span>
+                    <span class="tag tag-green">Code</span>
+                    <span class="tag" style="color: var(--pink); border-color: rgba(236,72,153,0.3); background: rgba(236,72,153,0.1);">Mod Game</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer style="text-align: center; padding: 30px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;">
+    <p>© 2026 <strong style="color: var(--text);">KENZO 健藏</strong> Studio. All Rights Reserved.</p>
+</footer>
+
+<!-- MODAL CHI TIẾT -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        <div id="modalBody"></div>
+    </div>
+</div>
+
+<!-- MODAL VÒNG QUAY -->
+<div id="spinModal" class="modal">
+    <div class="modal-content" style="text-align: center; max-width: 350px;">
+        <button class="close-btn" onclick="document.getElementById('spinModal').classList.remove('active')"><i class="fa-solid fa-xmark"></i></button>
+        <h2 style="font-size: 20px; margin-bottom: 10px; color: var(--text);" data-i18n="spin_title">🎁 Vòng Quay May Mắn</h2>
+        <div class="wheel-pointer">▼</div>
+        <div id="wheel" class="wheel-container"></div>
+        <button class="btn-download" style="margin-top: 20px;" onclick="spinWheel()" data-i18n="spin_btn">Quay Ngay!</button>
+        <p id="spinResult" style="margin-top: 15px; font-weight: bold; color: var(--blue);"></p>
+    </div>
+</div>
+
+<!-- FLOATING ELEMENTS -->
+<div id="toast" class="toast">Thông báo!</div>
+<div id="liveNoti" class="live-noti">
+    <img id="notiImg" src="">
+    <span id="notiText" style="font-size: 12px; color: var(--text);"></span>
+</div>
+<div id="spinBtn" class="spin-btn" onclick="document.getElementById('spinModal').classList.add('active')">🎁</div>
+<div id="backToTop" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fa-solid fa-arrow-up"></i></div>
+<script>
+    // ========================================================
+    // KHU VỰC BẠN CẦN SỬA: THÊM/SỬA GAME VÀO ĐÂY
+    // ========================================================
+    const apps = [
+        { 
+            id: 1, 
+            name: 'Huyền Thoại Hải Tặc (TEST)', 
+            pkg: 'com.package.haitacdaichien', 
+            size: '271 MB', 
+            cat: 'GAME', 
+            downloads: 1500, 
+            icon: 'logohtht.png', 
+            desc: 'Bản test với rất nhiều tài nguyên chỉ cần nhập là có Ngay nhắn qua @DTN_207 để nhận code hoặc chat trong nhóm của tôi', 
+            screenshots: [], 
+            downloadLink: 'https://www.mediafire.com/file/yynia7atfblx4d9/haitacphucsinh-1.1.8.apk/file?dkey=i00bxehb1hi&r=728' 
+        },
+        { 
+            id: 2, 
+            name: 'CLOUD VMOS', 
+            pkg: 'com.package.cloudvmos', 
+            size: '0 MB', 
+            cat: 'cloudvmos', 
+            downloads: 1200, 
+            icon: 'logovmos.png', 
+            desc: 'Cloud VMOS 2-3h 1máy / 2k mua nhắn qua mình nhé click vào bên dưới để mua', 
+            screenshots: [], 
+            downloadLink: 'https://t.me/DTN_207' 
+        }
+    ];
+    // ========================================================
+
+    const langDict = {
+        vi: { 
+            security_title: "Kenzo Security", security_desc: "Vui lòng xác minh để truy cập", captcha_text: "Tôi không phải là người máy", marquee_text: "🔥 Chào mừng đến với Kenzo Studio - Cập nhật game mới mỗi ngày!", noti_title: "Thông báo mới", noti_1: "Hệ thống đã cập nhật Game mới!", noti_2: "Tặng bạn 1 lượt quay may mắn!", nav_home: "Trang Chủ", nav_charts: "Bảng Xếp Hạng", nav_saved: "Đã Lưu", nav_history: "Lịch Sử Tải", nav_studio: "Studio", hero_title: "Tải APK Tốc Độ Cao <br><span class='text-gradient'>An Toàn Tuyệt Đối</span>", hero_desc: "Kho ứng dụng Android cao cấp của Kenzo Studio.", tab_all: "Tất Cả", tab_game: "Trò Chơi", tab_app: "Ứng Dụng", charts_title: "🏆 Bảng Xếp Hạng Tải Nhiều", saved_title: "⭐ Ứng Dụng Đã Lưu", history_title: "🕒 Lịch Sử Tải Xuống", studio_title: "Đội Ngũ <span class='text-gradient'>Sáng Lập</span>", role_founder: "🌟 SÁNG LẬP", role_dev: "💻 NHÀ PHÁT TRIỂN", bio_dtn: "Nhà sáng lập kiêm chuyên gia lập trình, phát triển công nghệ và Mod Game. Đảm nhận vai trò kỹ thuật chính của Kenzo Studio.", spin_title: "🎁 Vòng Quay May Mắn", spin_btn: "Quay Ngay!" 
+        },
+        en: { 
+            security_title: "Kenzo Security", security_desc: "Please verify to access", captcha_text: "I am not a robot", marquee_text: "🔥 Welcome to Kenzo Studio - Update games daily!", noti_title: "Notifications", noti_1: "New Game updated!", noti_2: "You got 1 lucky spin!", nav_home: "Home", nav_charts: "Top Charts", nav_saved: "Saved Apps", nav_history: "Downloads", nav_studio: "Studio", hero_title: "High Speed APK <br><span class='text-gradient'>100% Safe</span>", hero_desc: "Premium Android app store by Kenzo Studio.", tab_all: "All", tab_game: "Games", tab_app: "Apps", charts_title: "🏆 Top Charts", saved_title: "⭐ Saved Apps", history_title: "🕒 Download History", studio_title: "Founding <span class='text-gradient'>Team</span>", role_founder: "🌟 FOUNDER", role_dev: "💻 DEVELOPER", bio_dtn: "Founder & Programming, Technology and Mod Game Expert. Lead Technical Role at Kenzo Studio.", spin_title: "🎁 Lucky Spin", spin_btn: "Spin Now!" 
+        }
+    };
+
+    let currentLang = localStorage.getItem('yj_lang') || 'vi';
+    let currentCat = 'ALL', searchQ = '', isSpinning = false;
+    let savedApps = JSON.parse(localStorage.getItem('yj_saved')) || [];
+    let historyApps = JSON.parse(localStorage.getItem('yj_history')) || [];
+    let recentSearches = JSON.parse(localStorage.getItem('yj_searches')) || [];
+
+    document.body.style.overflow = 'hidden'; 
+
+    window.onload = () => {
+        if(localStorage.getItem('yj_theme') === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        }
+        applyLanguage();
+        renderStore(); renderCharts(); renderSaved(); renderHistory();
+        startLiveNoti();
+    };
+
+    function toggleTheme() {
+        document.body.classList.toggle('light-mode');
+        const isLight = document.body.classList.contains('light-mode');
+        localStorage.setItem('yj_theme', isLight ? 'light' : 'dark');
+        document.getElementById('themeIcon').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    }
+
+    function toggleLang() {
+        currentLang = currentLang === 'vi' ? 'en' : 'vi';
+        localStorage.setItem('yj_lang', currentLang);
+        applyLanguage();
+    }
+
+    function applyLanguage() {
+        document.getElementById('langBtn').innerText = currentLang === 'vi' ? 'EN' : 'VI';
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if(langDict[currentLang][key]) el.innerHTML = langDict[currentLang][key];
+        });
+        renderStore(); renderCharts(); renderSaved(); renderHistory();
+    }
+
+    function verifyGateway() {
+        const box = document.getElementById('gatewayCheck');
+        const icon = document.getElementById('gatewayIcon');
+        const overlay = document.getElementById('gatewayCaptcha');
+        
+        if (box.classList.contains('verified') || box.classList.contains('verifying')) return;
+        
+        icon.className = 'fa-solid fa-circle-notch fa-spin'; icon.style.color = 'var(--blue)'; box.classList.add('verifying');
+        
+        setTimeout(() => {
+            box.style.background = '#10b981'; box.style.borderColor = '#10b981'; 
+            icon.className = 'fa-solid fa-check'; icon.style.color = 'white'; box.classList.add('verified');
+            
+            setTimeout(() => { 
+                overlay.style.opacity = '0'; overlay.style.transition = 'opacity 0.5s ease'; 
+                setTimeout(() => { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }, 500); 
+            }, 500);
+        }, 1500);
+    }
+
+    function openMenu() { document.getElementById('sideDrawer').classList.add('active'); document.getElementById('drawerPanel').classList.add('active'); }
+    function closeMenu(e) { if (e && e.target.tagName === 'A') return; document.getElementById('sideDrawer').classList.remove('active'); document.getElementById('drawerPanel').classList.remove('active'); }
+    
+    function switchView(viewName) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.getElementById('view-' + viewName).classList.add('active');
+        document.getElementById('nav-' + viewName).classList.add('active');
+        closeMenu(); window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+  function showSkeleton(containerId) {
+    const grid = document.getElementById(containerId);
+    if(!grid) return;
+    grid.innerHTML = Array(2).fill(0).map(() => `
+        <div class="skeleton-card">
+            <div class="skeleton-box" style="width: 60px; height: 60px;"></div>
+            <div class="skeleton-box" style="width: 80%; height: 20px; margin-top: 10px;"></div>
+            <div class="skeleton-box" style="width: 50%; height: 15px;"></div>
+        </div>
+    `).join('');
+}
+
+function renderStore() {
+    const grid = document.getElementById('appGrid'); const hero = document.getElementById('heroCard');
+    if(!grid) return;
+    showSkeleton('appGrid');
+    
+    setTimeout(() => { 
+        if (apps.length > 0) {
+            let h = apps[0];
+            hero.innerHTML = `
+                <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
+                    <img src="${h.icon}" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border);">
+                    <div><h3 style="font-size: 18px; font-weight: 900; color: var(--text);">${h.name}</h3><p style="font-size: 12px; color: var(--blue); margin-top: 3px;">${h.pkg}</p></div>
+                </div>
+                <button onclick="openModal(${h.id})" class="btn-download">${currentLang==='vi'?'Tải File APK':'Download APK'} (${h.size})</button>
+            `;
+        }
+        let filtered = apps.filter(a => {
+            let matchCat = (currentCat === 'ALL') || (a.cat === currentCat);
+            let matchSearch = a.name.toLowerCase().includes(searchQ) || a.pkg.toLowerCase().includes(searchQ);
+            return matchCat && matchSearch;
+        });
+        if (filtered.length === 0) { grid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">Chưa có App nào.</p>`; return; }
+        
+        grid.innerHTML = filtered.map(a => generateAppCard(a)).join('');
+    }, 500);
+}
+
+function generateAppCard(a) {
+    const isSaved = savedApps.includes(a.id);
+    return `
+        <div class="app-card">
+            <div>
+                <div class="flex justify-between items-start">
+                    <img src="${a.icon}" class="app-icon">
+                    <div class="flex" style="gap: 5px;">
+                        <button onclick="toggleSave(${a.id})" style="color: ${isSaved ? '#f59e0b' : 'var(--text-muted)'}; font-size: 18px;"><i class="fa-solid fa-star"></i></button>
+                        <span style="font-size: 10px; color: var(--pink); font-weight: bold; border: 1px solid var(--pink); padding: 2px 6px; border-radius: 8px;">${a.cat}</span>
+                    </div>
+                </div>
+                <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--text);">${a.name}</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">${a.pkg}</p>
+            </div>
+            <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
+                <span style="font-size: 12px; color: var(--text-muted);">${a.size}</span>
+                <button onclick="openModal(${a.id})" class="btn-download" style="width: auto; padding: 8px 15px;">${currentLang==='vi'?'Tải':'Get'}</button>
+            </div>
+        </div>
+    `;
+}
+
+function renderCharts() {
+    const list = document.getElementById('chartList');
+    if(!list) return;
+    let sorted = [...apps].sort((a,b) => b.downloads - a.downloads);
+    list.innerHTML = sorted.map((a, i) => `
+        <div class="top-chart-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''}" onclick="openModal(${a.id})">
+            <div class="rank-number" style="color: ${i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#b45309':'var(--text-muted)'}">#${i+1}</div>
+            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;">
+            <div style="flex: 1;">
+                <h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3>
+                <p style="font-size: 12px; color: var(--text-muted);">${a.downloads} ${currentLang==='vi'?'lượt tải':'downloads'}</p>
+            </div>
+            <i class="fa-solid fa-chevron-right" style="color: var(--text-muted);"></i>
+        </div>
+    `).join('');
+}
+
+function renderSaved() {
+    const grid = document.getElementById('savedGrid');
+    if(!grid) return;
+    let filtered = apps.filter(a => savedApps.includes(a.id));
+    grid.innerHTML = filtered.length ? filtered.map(generateAppCard).join('') : `<p style="color: var(--text-muted); grid-column: 1/-1;">Chưa có app nào được lưu.</p>`;
+}
+
+function renderHistory() {
+    const list = document.getElementById('historyList');
+    if(!list) return;
+    let filtered = apps.filter(a => historyApps.includes(a.id));
+    list.innerHTML = filtered.length ? filtered.map(a => `
+        <div class="top-chart-item" onclick="openModal(${a.id})">
+            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;">
+            <div style="flex: 1;">
+                <h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3>
+                <p style="font-size: 12px; color: #10b981;"><i class="fa-solid fa-check-circle"></i> Đã tải thành công</p>
+            </div>
+        </div>
+    `).join('') : `<p style="color: var(--text-muted);">Chưa có lịch sử tải.</p>`;
+}
+
+function toggleSave(id) {
+    if (savedApps.includes(id)) savedApps = savedApps.filter(x => x !== id);
+    else savedApps.push(id);
+    localStorage.setItem('yj_saved', JSON.stringify(savedApps));
+    renderStore(); renderSaved();
+    showToast(savedApps.includes(id) ? 'Đã lưu vào yêu thích!' : 'Đã xóa khỏi yêu thích');
+}
+
+function handleSearch(val) { searchQ = val.toLowerCase(); renderStore(); }
+function showRecent() {
+    const box = document.getElementById('recentSearches');
+    if (recentSearches.length === 0) return;
+    box.innerHTML = recentSearches.map(s => `<div class="recent-item" onclick="document.getElementById('searchInput').value='${s}';handleSearch('${s}');hideRecent();"><span><i class="fa-solid fa-clock-rotate-left" style="margin-right:10px;"></i>${s}</span></div>`).join('');
+    box.classList.add('active');
+}
+function hideRecent() { document.getElementById('recentSearches').classList.remove('active'); }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const searchInp = document.getElementById('searchInput');
+    if(searchInp) {
+        searchInp.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && searchQ.trim() !== '') {
+                if(!recentSearches.includes(searchQ)) { recentSearches.unshift(searchQ); if(recentSearches.length > 5) recentSearches.pop(); localStorage.setItem('yj_searches', JSON.stringify(recentSearches)); }
+                hideRecent(); this.blur();
+            }
+        });
+    }
+});
+
+function filterCategory(cat, btn) {
+    currentCat = cat; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); renderStore();
+}
+
+function toggleNoti() { document.getElementById('notiDropdown').classList.toggle('active'); }
+          function openModal(id) {
+            let app = apps.find(a => a.id === id);
+            let screenshotsHtml = (app.screenshots && app.screenshots.length > 0) ? `
+                <div style="display:flex; gap:10px; overflow-x:auto; padding-bottom:10px; margin-bottom:20px;">
+                    ${app.screenshots.map(img => `<img src="${img}" style="height:140px; border-radius:10px; border:1px solid var(--border);">`).join('')}
+                </div>` : '';
+
+            document.getElementById('modalBody').innerHTML = `
+                <div class="flex items-center" style="gap: 15px; margin-bottom: 20px;">
+                    <img src="${app.icon}" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover;">
+                    <div>
+                        <h2 style="font-size: 20px; font-weight: 900; color: var(--text);">${app.name}</h2>
+                        <div class="flex items-center" style="gap: 10px; margin-top: 5px;">
+                            <p style="color: var(--blue); font-size: 13px; font-family: monospace;">${app.pkg}</p>
+                            <button onclick="copyPkg('${app.pkg}')" style="color: var(--text-muted); font-size: 12px;"><i class="fa-regular fa-copy"></i></button>
+                        </div>
+                    </div>
+                </div>
+                ${screenshotsHtml}
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.6;">${app.desc}</p>
+                
+                <div class="scan-container">
+                    <div class="scan-line"></div>
+                    <div class="flex justify-between items-center" style="position: relative; z-index: 2;">
+                        <div class="flex items-center gap-2"><i class="fa-solid fa-shield-virus" style="color: #10b981;"></i> <span style="font-size: 13px; color: var(--text);">${currentLang==='vi'?'Đang quét virus...':'Scanning...'}</span></div>
+                        <span style="font-size: 12px; color: #10b981; font-weight: bold;">0 Threats</span>
+                    </div>
+                </div>
+
+                <div class="captcha-box" onclick="verifyCaptcha()">
+                    <div class="flex items-center" style="gap: 12px;">
+                        <div id="captchaCheck" class="captcha-checkbox"><i id="captchaIcon" class="fa-solid fa-check" style="color: transparent; font-size: 14px;"></i></div>
+                        <span style="font-size: 14px; color: var(--text); font-weight: 600;">${currentLang==='vi'?'Tôi không phải là người máy':'I am not a robot'}</span>
+                    </div>
+                    <i class="fa-solid fa-shield-halved" style="color: var(--blue); font-size: 22px;"></i>
+                </div>
+
+                <div class="flex" style="gap: 10px; margin-top: 15px;">
+                    <button id="dlBtn" class="btn-download hidden" style="padding: 15px; font-size: 14px;" onclick="startDownload(${app.id})"><i class="fa-solid fa-download"></i> ${currentLang==='vi'?'Tải Xuống':'Download'} (${app.size})</button>
+                    <button class="btn-download" style="background: var(--card-bg); border: 1px solid var(--border); width: auto; padding: 0 20px; font-size: 16px; color: var(--text);" onclick="shareApp('${app.name}')"><i class="fa-solid fa-share-nodes"></i></button>
+                </div>
+
+                <div id="dlProgress" class="hidden" style="margin-top: 15px; text-align: center;">
+                    <div style="background: #334155; height: 8px; border-radius: 4px; overflow: hidden;"><div id="dlBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--purple), var(--blue)); transition: 0.2s;"></div></div>
+                    <p id="dlText" style="font-size: 12px; margin-top: 10px; color: var(--blue); font-weight: 600;">0%</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 20px;">
+                    <button onclick="reportLink()" style="font-size: 12px; color: var(--text-muted); text-decoration: underline;"><i class="fa-solid fa-triangle-exclamation"></i> ${currentLang==='vi'?'Báo cáo link lỗi':'Report broken link'}</button>
+                </div>
+            `;
+            document.getElementById('detailModal').classList.add('active');
+        }
+
+        function copyPkg(pkg) { navigator.clipboard.writeText(pkg); showToast('Đã copy Package Name!'); }
+        function reportLink() { showToast('Cảm ơn bạn! Đã gửi báo cáo cho Admin.'); }
+        function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+        
+        function verifyCaptcha() {
+            const box = document.getElementById('captchaCheck'), icon = document.getElementById('captchaIcon'), dlBtn = document.getElementById('dlBtn');
+            if (box.classList.contains('verified') || box.classList.contains('verifying')) return;
+            
+            icon.className = 'fa-solid fa-circle-notch fa-spin'; icon.style.color = 'var(--blue)'; box.classList.add('verifying');
+            
+            setTimeout(() => {
+                box.style.background = '#10b981'; box.style.borderColor = '#10b981'; 
+                icon.className = 'fa-solid fa-check'; icon.style.color = 'white'; box.classList.add('verified');
+                if(dlBtn) dlBtn.classList.remove('hidden');
+            }, 1500);
+        }
+
+        function startDownload(id) {
+            let app = apps.find(a => a.id === id);
+            if(!app) return;
+
+            document.getElementById('dlBtn').classList.add('hidden');
+            document.getElementById('dlProgress').classList.remove('hidden');
+            let p = 0;
+            let timer = setInterval(() => {
+                p += 20; 
+                document.getElementById('dlBar').style.width = p + '%'; 
+                document.getElementById('dlText').innerText = p + '%';
+                if(p >= 100) {
+                    clearInterval(timer);
+                    
+                    if(!historyApps.includes(app.id)) { 
+                        historyApps.push(app.id); 
+                        localStorage.setItem('yj_history', JSON.stringify(historyApps)); 
+                        renderHistory(); 
+                    }
+                    
+                    setTimeout(() => { 
+                        closeModal(); 
+                        showToast('Đang chuyển hướng đến link tải...');
+                        
+                        if (app.downloadLink && app.downloadLink !== '') {
+                            window.open(app.downloadLink, '_blank');
+                        } else {
+                            showToast('Chưa cập nhật link tải cho App này!');
+                        }
+                    }, 500);
+                }
+            }, 300);
+        }
+
+        function shareApp(name) { if (navigator.share) navigator.share({ title: name, url: window.location.href }); else { navigator.clipboard.writeText(window.location.href); showToast('Đã copy link!'); } }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            const wheel = document.getElementById('wheel');
+            const randomDeg = Math.floor(1000 + Math.random() * 1000);
+            wheel.style.transform = `rotate(${randomDeg}deg)`;
+            document.getElementById('spinResult').innerText = '';
+            setTimeout(() => {
+                isSpinning = false;
+                const prizes = ['Chúc may mắn lần sau!', 'Bạn nhận được 1 Like 👍', 'Trúng 100 điểm tải!', 'Nhận Acc VIP 1 ngày 🎉'];
+                document.getElementById('spinResult').innerText = prizes[Math.floor(Math.random() * prizes.length)];
+            }, 3000);
+        }
+
+        function showToast(msg) { let t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
+        
+        function startLiveNoti() {
+            setInterval(() => {
+                const names = ['Minh***', 'Hùng***', 'Trang***', 'Khánh***', 'Bảo***'];
+                const app = apps[Math.floor(Math.random() * apps.length)];
+                const noti = document.getElementById('liveNoti');
+                if(noti && app) {
+                    document.getElementById('notiText').innerHTML = `<b>${names[Math.floor(Math.random() * names.length)]}</b> vừa tải <b>${app.name}</b>`;
+                    document.getElementById('notiImg').src = app.icon;
+                    noti.classList.add('show');
+                    setTimeout(() => noti.classList.remove('show'), 4000);
+                }
+            }, 15000);
+        }
+
+        window.addEventListener('scroll', () => {
+            const btn = document.getElementById('backToTop');
+            if(btn) {
+                if (window.scrollY > 300) btn.classList.add('show'); else btn.classList.remove('show');
+            }
+        });
+    </script>
+</body>
+</html>
