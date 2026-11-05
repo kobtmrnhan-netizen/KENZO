@@ -281,17 +281,17 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
             <!-- KING: DTN -->
             <div class="king-card">
                 <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
-                    <img src="logodtn.png" class="avatar neon" style="object-fit: cover; padding: 0; border: 2px solid var(--purple);"> 
+                    <img src="logodtn.png" class="avatar neon" style="object-fit: cover; padding: 0; border: 2px solid var(--purple);">
                     <div>
                         <span class="king-badge">👑 KING</span>
-                        <h3 class="king-name">DTN
+                        <h3 class="king-name">DTN_207
                             <!-- TÍCH KZ THƯƠNG HIỆU CỦA BẠN -->
                             <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
                                 <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
                                 <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
                             </svg>
                         </h3>
-                        <p style="font-size: 12px; color: var(--text-muted);">@DTN_207 (telegram)</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">@DTN_207</p>
                     </div>
                 </div>
                 
@@ -319,7 +319,7 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
     <p>© 2026 <strong style="color: var(--text);">KENZO 健藏</strong> Studio. All Rights Reserved.</p>
 </footer>
 
-<!-- MODAL CHI TIẾT -->
+<!-- MODAL CHI TIẾT APP -->
 <div id="detailModal" class="modal">
     <div class="modal-content">
         <button class="close-btn" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
@@ -339,6 +339,19 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
     </div>
 </div>
 
+<!-- MODAL GAME KHỦNG LONG -->
+<div id="dinoModal" class="modal">
+    <div class="modal-content" style="max-width: 800px; padding: 15px; overflow: hidden;">
+        <div class="flex justify-between items-center" style="margin-bottom: 10px;">
+            <h2 style="font-size: 18px; font-weight: 900; color: var(--text);">🦖 Khủng Long Nhảy - Chơi Ngay</h2>
+            <button onclick="closeDino()" style="color: var(--text-muted); font-size: 20px;"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <!-- Khung nhúng game -->
+        <iframe src="https://wayou.github.io/t-rex-runner/" width="100%" height="400px" style="border-radius: 12px; border: 1px solid var(--border); background: #fff;" frameborder="0"></iframe>
+        <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 10px;">Dùng phím Cách (Space) hoặc Mũi tên Lên để nhảy.</p>
+    </div>
+</div>
+
 <!-- FLOATING ELEMENTS -->
 <div id="toast" class="toast">Thông báo!</div>
 <div id="liveNoti" class="live-noti">
@@ -354,13 +367,13 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
     const apps = [
         { 
             id: 1, 
-            name: 'Huyền Thoại Hải Tặc (TEST)', 
-            pkg: 'com.package.haitacdaichien', 
+            name: 'Huyền thoại hải tặc (test)', 
+            pkg: 'com.package.huyenthoaihaitactest', 
             size: '271 MB', 
             cat: 'GAME', 
             downloads: 1500, 
             icon: 'logohtht.png', 
-            desc: 'Bản test với rất nhiều tài nguyên chỉ cần nhập là có Ngay nhắn qua @DTN_207 để nhận code hoặc chat trong nhóm của tôi', 
+            desc: 'huyền thoại hải tặc test sẽ cho bạn rất nhiều tài nguyên bằng cách nhập code testgame,dacuonghoa,linhtri999,haitacphucsinh,nuocmat111,germa222 còn rất nhiều code nếu muốn hãy nhắn telegram @DTN_207', 
             screenshots: [], 
             downloadLink: 'https://www.mediafire.com/file/yynia7atfblx4d9/haitacphucsinh-1.1.8.apk/file?dkey=i00bxehb1hi&r=728' 
         },
@@ -369,12 +382,24 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
             name: 'CLOUD VMOS', 
             pkg: 'com.package.cloudvmos', 
             size: '0 MB', 
-            cat: 'cloudvmos', 
+            cat: 'CLOUD', 
             downloads: 1200, 
             icon: 'logovmos.png', 
-            desc: 'Cloud VMOS 2-3h 1máy / 2k mua nhắn qua mình nhé click vào bên dưới để mua', 
+            desc: 'cloud vmos 2-3h 1máy /;2k mua nhấn vào phía dưới sẽ đến chỗ mua', 
             screenshots: [], 
             downloadLink: 'https://t.me/DTN_207' 
+        },
+        { 
+                id: 3,                                // ID phải là số khác (3, 4, 5...) không trùng
+                name: 'Zayon Mods',                 // Tên hiển thị
+                pkg: 'com.package.zayon',             // Package name
+                size: '7 MB',                       // Dung lượng
+                cat: 'APP MODS',                          // 'GAME' hoặc 'APP'
+                downloads: 5000,                      // Lượt tải (để xếp hạng)
+                icon: 'logozygon.png', // Link ảnh icon
+                desc: 'Zayon mods App Tăng Tốc Những tuyển thủ dùng:))', // Mô tả
+                screenshots: [],                      // Ảnh chụp màn hình (để trống [] nếu không có)
+                downloadLink: 'https://www.mediafire.com/file/23ln6qjsfr2qlis/Zayon_Crack_By_Hihi.apk/file' // Link tải file thật
         }
     ];
     // ========================================================
@@ -476,16 +501,19 @@ function renderStore() {
     showSkeleton('appGrid');
     
     setTimeout(() => { 
-        if (apps.length > 0) {
-            let h = apps[0];
-            hero.innerHTML = `
-                <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
-                    <img src="${h.icon}" style="width: 60px; height: 60px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border);">
-                    <div><h3 style="font-size: 18px; font-weight: 900; color: var(--text);">${h.name}</h3><p style="font-size: 12px; color: var(--blue); margin-top: 3px;">${h.pkg}</p></div>
+        // --- THẺ HERO CỦA KHỦNG LONG ---
+        hero.innerHTML = `
+            <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
+                <div style="width: 60px; height: 60px; border-radius: 12px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 32px;">🦖</div>
+                <div>
+                    <h3 style="font-size: 18px; font-weight: 900; color: var(--text);">Khủng Long Nhảy</h3>
+                    <p style="font-size: 12px; color: var(--blue); margin-top: 3px;">Game giải trí không cần mạng</p>
                 </div>
-                <button onclick="openModal(${h.id})" class="btn-download">${currentLang==='vi'?'Tải File APK':'Download APK'} (${h.size})</button>
-            `;
-        }
+            </div>
+            <button onclick="document.getElementById('dinoModal').classList.add('active')" class="btn-download" style="background: linear-gradient(135deg, #10b981, #06b6d4);">Chơi Ngay (Miễn Phí)</button>
+        `;
+        // --------------------------------
+
         let filtered = apps.filter(a => {
             let matchCat = (currentCat === 'ALL') || (a.cat === currentCat);
             let matchSearch = a.name.toLowerCase().includes(searchQ) || a.pkg.toLowerCase().includes(searchQ);
@@ -650,7 +678,10 @@ function toggleNoti() { document.getElementById('notiDropdown').classList.toggle
 
         function copyPkg(pkg) { navigator.clipboard.writeText(pkg); showToast('Đã copy Package Name!'); }
         function reportLink() { showToast('Cảm ơn bạn! Đã gửi báo cáo cho Admin.'); }
+        
+        // Hàm đóng Modal
         function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
+        function closeDino() { document.getElementById('dinoModal').classList.remove('active'); }
         
         function verifyCaptcha() {
             const box = document.getElementById('captchaCheck'), icon = document.getElementById('captchaIcon'), dlBtn = document.getElementById('dlBtn');
