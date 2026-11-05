@@ -221,7 +221,6 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         <div class="flex justify-between items-center" style="margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px;">
             <div class="logo-text">
                 <span>KENZO</span><span class="text-gradient">健藏</span>
-                <!-- TÍCH KZ TRONG MENU -->
                 <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
                     <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
                     <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
@@ -234,6 +233,10 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         <div id="nav-saved" class="nav-item" onclick="switchView('saved')"><i class="fa-solid fa-star"></i> <span data-i18n="nav_saved">Đã Lưu</span></div>
         <div id="nav-history" class="nav-item" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="nav_history">Lịch Sử Tải</span></div>
         <div id="nav-studio" class="nav-item" onclick="switchView('studio')"><i class="fa-solid fa-crown"></i> <span data-i18n="nav_studio">Studio</span></div>
+        
+        <!-- VẠCH KẺ NGANG VÀ NÚT GETKEY -->
+        <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0;">
+        <div id="nav-getkey" class="nav-item" onclick="switchView('getkey')" style="color: #f59e0b;"><i class="fa-solid fa-key"></i> <span>GETKEY</span></div>
     </div>
 </div>
 <main>
@@ -246,11 +249,16 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
             </div>
             <div id="heroCard" class="hero-card"></div>
         </div>
+        
+        <!-- NÚT BỘ LỌC ĐÃ ĐƯỢC CẬP NHẬT THEO YÊU CẦU -->
         <div class="tabs">
             <button class="tab-btn active" onclick="filterCategory('ALL', this)" data-i18n="tab_all">Tất Cả</button>
-            <button class="tab-btn" onclick="filterCategory('GAME', this)" data-i18n="tab_game">Trò Chơi</button>
-            <button class="tab-btn" onclick="filterCategory('APP', this)" data-i18n="tab_app">Ứng Dụng</button>
+            <button class="tab-btn" onclick="filterCategory('GAME', this)">GAME</button>
+            <button class="tab-btn" onclick="filterCategory('CLOUD', this)">CLOUD</button>
+            <button class="tab-btn" onclick="filterCategory('APP MODS', this)">APP MODS</button>
+            <button class="tab-btn" onclick="switchView('getkey')" style="background: rgba(245,158,11,0.1); color: #f59e0b; border-color: rgba(245,158,11,0.3);">GETKEY</button>
         </div>
+        
         <div id="appGrid" class="app-grid"></div>
     </div>
 
@@ -271,38 +279,50 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text);" data-i18n="history_title">🕒 Lịch Sử Tải Xuống</h2>
         <div id="historyList"></div>
     </div>
+
+    <!-- TRANG GETKEY -->
+    <div id="view-getkey" class="view">
+        <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🔑 KHO KEY MIỄN PHÍ</h2>
+        <div class="app-card" style="max-width: 400px; margin: 0 auto; text-align: center; padding: 30px;">
+            <img id="keyImg" src="https://via.placeholder.com/150" class="app-icon" style="margin: 0 auto 15px auto; width: 100px; height: 100px;">
+            <h3 id="keyName" style="font-size: 20px; font-weight: 900; color: var(--text);">Tên Key (Tự Đặt)</h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Mã số: <span id="keyCode">Key 09</span></p>
+            
+            <div id="keyLinkContainer" class="hidden" style="margin-top: 20px; padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;">
+                <a id="keyLink" href="#" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 14px;">Bấm vào đây để nhận Key</a>
+            </div>
+
+            <button class="btn-download" style="margin-top: 20px; padding: 15px; font-size: 14px;" onclick="revealKeyLink()">GET</button>
+        </div>
+    </div>
         <!-- TRANG STUDIO -->
     <div id="view-studio" class="view">
         <div class="studio-header">
             <h1 style="color: var(--text);" data-i18n="studio_title">Đội Ngũ <span class="text-gradient">Sáng Lập</span></h1>
         </div>
-        <div class="studio-grid" style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto;">
+        
+        <div class="studio-grid">
             
-            <!-- KING: DTN -->
+            <!-- NGƯỜI 1: DTN (Giữ nguyên) -->
             <div class="king-card">
                 <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
                     <img src="logodtn.png" class="avatar neon" style="object-fit: cover; padding: 0; border: 2px solid var(--purple);">
                     <div>
                         <span class="king-badge">👑 KING</span>
-                        <h3 class="king-name">DTN_207
-                            <!-- TÍCH KZ THƯƠNG HIỆU CỦA BẠN -->
+                        <h3 class="king-name">DTN
                             <svg class="verify-icon neon-glow" viewBox="0 0 22 22">
                                 <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
                                 <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
                             </svg>
                         </h3>
-                        <p style="font-size: 12px; color: var(--text-muted);">@DTN_207</p>
+                        <p style="font-size: 12px; color: var(--text-muted);">@DTN_207 (telegram)</p>
                     </div>
                 </div>
-                
-                <!-- 2 Chức vụ -->
                 <div style="margin-bottom: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
                     <span style="font-size: 11px; font-weight: 900; color: #f59e0b;" data-i18n="role_founder">🌟 SÁNG LẬP</span>
                     <span style="font-size: 11px; font-weight: 900; color: #06b6d4;" data-i18n="role_dev">💻 NHÀ PHÁT TRIỂN</span>
                 </div>
-                
                 <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;" data-i18n="bio_dtn">Nhà sáng lập kiêm chuyên gia lập trình, phát triển công nghệ và Mod Game. Đảm nhận vai trò kỹ thuật chính của Kenzo Studio.</p>
-                
                 <div class="flex" style="gap: 8px; flex-wrap: wrap;">
                     <span class="tag tag-purple">Sáng Lập</span>
                     <span class="tag" style="color: #06b6d4; border-color: rgba(6,182,212,0.3); background: rgba(6,182,212,0.1);">Nhà Phát Triển</span>
@@ -310,6 +330,38 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
                     <span class="tag" style="color: var(--pink); border-color: rgba(236,72,153,0.3); background: rgba(236,72,153,0.1);">Mod Game</span>
                 </div>
             </div>
+
+            <!-- NGƯỜI 2: MODS' INCOME (Mới thêm, Tích ĐEN) -->
+            <div class="king-card">
+                <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
+                    <img src="logoad2.png" class="avatar" style="object-fit: cover; padding: 0; border: 2px solid #f59e0b; background: #f59e0b;">
+                    <div>
+                        <span class="king-badge" style="color: #f59e0b;">💼 MODS' INCOME</span>
+                        <h3 class="king-name">BOMAYLAQUAN
+                            <!-- TÍCH ĐEN VIỀN TRẮNG -->
+                            <svg class="verify-icon" viewBox="0 0 22 22">
+                                <path fill="#111111" stroke="#ffffff" stroke-width="0.8" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                                <path fill="#ffffff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
+                            </svg>
+                        </h3>
+                        <p style="font-size: 12px; color: var(--text-muted);">@bomaylaquan (telegram)</p>
+                    </div>
+                </div>
+                
+                <div style="margin-bottom: 12px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span style="font-size: 11px; font-weight: 900; color: #f59e0b;">💼 MODS' INCOME</span>
+                </div>
+                
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Chuyên cung cấp các bản Mod, Code, hỗ trợ BOT và các giải pháp công nghệ cho cộng đồng.</p>
+                
+                <div class="flex" style="gap: 8px; flex-wrap: wrap;">
+                    <span class="tag" style="color: #f59e0b; border-color: rgba(245,158,11,0.3); background: rgba(245,158,11,0.1);">Lấy Mods</span>
+                    <span class="tag tag-blue">Code</span>
+                    <span class="tag tag-green">BOT</span>
+                    <span class="tag tag-purple">Công Nghệ</span>
+                </div>
+            </div>
+
         </div>
     </div>
 </main>
@@ -346,7 +398,6 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
             <h2 style="font-size: 18px; font-weight: 900; color: var(--text);">🦖 Khủng Long Nhảy - Chơi Ngay</h2>
             <button onclick="closeDino()" style="color: var(--text-muted); font-size: 20px;"><i class="fa-solid fa-xmark"></i></button>
         </div>
-        <!-- Khung nhúng game -->
         <iframe src="https://wayou.github.io/t-rex-runner/" width="100%" height="400px" style="border-radius: 12px; border: 1px solid var(--border); background: #fff;" frameborder="0"></iframe>
         <p style="text-align: center; font-size: 12px; color: var(--text-muted); margin-top: 10px;">Dùng phím Cách (Space) hoặc Mũi tên Lên để nhảy.</p>
     </div>
@@ -362,11 +413,12 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
 <div id="backToTop" class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'});"><i class="fa-solid fa-arrow-up"></i></div>
 <script>
     // ========================================================
-    // KHU VỰC BẠN CẦN SỬA: THÊM/SỬA GAME VÀO ĐÂY
+    // DỮ LIỆU GAME/APP (Bạn tự điền thêm 6 App vào)
     // ========================================================
     const apps = [
         { 
             id: 1, 
+            idCode: 'HT-001', // Mã số hiển thị
             name: 'Huyền thoại hải tặc (test)', 
             pkg: 'com.package.huyenthoaihaitactest', 
             size: '271 MB', 
@@ -379,6 +431,7 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         },
         { 
             id: 2, 
+            idCode: 'VM-002',
             name: 'CLOUD VMOS', 
             pkg: 'com.package.cloudvmos', 
             size: '0 MB', 
@@ -390,27 +443,51 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
             downloadLink: 'https://t.me/DTN_207' 
         },
         { 
-                id: 3,                                // ID phải là số khác (3, 4, 5...) không trùng
-                name: 'Zayon Mods',                 // Tên hiển thị
-                pkg: 'com.package.zayon',             // Package name
-                size: '7 MB',                       // Dung lượng
-                cat: 'APP MODS',                          // 'GAME' hoặc 'APP'
-                downloads: 5000,                      // Lượt tải (để xếp hạng)
-                icon: 'logozygon.png', // Link ảnh icon
-                desc: 'Zayon mods App Tăng Tốc Những tuyển thủ dùng:))', // Mô tả
-                screenshots: [],                      // Ảnh chụp màn hình (để trống [] nếu không có)
-                downloadLink: 'https://www.mediafire.com/file/23ln6qjsfr2qlis/Zayon_Crack_By_Hihi.apk/file' // Link tải file thật
+            id: 3, 
+            idCode: 'ZY-003',                      
+            name: 'Zayon Mods',                 
+            pkg: 'com.package.zayon',             
+            size: '7 MB',                       
+            cat: 'APP MODS',                          
+            downloads: 5000,                      
+            icon: 'logozygon.png', 
+            desc: 'Zayon mods App Tăng Tốc Những tuyển thủ dùng:))', 
+            screenshots: [],                      
+            downloadLink: 'https://www.mediafire.com/file/23ln6qjsfr2qlis/Zayon_Crack_By_Hihi.apk/file' 
+        },
+        // ================= 6 APP TRỐNG BẠN TỰ ĐIỀN =================
+        { 
+            id: 4, idCode: '09-004', name: '09 TEAM  4', pkg: 'com.package.09team', size: '0 MB', cat: 'APP MODS', downloads: 3648, icon: 'logo09team.png', desc: '09 team mods web esp,hs antiban', screenshots: [], downloadLink: 'https://vi.anotepad.com/notes/5hxwf93t' 
+        },
+        { 
+            id: 5, idCode: 'novax-005', name: 'NOVAX MODS', pkg: 'com.package.novax', size: '0 MB', cat: 'APP MODS', downloads: 127, icon: 'logonovax.png', desc: 'Novax mods app tăng tốc esp,hs antiban', screenshots: [], downloadLink: 'https://vi.anotepad.com/notes/8j5kpxhg' 
+        },
+        { 
+            id: 6, idCode: 'pubg-006', name: 'PUBG MODS', pkg: 'com.package.pubg', size: '1.18 GB', cat: 'GAME', downloads: 72, icon: 'logopubg.png', desc: 'Pubg Phiên Bản Dành Cho Tuyển Thủ', screenshots: [], downloadLink: 'https://www.mediafire.com/file/uu5pw2y1j9to0ng/JAVA+PUBG+VNG+4.6.0_MOD.apk/file' 
+        },
+        { 
+            id: 7, idCode: 'fcm-007', name: 'FC MOBILE MODS', pkg: 'com.package.fcm', size: '175 MB', cat: 'GAME', downloads: 379, icon: 'logofcmobile.png', desc: 'Fc mobile chế độ siêu dễ', screenshots: [], downloadLink: 'https://www.mediafire.com/file/zk8u2nw419lo11y/FC_JAVA_VN_33.0.4_FIXONLINE.apk/file' 
+        },
+        { 
+            id: 8, idCode: 'cr-008', name: 'CORNE RUNNER', pkg: 'com.package.cornerunner', size: '847 MB', cat: 'GAME', downloads: 297, icon: 'logocr.png', desc: 'corne runner chế độ hủy diệt', screenshots: [], downloadLink: 'https://www.mediafire.com/file/cb8lgeg0bh0loew/OWM+Core+Runners_1.0.179_sign.apk/file' 
+        },
+        { 
+            id: 9, idCode: 'bls-009', name: 'BLOOD STRIKE', pkg: 'com.package.bls', size: 'bảo trì', cat: 'GAME', downloads: 115, icon: 'logobld.png', desc: 'BLOOD STRIKE chế độ khủng bố lũ địch', screenshots: [], downloadLink: 'https://www.mediafire.com/file/i36cgzhegj8d3io/blood-strike-v2-signed.apk/file' 
         }
     ];
+
+    // CẤU HÌNH TRANG GETKEY (Bạn tự điền)
+    const getkeyConfig = {
+        img: 'logohenrygetkey.png', // Link ảnh
+        name: 'GETKEY 4 GAME - PUBG,FC,CORNE RUNNER,BLD', // Tên hiển thị
+        code: 'getkey - 372997265', // Mã số
+        link: 'https://henry07.site/getkey?admin=binbaroi' // Link khi bấm nút GET
+    };
     // ========================================================
 
     const langDict = {
-        vi: { 
-            security_title: "Kenzo Security", security_desc: "Vui lòng xác minh để truy cập", captcha_text: "Tôi không phải là người máy", marquee_text: "🔥 Chào mừng đến với Kenzo Studio - Cập nhật game mới mỗi ngày!", noti_title: "Thông báo mới", noti_1: "Hệ thống đã cập nhật Game mới!", noti_2: "Tặng bạn 1 lượt quay may mắn!", nav_home: "Trang Chủ", nav_charts: "Bảng Xếp Hạng", nav_saved: "Đã Lưu", nav_history: "Lịch Sử Tải", nav_studio: "Studio", hero_title: "Tải APK Tốc Độ Cao <br><span class='text-gradient'>An Toàn Tuyệt Đối</span>", hero_desc: "Kho ứng dụng Android cao cấp của Kenzo Studio.", tab_all: "Tất Cả", tab_game: "Trò Chơi", tab_app: "Ứng Dụng", charts_title: "🏆 Bảng Xếp Hạng Tải Nhiều", saved_title: "⭐ Ứng Dụng Đã Lưu", history_title: "🕒 Lịch Sử Tải Xuống", studio_title: "Đội Ngũ <span class='text-gradient'>Sáng Lập</span>", role_founder: "🌟 SÁNG LẬP", role_dev: "💻 NHÀ PHÁT TRIỂN", bio_dtn: "Nhà sáng lập kiêm chuyên gia lập trình, phát triển công nghệ và Mod Game. Đảm nhận vai trò kỹ thuật chính của Kenzo Studio.", spin_title: "🎁 Vòng Quay May Mắn", spin_btn: "Quay Ngay!" 
-        },
-        en: { 
-            security_title: "Kenzo Security", security_desc: "Please verify to access", captcha_text: "I am not a robot", marquee_text: "🔥 Welcome to Kenzo Studio - Update games daily!", noti_title: "Notifications", noti_1: "New Game updated!", noti_2: "You got 1 lucky spin!", nav_home: "Home", nav_charts: "Top Charts", nav_saved: "Saved Apps", nav_history: "Downloads", nav_studio: "Studio", hero_title: "High Speed APK <br><span class='text-gradient'>100% Safe</span>", hero_desc: "Premium Android app store by Kenzo Studio.", tab_all: "All", tab_game: "Games", tab_app: "Apps", charts_title: "🏆 Top Charts", saved_title: "⭐ Saved Apps", history_title: "🕒 Download History", studio_title: "Founding <span class='text-gradient'>Team</span>", role_founder: "🌟 FOUNDER", role_dev: "💻 DEVELOPER", bio_dtn: "Founder & Programming, Technology and Mod Game Expert. Lead Technical Role at Kenzo Studio.", spin_title: "🎁 Lucky Spin", spin_btn: "Spin Now!" 
-        }
+        vi: { security_title: "Kenzo Security", security_desc: "Vui lòng xác minh để truy cập", captcha_text: "Tôi không phải là người máy", marquee_text: "🔥 Chào mừng đến với Kenzo Studio - Cập nhật game mới mỗi ngày!", noti_title: "Thông báo mới", noti_1: "Hệ thống đã cập nhật Game mới!", noti_2: "Tặng bạn 1 lượt quay may mắn!", nav_home: "Trang Chủ", nav_charts: "Bảng Xếp Hạng", nav_saved: "Đã Lưu", nav_history: "Lịch Sử Tải", nav_studio: "Studio", hero_title: "Tải APK Tốc Độ Cao <br><span class='text-gradient'>An Toàn Tuyệt Đối</span>", hero_desc: "Kho ứng dụng Android cao cấp của Kenzo Studio.", tab_all: "Tất Cả", charts_title: "🏆 Bảng Xếp Hạng Tải Nhiều", saved_title: "⭐ Ứng Dụng Đã Lưu", history_title: "🕒 Lịch Sử Tải Xuống", studio_title: "Đội Ngũ <span class='text-gradient'>Sáng Lập</span>", role_founder: "🌟 SÁNG LẬP", role_dev: "💻 NHÀ PHÁT TRIỂN", bio_dtn: "Nhà sáng lập kiêm chuyên gia lập trình, phát triển công nghệ và Mod Game.", spin_title: "🎁 Vòng Quay May Mắn", spin_btn: "Quay Ngay!" },
+        en: { security_title: "Kenzo Security", security_desc: "Please verify to access", captcha_text: "I am not a robot", marquee_text: "🔥 Welcome to Kenzo Studio - Update games daily!", noti_title: "Notifications", noti_1: "New Game updated!", noti_2: "You got 1 lucky spin!", nav_home: "Home", nav_charts: "Top Charts", nav_saved: "Saved Apps", nav_history: "Downloads", nav_studio: "Studio", hero_title: "High Speed APK <br><span class='text-gradient'>100% Safe</span>", hero_desc: "Premium Android app store by Kenzo Studio.", tab_all: "All", charts_title: "🏆 Top Charts", saved_title: "⭐ Saved Apps", history_title: "🕒 Download History", studio_title: "Founding <span class='text-gradient'>Team</span>", role_founder: "🌟 FOUNDER", role_dev: "💻 DEVELOPER", bio_dtn: "Founder & Programming Expert.", spin_title: "🎁 Lucky Spin", spin_btn: "Spin Now!" }
     };
 
     let currentLang = localStorage.getItem('yj_lang') || 'vi';
@@ -428,65 +505,78 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         }
         applyLanguage();
         renderStore(); renderCharts(); renderSaved(); renderHistory();
+        initGetKey();
         startLiveNoti();
     };
+  function initGetKey() {
+    document.getElementById('keyImg').src = getkeyConfig.img;
+    document.getElementById('keyName').innerText = getkeyConfig.name;
+    document.getElementById('keyCode').innerText = getkeyConfig.code;
+    document.getElementById('keyLink').href = getkeyConfig.link;
+}
 
-    function toggleTheme() {
-        document.body.classList.toggle('light-mode');
-        const isLight = document.body.classList.contains('light-mode');
-        localStorage.setItem('yj_theme', isLight ? 'light' : 'dark');
-        document.getElementById('themeIcon').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-    }
+function revealKeyLink() {
+    document.getElementById('keyLinkContainer').classList.remove('hidden');
+    showToast('Đã lấy được link!');
+}
 
-    function toggleLang() {
-        currentLang = currentLang === 'vi' ? 'en' : 'vi';
-        localStorage.setItem('yj_lang', currentLang);
-        applyLanguage();
-    }
+function toggleTheme() {
+    document.body.classList.toggle('light-mode');
+    const isLight = document.body.classList.contains('light-mode');
+    localStorage.setItem('yj_theme', isLight ? 'light' : 'dark');
+    document.getElementById('themeIcon').className = isLight ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+}
 
-    function applyLanguage() {
-        document.getElementById('langBtn').innerText = currentLang === 'vi' ? 'EN' : 'VI';
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if(langDict[currentLang][key]) el.innerHTML = langDict[currentLang][key];
-        });
-        renderStore(); renderCharts(); renderSaved(); renderHistory();
-    }
+function toggleLang() {
+    currentLang = currentLang === 'vi' ? 'en' : 'vi';
+    localStorage.setItem('yj_lang', currentLang);
+    applyLanguage();
+}
 
-    function verifyGateway() {
-        const box = document.getElementById('gatewayCheck');
-        const icon = document.getElementById('gatewayIcon');
-        const overlay = document.getElementById('gatewayCaptcha');
-        
-        if (box.classList.contains('verified') || box.classList.contains('verifying')) return;
-        
-        icon.className = 'fa-solid fa-circle-notch fa-spin'; icon.style.color = 'var(--blue)'; box.classList.add('verifying');
-        
-        setTimeout(() => {
-            box.style.background = '#10b981'; box.style.borderColor = '#10b981'; 
-            icon.className = 'fa-solid fa-check'; icon.style.color = 'white'; box.classList.add('verified');
-            
-            setTimeout(() => { 
-                overlay.style.opacity = '0'; overlay.style.transition = 'opacity 0.5s ease'; 
-                setTimeout(() => { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }, 500); 
-            }, 500);
-        }, 1500);
-    }
+function applyLanguage() {
+    document.getElementById('langBtn').innerText = currentLang === 'vi' ? 'EN' : 'VI';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if(langDict[currentLang][key]) el.innerHTML = langDict[currentLang][key];
+    });
+    renderStore(); renderCharts(); renderSaved(); renderHistory();
+}
 
-    function openMenu() { document.getElementById('sideDrawer').classList.add('active'); document.getElementById('drawerPanel').classList.add('active'); }
-    function closeMenu(e) { if (e && e.target.tagName === 'A') return; document.getElementById('sideDrawer').classList.remove('active'); document.getElementById('drawerPanel').classList.remove('active'); }
+function verifyGateway() {
+    const box = document.getElementById('gatewayCheck');
+    const icon = document.getElementById('gatewayIcon');
+    const overlay = document.getElementById('gatewayCaptcha');
     
-    function switchView(viewName) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        document.getElementById('view-' + viewName).classList.add('active');
-        document.getElementById('nav-' + viewName).classList.add('active');
-        closeMenu(); window.scrollTo({top: 0, behavior: 'smooth'});
-    }
-  function showSkeleton(containerId) {
+    if (box.classList.contains('verified') || box.classList.contains('verifying')) return;
+    
+    icon.className = 'fa-solid fa-circle-notch fa-spin'; icon.style.color = 'var(--blue)'; box.classList.add('verifying');
+    
+    setTimeout(() => {
+        box.style.background = '#10b981'; box.style.borderColor = '#10b981'; 
+        icon.className = 'fa-solid fa-check'; icon.style.color = 'white'; box.classList.add('verified');
+        
+        setTimeout(() => { 
+            overlay.style.opacity = '0'; overlay.style.transition = 'opacity 0.5s ease'; 
+            setTimeout(() => { overlay.style.display = 'none'; document.body.style.overflow = 'auto'; }, 500); 
+        }, 500);
+    }, 1500);
+}
+
+function openMenu() { document.getElementById('sideDrawer').classList.add('active'); document.getElementById('drawerPanel').classList.add('active'); }
+function closeMenu(e) { if (e && e.target.tagName === 'A') return; document.getElementById('sideDrawer').classList.remove('active'); document.getElementById('drawerPanel').classList.remove('active'); }
+
+function switchView(viewName) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('view-' + viewName).classList.add('active');
+    document.getElementById('nav-' + viewName).classList.add('active');
+    closeMenu(); window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function showSkeleton(containerId) {
     const grid = document.getElementById(containerId);
     if(!grid) return;
-    grid.innerHTML = Array(2).fill(0).map(() => `
+    grid.innerHTML = Array(4).fill(0).map(() => `
         <div class="skeleton-card">
             <div class="skeleton-box" style="width: 60px; height: 60px;"></div>
             <div class="skeleton-box" style="width: 80%; height: 20px; margin-top: 10px;"></div>
@@ -501,7 +591,6 @@ function renderStore() {
     showSkeleton('appGrid');
     
     setTimeout(() => { 
-        // --- THẺ HERO CỦA KHỦNG LONG ---
         hero.innerHTML = `
             <div class="flex items-center" style="gap: 15px; margin-bottom: 15px;">
                 <div style="width: 60px; height: 60px; border-radius: 12px; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 32px;">🦖</div>
@@ -512,14 +601,13 @@ function renderStore() {
             </div>
             <button onclick="document.getElementById('dinoModal').classList.add('active')" class="btn-download" style="background: linear-gradient(135deg, #10b981, #06b6d4);">Chơi Ngay (Miễn Phí)</button>
         `;
-        // --------------------------------
 
         let filtered = apps.filter(a => {
             let matchCat = (currentCat === 'ALL') || (a.cat === currentCat);
             let matchSearch = a.name.toLowerCase().includes(searchQ) || a.pkg.toLowerCase().includes(searchQ);
             return matchCat && matchSearch;
         });
-        if (filtered.length === 0) { grid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">Chưa có App nào.</p>`; return; }
+        if (filtered.length === 0) { grid.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">Chưa có App nào trong mục này.</p>`; return; }
         
         grid.innerHTML = filtered.map(a => generateAppCard(a)).join('');
     }, 500);
@@ -531,14 +619,15 @@ function generateAppCard(a) {
         <div class="app-card">
             <div>
                 <div class="flex justify-between items-start">
-                    <img src="${a.icon}" class="app-icon">
+                    <img src="${a.icon}" class="app-icon" onerror="this.src='https://via.placeholder.com/150'">
                     <div class="flex" style="gap: 5px;">
                         <button onclick="toggleSave(${a.id})" style="color: ${isSaved ? '#f59e0b' : 'var(--text-muted)'}; font-size: 18px;"><i class="fa-solid fa-star"></i></button>
                         <span style="font-size: 10px; color: var(--pink); font-weight: bold; border: 1px solid var(--pink); padding: 2px 6px; border-radius: 8px;">${a.cat}</span>
                     </div>
                 </div>
                 <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 5px; color: var(--text);">${a.name}</h3>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">${a.pkg}</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">${a.pkg}</p>
+                <p style="font-size: 11px; color: #f59e0b; font-weight: bold;"><i class="fa-solid fa-hashtag"></i> Mã số: ${a.idCode}</p>
             </div>
             <div class="flex justify-between items-center" style="border-top: 1px solid var(--border); padding-top: 15px; margin-top: 15px;">
                 <span style="font-size: 12px; color: var(--text-muted);">${a.size}</span>
@@ -555,7 +644,7 @@ function renderCharts() {
     list.innerHTML = sorted.map((a, i) => `
         <div class="top-chart-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''}" onclick="openModal(${a.id})">
             <div class="rank-number" style="color: ${i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#b45309':'var(--text-muted)'}">#${i+1}</div>
-            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;">
+            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'">
             <div style="flex: 1;">
                 <h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3>
                 <p style="font-size: 12px; color: var(--text-muted);">${a.downloads} ${currentLang==='vi'?'lượt tải':'downloads'}</p>
@@ -578,7 +667,7 @@ function renderHistory() {
     let filtered = apps.filter(a => historyApps.includes(a.id));
     list.innerHTML = filtered.length ? filtered.map(a => `
         <div class="top-chart-item" onclick="openModal(${a.id})">
-            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;">
+            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'">
             <div style="flex: 1;">
                 <h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3>
                 <p style="font-size: 12px; color: #10b981;"><i class="fa-solid fa-check-circle"></i> Đã tải thành công</p>
@@ -617,8 +706,10 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function filterCategory(cat, btn) {
-    currentCat = cat; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active'); renderStore();
+    currentCat = cat; 
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); 
+    renderStore();
 }
 
 function toggleNoti() { document.getElementById('notiDropdown').classList.toggle('active'); }
@@ -631,13 +722,14 @@ function toggleNoti() { document.getElementById('notiDropdown').classList.toggle
 
             document.getElementById('modalBody').innerHTML = `
                 <div class="flex items-center" style="gap: 15px; margin-bottom: 20px;">
-                    <img src="${app.icon}" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover;">
+                    <img src="${app.icon}" style="width: 80px; height: 80px; border-radius: 16px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/150'">
                     <div>
                         <h2 style="font-size: 20px; font-weight: 900; color: var(--text);">${app.name}</h2>
                         <div class="flex items-center" style="gap: 10px; margin-top: 5px;">
                             <p style="color: var(--blue); font-size: 13px; font-family: monospace;">${app.pkg}</p>
                             <button onclick="copyPkg('${app.pkg}')" style="color: var(--text-muted); font-size: 12px;"><i class="fa-regular fa-copy"></i></button>
                         </div>
+                        <p style="font-size: 12px; color: #f59e0b; font-weight: bold; margin-top: 5px;">Mã số: ${app.idCode}</p>
                     </div>
                 </div>
                 ${screenshotsHtml}
@@ -679,7 +771,6 @@ function toggleNoti() { document.getElementById('notiDropdown').classList.toggle
         function copyPkg(pkg) { navigator.clipboard.writeText(pkg); showToast('Đã copy Package Name!'); }
         function reportLink() { showToast('Cảm ơn bạn! Đã gửi báo cáo cho Admin.'); }
         
-        // Hàm đóng Modal
         function closeModal() { document.getElementById('detailModal').classList.remove('active'); }
         function closeDino() { document.getElementById('dinoModal').classList.remove('active'); }
         
