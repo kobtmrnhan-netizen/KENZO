@@ -391,7 +391,7 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
 <!-- FOOTER -->
 <footer style="text-align: center; padding: 30px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;">
     <p>© 2026 <strong style="color: var(--text);">KENZO 健藏</strong> Studio. All Rights Reserved.</p>
-    <p style="margin-top: 5px; font-size: 11px;"><a href="javascript:void(0)" onclick="switchView('404')" style="color: var(--text-muted);">Lỗi 404</a></p>
+    <p style="margin-top: 5px; font-size: 11px;"><a href="javascript:void(0)" onclick="switchView('404')" style="color: var(--text-muted);">KENZO</a></p>
 </footer>
 <!-- MODAL CHI TIẾT APP -->
 <div id="detailModal" class="modal">
@@ -457,7 +457,7 @@ body.light-mode .skeleton-box { background: #cbd5e1; }
         { id: 6, idCode: 'pubg-006', name: 'PUBG MODS', pkg: 'com.package.pubg', size: '1.18 GB', cat: 'GAME', downloads: 72, icon: 'logopubg.png', desc: 'Pubg Phiên Bản Dành Cho Tuyển Thủ', screenshots: [], downloadLink: 'https://www.mediafire.com/file/uu5pw2y1j9to0ng/JAVA+PUBG+VNG+4.6.0_MOD.apk/file' },
         { id: 7, idCode: 'fcm-007', name: 'FC MOBILE MODS', pkg: 'com.package.fcm', size: '175 MB', cat: 'GAME', downloads: 379, icon: 'logofcmobile.png', desc: 'Fc mobile chế độ siêu dễ', screenshots: [], downloadLink: 'https://www.mediafire.com/file/zk8u2nw419lo11y/FC_JAVA_VN_33.0.4_FIXONLINE.apk/file' },
         { id: 8, idCode: 'cr-008', name: 'CORNE RUNNER', pkg: 'com.package.cornerunner', size: '847 MB', cat: 'GAME', downloads: 297, icon: 'logocr.png', desc: 'corne runner chế độ hủy diệt', screenshots: [], downloadLink: 'https://www.mediafire.com/file/cb8lgeg0bh0loew/OWM+Core+Runners_1.0.179_sign.apk/file' },
-        { id: 9, idCode: 'bls-009', name: 'BLOOD STRIKE', pkg: 'com.package.bls', size: 'bảo trì', cat: 'GAME', downloads: 115, icon: 'logobld.png', desc: 'BLOOD STRIKE chế độ khủng bố lũ địch', screenshots: [], downloadLink: 'https://www.mediafire.com/file/i36cgzhegj8d3io/blood-strike-v2-signed.apk/file' }
+        { id: 9, idCode: 'bls-009', name: 'BLOOD STRIKE', pkg: 'com.package.bls', size: 'bảo trì', cat: 'GAME', downloads: 115, icon: 'logobld.png', desc: 'BLOOD STRIKE chế độ khủng bố lũ địch', screenshots: [], downloadLink: '' }
     ];
 
     const getkeyConfig = {
@@ -722,7 +722,7 @@ function openModal(id) {
         <div class="scan-container">
             <div class="scan-line"></div>
             <div class="flex justify-between items-center" style="position: relative; z-index: 2;">
-                <div class="flex items-center gap-2"><i class="fa-solid fa-shield-virus" style="color: #10b981;"></i> <span style="font-size: 13px; color: var(--text);">${currentLang==='vi'?'Đang quét virus...':'Scanning...'}</span></div>
+                <div class="flex items-center gap-2"><i class="fa-solid fa-shield-virus" style="color: #10b981;"></i> <span id="dlStatus" style="font-size: 13px; color: var(--text);">${currentLang==='vi'?'Đang quét virus...':'Scanning...'}</span></div>
                 <span style="font-size: 12px; color: #10b981; font-weight: bold;">0 Threats</span>
             </div>
         </div>
@@ -769,58 +769,41 @@ function openModal(id) {
             }, 1500);
         }
 
-        // HÀM TẢI FILE CÓ ĐẾM NGƯỢC 5 GIÂY
         function startDownload(id) {
-            let app = apps.find(a => a.id === id);
-            if(!app) return;
+    let app = apps.find(a => a.id === id);
+    if(!app) return;
 
-            document.getElementById('dlBtn').classList.add('hidden');
-            document.getElementById('dlProgress').classList.remove('hidden');
+    document.getElementById('dlBtn').classList.add('hidden');
+    document.getElementById('dlProgress').classList.remove('hidden');
+    
+    let p = 0;
+    let timer = setInterval(() => {
+        p += 20; 
+        document.getElementById('dlBar').style.width = p + '%'; 
+        document.getElementById('dlText').innerText = p + '%';
+        
+        if(p >= 100) {
+            clearInterval(timer);
             
-            const dlBar = document.getElementById('dlBar');
-            const dlText = document.getElementById('dlText');
-            const dlStatus = document.getElementById('dlStatus');
+            if(!historyApps.includes(app.id)) { 
+                historyApps.push(app.id); 
+                localStorage.setItem('yj_history', JSON.stringify(historyApps)); 
+                renderHistory(); 
+            }
             
-            let count = 5;
-            dlStatus.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Đang tạo link... Vui lòng đợi ${count}s`;
-            
-            let countdown = setInterval(() => {
-                count--;
-                if(count > 0) {
-                    dlStatus.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Đang tạo link... Vui lòng đợi ${count}s`;
+            setTimeout(() => { 
+                closeModal(); 
+                showToast('Đang chuyển hướng đến link tải...');
+                
+                if (app.downloadLink && app.downloadLink !== '') {
+                    window.open(app.downloadLink, '_blank');
                 } else {
-                    clearInterval(countdown);
-                    dlStatus.innerHTML = `<i class="fa-solid fa-gauge-high text-emerald-400 animate-pulse mr-2"></i> Tải xuống cực nhanh (50 MB/s)...`;
-                    
-                    let p = 0;
-                    let timer = setInterval(() => {
-                        p += 20; 
-                        dlBar.style.width = p + '%'; 
-                        dlText.innerText = p + '%';
-                        if(p >= 100) {
-                            clearInterval(timer);
-                            
-                            if(!historyApps.includes(app.id)) { 
-                                historyApps.push(app.id); 
-                                localStorage.setItem('yj_history', JSON.stringify(historyApps)); 
-                                renderHistory(); 
-                            }
-                            
-                            setTimeout(() => { 
-                                closeModal(); 
-                                showToast('Đang chuyển hướng đến link tải...');
-                                
-                                if (app.downloadLink && app.downloadLink !== '') {
-                                    window.open(app.downloadLink, '_blank');
-                                } else {
-                                    showToast('Chưa cập nhật link tải cho App này!');
-                                }
-                            }, 500);
-                        }
-                    }, 300);
+                    showToast('Chưa cập nhật link tải cho App này!');
                 }
-            }, 1000);
+            }, 500);
         }
+    }, 300);
+  }
 
         function shareApp(name) { if (navigator.share) navigator.share({ title: name, url: window.location.href }); else { navigator.clipboard.writeText(window.location.href); showToast('Đã copy link!'); } }
 
