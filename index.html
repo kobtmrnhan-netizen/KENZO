@@ -350,14 +350,8 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     <div id="view-history" class="view"><h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🕒 Lịch Sử Tải</h2><div id="historyList"></div></div>
     <div id="view-getkey" class="view">
     <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🔑 KHO KEY MIỄN PHÍ</h2>
-    <div class="app-list-item" style="max-width: 400px; margin: 0 auto; text-align: center; padding: 30px;">
-        <img id="keyImg" src="https://via.placeholder.com/150" class="app-icon-large" style="margin: 0 auto 15px auto; width: 100px; height: 100px;">
-        <h3 id="keyName" style="font-size: 20px; font-weight: 900; color: white; margin-bottom: 5px;">Tên Key</h3>
-        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Mã số: <span id="keyCode">Key 09</span></p>
-        <div id="keyLinkContainer" class="hidden" style="margin-bottom: 20px; padding: 15px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;"><a id="keyLink" href="#" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 14px;">Bấm vào đây để nhận Key</a></div>
-        <button class="btn-app-download" style="width: 100%;" onclick="revealKeyLink()">GET</button>
+    <div id="getkeyList" class="shop-grid-new"></div>
     </div>
-</div>
 <div id="view-shop" class="view">
     <h2 style="text-align: center; color: var(--text); margin-bottom: 30px;">🛒 CỬA HÀNG KENZO</h2>
     <div class="shop-grid-new" id="shopList"></div>
@@ -631,7 +625,21 @@ const defaultApps = [
     { id: 12, idCode: 'crgmenu-012', name: 'CRG MENU MODS', pkg: 'com.package.crgmods', size: '22.62 MB', cat: 'APP MODS', downloads: 159, icon: 'logoff.png', banner: 'bannercrg.png', desc: 'CRG MENU MODS ANTIBAN XÀI FF THƯỜNG CÂN RANK NO KEY ', downloadLink: 'https://www.mediafire.com/file/w607nelgdb34e32/CRGCRACK.apk/file', getKeyLink: '#' },
     { id: 13, idCode: 'dinhvi2-013', name: 'Định Vị Súng V2', pkg: 'com.package.dinhviv2', size: '1.5 MB', cat: 'APP MODS', downloads: 352, icon: 'logoff.png', banner: 'bannerdinhviv2.png', desc: 'Định Vị Siêu Dễ Nhìn,Nhìn Xuyên Lục Địa', downloadLink: 'https://www.mediafire.com/file/qe01cogbjloldyt/FFTH_Tra%25CC%2586%25CC%2581ng_Xanh.zip/file', getKeyLink: '#' }
 ];
-const getkeyConfig = { img: 'logohenrygetkey.png', name: 'GETKEY 4 GAME - PUBG,FC,CORNE RUNNER,BLD', code: 'getkey - 372997265', link: 'https://henry07.site/getkey?admin=binbaroi' };
+const getkeyData = [
+    { 
+        img: 'logohenrygetkey.png', 
+        name: 'GETKEY 4 GAME - PUBG,FC,CORNE RUNNER,BLD', 
+        code: 'getkey - 3729978265', 
+        link: 'https://henry07.site/getkey?admin=binbaroi' 
+    },
+    // --- DƯỚI ĐÂY LÀ THẺ THỨ 2, BRO TỰ ĐIỀN THÔNG TIN VÀO NHÉ ---
+    { 
+        img: 'logoyurigetkey.png', // Tên ảnh hoặc link ảnh
+        name: 'GETKEY 1 GAME - ZYTRON', 
+        code: 'getkey - 2739263952', 
+        link: 'https://henry07.site/getkey?admin=yuri' 
+    }
+];
 
 let currentCat = 'ALL', searchQ = '', currentModalAppId = null, currentBuyItem = null;
 let savedApps = JSON.parse(localStorage.getItem('yj_saved')) || [];
@@ -713,12 +721,20 @@ db.ref('card_requests').on('value', (snap) => {
 };
 
 function initGetKey() {
-    document.getElementById('keyImg').src = getkeyConfig.img;
-    document.getElementById('keyName').innerText = getkeyConfig.name;
-    document.getElementById('keyCode').innerText = getkeyConfig.code;
-    document.getElementById('keyLink').href = getkeyConfig.link;
-}
-function revealKeyLink() { document.getElementById('keyLinkContainer').classList.remove('hidden'); showToast('Đã lấy được link!'); }
+    const list = document.getElementById('getkeyList'); if(!list) return;
+    list.innerHTML = getkeyData.map((key, index) => `
+        <div class="shop-card" style="text-align: center; padding: 25px 15px;">
+            <img src="${key.img}" class="app-icon-large" onerror="this.src='https://via.placeholder.com/150'" style="margin: 0 auto 15px auto; width: 90px; height: 90px;">
+            <h3 style="font-size: 16px; font-weight: 900; color: white; margin-bottom: 5px; line-height: 1.4;">${key.name}</h3>
+            <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Mã số: <span style="color:#10b981; font-weight:bold;">${key.code}</span></p>
+            <div id="keyLinkContainer_${index}" class="hidden" style="margin-bottom: 15px; padding: 10px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;">
+                <a href="${key.link}" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 13px;">Bấm vào đây để nhận Key</a>
+            </div>
+            <button class="btn-app-download" style="width: 100%;" onclick="document.getElementById('keyLinkContainer_${index}').classList.remove('hidden'); showToast('Đã lấy được link!')">GET KEY</button>
+        </div>
+    `).join('');
+  }
+  
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const isLight = document.body.classList.contains('light-mode');
