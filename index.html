@@ -142,7 +142,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 @media(min-width: 768px) { .modal { align-items: center; } }
 .modal.active { display: flex; animation: slideUpModal 0.3s ease; }
 @keyframes slideUpModal { from { transform: translateY(100%); } to { transform: translateY(0); } }
-.modal-content-version { background: #0f172a; width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; border: 1px solid #1e293b; position: relative; }
+.modal-content-version { background: #0f172a; width: 100%; max-width: 500px; padding: 25px; border-radius: 30px 30px 0 0; border: 1px solid #1e293b; position: relative; max-height: 90vh; overflow-y: auto; }
 @media(min-width: 768px) { .modal-content-version { border-radius: 25px; } }
 .version-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
 .version-header .sub { font-size: 12px; font-weight: 700; color: #818cf8; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
@@ -259,7 +259,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 </div>
 <div class="marquee-container"><div class="marquee-text">🔥 Chào mừng đến với Kenzo Studio - Cập nhật game & app mới mỗi ngày! Bảo mật 100% - Tốc độ không giới hạn!</div></div>
 <div class="clock-bar"><i class="fa-solid fa-clock"></i> <span>Giờ hiện tại:</span> <span id="clockDisplay">0h 0p 0s</span></div>
-  
 <header class="glass">
     <div class="header-inner">
         <div class="logo-area">
@@ -314,7 +313,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <div class="profile-section">
             <div class="profile-avatar-box">
                 <div class="profile-ring"></div>
-                <img src="logokenzo.png" id="homeAvatar" class="profile-avatar" alt="Avatar">
+                <img src="logokenzo.png" class="profile-avatar" alt="Avatar">
             </div>
             <div class="profile-badge">🎮 KENZO VIỆT NAM</div>
             <div class="profile-greeting">Hi, I am</div>
@@ -334,7 +333,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
                 <i class="fa-solid fa-chevron-right" style="color: rgba(255,255,255,0.5);"></i>
             </div>
         </div>
-        
         <div class="section-title"><div class="tag"><i class="fa-solid fa-gamepad"></i> TẢI GAME</div><h2>Game Mods</h2></div>
         <div class="tabs">
             <button class="tab-btn active" onclick="filterCategory('ALL', this)">Tất Cả</button>
@@ -351,7 +349,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     <div id="view-getkey" class="view">
     <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🔑 KHO KEY MIỄN PHÍ</h2>
     <div id="getkeyList" class="shop-grid-new"></div>
-    </div>
+</div>
 <div id="view-shop" class="view">
     <h2 style="text-align: center; color: var(--text); margin-bottom: 30px;">🛒 CỬA HÀNG KENZO</h2>
     <div class="shop-grid-new" id="shopList"></div>
@@ -405,10 +403,49 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <div id="adminGameList"></div>
     </div>
 
+    <!-- QUẢN LÝ GETKEY -->
+    <div class="admin-panel" style="border-color: #f59e0b;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">Quản Lý Kho GetKey</h3>
+        <button class="btn-app-download" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="document.getElementById('getkeyForm').classList.toggle('hidden')">Thêm GetKey Mới +</button>
+        <div id="getkeyForm" class="hidden" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+            <div class="form-group"><label>Tên Game/Key</label><input type="text" id="gkName" class="form-input"></div>
+            <div class="form-group"><label>Mã số (Code)</label><input type="text" id="gkCode" class="form-input"></div>
+            <div class="form-group"><label>Link lấy Key</label><input type="text" id="gkLink" class="form-input"></div>
+            <div class="form-group"><label>Link Ảnh</label><input type="text" id="gkImg" class="form-input"></div>
+            <button class="btn-app-download" style="width: 100%;" onclick="addNewGetKey()">Lưu GetKey</button>
+        </div>
+        <div id="adminGetKeyList"></div>
+    </div>
+
+    <!-- QUẢN LÝ CỬA HÀNG -->
+    <div class="admin-panel" style="border-color: #38bdf8;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">Quản Lý Cửa Hàng (Acc)</h3>
+        <button class="btn-app-download" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #38bdf8, #0284c7);" onclick="document.getElementById('shopForm').classList.toggle('hidden')">Thêm Sản Phẩm Mới +</button>
+        <div id="shopForm" class="hidden" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px;">
+            <div class="form-group"><label>Tên Sản Phẩm</label><input type="text" id="sName" class="form-input"></div>
+            <div class="form-group"><label>Giá (Xu)</label><input type="number" id="sPrice" class="form-input"></div>
+            <div class="form-group"><label>Link Ảnh</label><input type="text" id="sImg" class="form-input"></div>
+            <div class="form-group"><label>Danh sách Acc (Mỗi dòng 1 acc: user|pass)</label><textarea id="sAccounts" class="form-input" rows="3" placeholder="user1|pass1&#10;user2|pass2"></textarea></div>
+            <button class="btn-app-download" style="width: 100%;" onclick="addNewShopItem()">Lưu Sản Phẩm</button>
+        </div>
+        <div id="adminShopItemList"></div>
+    </div>
+
     <!-- DUYỆT THẺ CÀO -->
     <div class="admin-panel" style="border-color: #ec4899;">
         <h3 style="color: var(--text); margin-bottom: 15px;">Duyệt Thẻ Cào</h3>
         <div id="adminCardList"></div>
+    </div>
+
+    <!-- LỊCH SỬ TRUY CẬP -->
+    <div class="admin-panel" style="border-color: #8b5cf6;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">Lịch Sử Truy Cập Web</h3>
+        <div style="max-height: 300px; overflow-y: auto;">
+            <table class="admin-table">
+                <thead><tr><th>Thời Gian</th><th>Thiết Bị</th></tr></thead>
+                <tbody id="adminVisitList"></tbody>
+            </table>
+        </div>
     </div>
 
     <!-- CỘNG XU & KHO ACC -->
@@ -511,6 +548,48 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
             </div>
         </div>
     </div>
+<!-- TRANG HỒ SƠ CÁ NHÂN -->
+<div id="view-profile" class="view">
+    <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">Hồ Sơ Của Tôi</h2>
+    
+    <div style="max-width: 500px; margin: 0 auto; background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; padding: 30px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <!-- Ảnh đại diện -->
+        <div style="position: relative; width: 120px; height: 120px; margin: 0 auto 20px auto;">
+            <img id="profileViewAvatar" src="https://via.placeholder.com/150" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 4px solid var(--blue); box-shadow: 0 0 20px rgba(6,182,212,0.5);">
+            <label for="editAvatarFile" style="position: absolute; bottom: 5px; right: 5px; background: var(--blue); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 3px solid #0f172a; box-shadow: 0 4px 10px rgba(0,0,0,0.5);">
+                <i class="fa-solid fa-camera" style="color: white; font-size: 16px;"></i>
+            </label>
+            <input type="file" id="editAvatarFile" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+            <label>Tên hiển thị</label>
+            <input type="text" id="editDisplayName" class="form-input" placeholder="Nhập tên của bạn...">
+        </div>
+        <div class="form-group" style="text-align: left;">
+            <label>Tiểu sử (Bio)</label>
+            <input type="text" id="editBio" class="form-input" placeholder="Viết gì đó về bạn...">
+        </div>
+        
+        <button class="btn-app-download" style="width: 100%; margin-bottom: 20px; background: linear-gradient(135deg, #10b981, #059669);" onclick="saveProfile()">Lưu Thay Đổi</button>
+        
+        <hr style="border-color: #334155; margin: 20px 0;">
+        
+        <!-- KHU VỰC LIÊN KẾT BẢO MẬT -->
+        <h3 style="font-size: 16px; color: var(--text); margin-bottom: 15px; text-align: left;">Liên Kết Bảo Mật (Khôi phục tài khoản)</h3>
+        <div class="flex" style="gap: 10px; margin-bottom: 20px;">
+            <button class="btn-icon" style="flex: 1; height: 50px; border-radius: 12px; border-color: #06b6d4; color: #06b6d4; font-size: 14px; font-weight: bold; display: flex; gap: 8px;" onclick="linkTelegram()">
+                <i class="fa-brands fa-telegram" style="font-size: 20px;"></i> Telegram
+            </button>
+            <button class="btn-icon" style="flex: 1; height: 50px; border-radius: 12px; border-color: #ef4444; color: #ef4444; font-size: 14px; font-weight: bold; display: flex; gap: 8px;" onclick="linkGmail()">
+                <i class="fa-brands fa-google" style="font-size: 20px;"></i> Gmail
+            </button>
+        </div>
+        <p id="linkedStatusText" style="font-size: 12px; color: var(--text-muted); text-align: left; margin-bottom: 20px;">Chưa liên kết bảo mật nào.</p>
+
+        <button class="btn-app-download" style="width: 100%; background: #1e293b; border: 1px solid #ef4444; color: #ef4444;" onclick="logout(event)">Đăng Xuất</button>
+    </div>
+</div>
 </main>
 <footer style="text-align: center; padding: 30px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;">
     <p>© 2026 <strong style="color: var(--text);">KENZO 健藏</strong> Studio. All Rights Reserved.</p>
@@ -559,28 +638,23 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
             <button class="btn-confirm-ok" id="customConfirmBtn" onclick="executeCustomConfirm()" style="background: linear-gradient(135deg, #ef4444, #dc2626);">Xóa</button>
         </div>
     </div>
-</div>
-<div id="editProfileModal" class="modal">
-    <div class="modal-content-version">
+</div> <!-- Đã đóng customConfirmModal chuẩn ở đây -->
+
+<!-- MODAL NHẬP LIÊN KẾT XỊN XÒ (Nằm riêng biệt bên ngoài) -->
+<div id="linkModal" class="modal" style="z-index: 2500;">
+    <div class="modal-content-version" style="max-width: 400px;">
         <div class="version-header">
-            <h3>CHỈNH SỬA HỒ SƠ</h3>
-            <button class="close-btn-modal" onclick="closeEditProfile()"><i class="fa-solid fa-xmark"></i></button>
+            <h3 id="linkModalTitle">Liên Kết Tài Khoản</h3>
+            <button class="close-btn-modal" onclick="closeLinkModal()"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <div style="text-align: center; margin-bottom: 20px;">
-            <div style="position: relative; width: 100px; height: 100px; margin: 0 auto;">
-                <img id="editAvatarPreview" src="https://via.placeholder.com/150" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #06b6d4;">
-                <label for="editAvatarFile" style="position: absolute; bottom: 0; right: 0; background: #06b6d4; width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid #0f172a;">
-                    <i class="fa-solid fa-camera" style="color: white; font-size: 14px;"></i>
-                </label>
-                <input type="file" id="editAvatarFile" accept="image/*" style="display: none;" onchange="handleAvatarUpload(event)">
-            </div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-top: 10px;">Bấm biểu tượng camera để đổi ảnh</p>
+            <i id="linkModalIcon" class="fa-brands fa-telegram" style="font-size: 50px; color: var(--blue);"></i>
         </div>
-        <div class="form-group"><label>Tên hiển thị</label><input type="text" id="editDisplayName" class="form-input" placeholder="VD: Nguyễn Văn A" maxlength="30"></div>
-        <div class="form-group"><label>Tiểu sử (Bio)</label><input type="text" id="editBio" class="form-input" placeholder="VD: Mê game, thích mod..." maxlength="60"></div>
-        <div class="form-group"><label>Username Telegram</label><input type="text" id="editTelegram" class="form-input" placeholder="VD: latthekingmeobot" maxlength="32"></div>
-        <button id="btnSyncTelegram" class="btn-app-download hidden" style="width: 100%; margin-bottom: 10px; background: linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="syncFromTelegram()"><i class="fa-brands fa-telegram"></i> Đồng bộ từ Telegram</button>
-        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="saveProfile()">Lưu Thay Đổi</button>
+        <div class="form-group">
+            <label id="linkModalLabel">Nhập Username Telegram:</label>
+            <input type="text" id="linkModalInput" class="form-input" placeholder="">
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="saveLinkData()">Xác Nhận Liên Kết</button>
     </div>
 </div>
 <div id="toast" class="toast">Thông báo!</div>
@@ -625,20 +699,12 @@ const defaultApps = [
     { id: 12, idCode: 'crgmenu-012', name: 'CRG MENU MODS', pkg: 'com.package.crgmods', size: '22.62 MB', cat: 'APP MODS', downloads: 159, icon: 'logoff.png', banner: 'bannercrg.png', desc: 'CRG MENU MODS ANTIBAN XÀI FF THƯỜNG CÂN RANK NO KEY ', downloadLink: 'https://www.mediafire.com/file/w607nelgdb34e32/CRGCRACK.apk/file', getKeyLink: '#' },
     { id: 13, idCode: 'dinhvi2-013', name: 'Định Vị Súng V2', pkg: 'com.package.dinhviv2', size: '1.5 MB', cat: 'APP MODS', downloads: 352, icon: 'logoff.png', banner: 'bannerdinhviv2.png', desc: 'Định Vị Siêu Dễ Nhìn,Nhìn Xuyên Lục Địa', downloadLink: 'https://www.mediafire.com/file/qe01cogbjloldyt/FFTH_Tra%25CC%2586%25CC%2581ng_Xanh.zip/file', getKeyLink: '#' }
 ];
-const getkeyData = [
-    { 
-        img: 'logohenrygetkey.png', 
-        name: 'GETKEY 4 GAME - PUBG,FC,CORNE RUNNER,BLD', 
-        code: 'getkey - 3729978265', 
-        link: 'https://henry07.site/getkey?admin=binbaroi' 
-    },
-    // --- DƯỚI ĐÂY LÀ THẺ THỨ 2, BRO TỰ ĐIỀN THÔNG TIN VÀO NHÉ ---
-    { 
-        img: 'logoyurigetkey.png', // Tên ảnh hoặc link ảnh
-        name: 'GETKEY 1 GAME - ZYTRON', 
-        code: 'getkey - 2739263952', 
-        link: 'https://henry07.site/getkey?admin=yuri' 
-    }
+const defaultGetkeyData = [
+    { img: 'logohenrygetkey.png', name: 'GETKEY 4 GAME - PUBG,FC,CORNE RUNNER,BLD', code: 'getkey - 3729978265', link: 'https://henry07.site/getkey?admin=binbaroi' },
+    { img: 'logoyurigetkey.png', name: 'GETKEY 1 GAME - ZYTRON', code: 'getkey - 2739263952', link: 'https://henry07.site/getkey?admin=yuri' }
+];
+const defaultShopData = [
+    { id: 'acc_ff', name: 'ACC Free Fire Clone GG', price: 2, img: 'accclone1.png', type: 'account', accounts: [{ user: 'accffclonekenzo1@gmail.com', pass: '28262393628728262625382628262826826272' }] }
 ];
 
 let currentCat = 'ALL', searchQ = '', currentModalAppId = null, currentBuyItem = null;
@@ -646,20 +712,14 @@ let savedApps = JSON.parse(localStorage.getItem('yj_saved')) || [];
 let historyApps = JSON.parse(localStorage.getItem('yj_history')) || [];
 let recentSearches = JSON.parse(localStorage.getItem('yj_searches')) || [];
 let isRegisterMode = false;
-let shopData = [], users = [], cardRequests = [];
+let shopData = [], users = [], cardRequests = [], getkeyData = [], visits = [];
 let currentUser = null, currentUserId = localStorage.getItem('kenzo_currentUserId') || null;
 let purchaseHistoryRef = null;
-
-const defaultShopData = [
-    { id: 'acc_ff', name: 'ACC Free Fire Clone GG', price: 2, img: 'accclone1.png', type: 'account', accounts: [{ user: 'accffclonekenzo1@gmail.com', pass: '28262393628728262625382628262826826272' }] }
-];
-
-db.ref('apps').on('value', (snap) => {
+  db.ref('apps').on('value', (snap) => {
     const data = snap.val();
     if (data) { apps = Object.values(data); } 
     else {
-        const obj = {};
-        defaultApps.forEach((app, index) => { obj['game_' + index] = app; });
+        const obj = {}; defaultApps.forEach((app, index) => { obj['game_' + index] = app; });
         db.ref('apps').set(obj); return;
     }
     if (typeof renderStore === 'function') renderStore();
@@ -667,12 +727,22 @@ db.ref('apps').on('value', (snap) => {
     if (typeof renderAdminPanel === 'function') renderAdminPanel();
 });
 
+db.ref('getkeys').on('value', (snap) => {
+    const data = snap.val();
+    if (data) { getkeyData = Object.values(data); } 
+    else {
+        const obj = {}; defaultGetkeyData.forEach((key, index) => { obj['key_' + index] = key; });
+        db.ref('getkeys').set(obj); return;
+    }
+    if (typeof initGetKey === 'function') initGetKey();
+    if (typeof renderAdminPanel === 'function') renderAdminPanel();
+});
+
 db.ref('shop').on('value', (snap) => {
     const data = snap.val();
     if (data) { shopData = Object.values(data).filter(i => i); } 
     else {
-        const obj = {};
-        defaultShopData.forEach(i => obj[i.id] = i);
+        const obj = {}; defaultShopData.forEach(i => obj[i.id] = i);
         db.ref('shop').set(obj); return;
     }
     if (typeof renderShop === 'function') renderShop();
@@ -694,30 +764,53 @@ db.ref('users').on('value', (snap) => {
 });
 
 db.ref('card_requests').on('value', (snap) => {
-    const data = snap.val() || {};
-    cardRequests = Object.values(data);
+    const data = snap.val() || {}; cardRequests = Object.values(data);
     if (typeof renderAdminPanel === 'function') renderAdminPanel();
 });
+
+db.ref('visits').limitToLast(100).on('value', (snap) => {
+    const data = snap.val() || {}; visits = Object.values(data).reverse();
+    if (typeof renderAdminPanel === 'function') renderAdminPanel();
+});
+
+function initTelegramApp() {
+    if (window.Telegram && window.Telegram.WebApp) {
+        window.Telegram.WebApp.ready();
+        window.Telegram.WebApp.expand();
+        const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
+        if (tgUser && currentUser) {
+            const displayName = ((tgUser.first_name || '') + ' ' + (tgUser.last_name || '')).trim();
+            const updates = { telegramId: tgUser.id, telegram: tgUser.username || '', displayName: displayName || currentUser.username };
+            if (tgUser.photo_url) updates.avatar = tgUser.photo_url;
+            db.ref('users/' + currentUser.id).update(updates);
+        }
+    }
+}
+
+function logVisit() {
+    if (!sessionStorage.getItem('visited')) {
+        db.ref('visits').push({ time: new Date().toLocaleString('vi-VN'), device: navigator.userAgent });
+        sessionStorage.setItem('visited', 'true');
+    }
+  }
   window.onload = () => {
     let count = 0;
     let intv = setInterval(() => {
         count += Math.floor(Math.random() * 5) + 1;
         if(count >= 100) {
             count = 100; clearInterval(intv);
-            setTimeout(() => {
-                document.getElementById('loadingScreen').style.opacity = '0';
-                setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; document.body.style.overflow = 'auto'; }, 800);
-            }, 300);
+            setTimeout(() => { document.getElementById('loadingScreen').style.opacity = '0'; setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; document.body.style.overflow = 'auto'; }, 800); }, 300);
         }
         document.getElementById('loadPercent').innerText = count + '%';
     }, 50);
 
     if(localStorage.getItem('yj_theme') === 'light') {
-        document.body.classList.add('light-mode');
-        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        document.body.classList.add('light-mode'); document.getElementById('themeIcon').className = 'fa-solid fa-sun';
     }
     renderStore(); renderCharts(); renderSaved(); renderHistory();
     initGetKey(); startLiveNoti(); initMouseTrail(); initAvatarGlitch(); updateAuthUI();
+    setTimeout(initTelegramApp, 1500);
+    logVisit();
 };
 
 function initGetKey() {
@@ -727,14 +820,12 @@ function initGetKey() {
             <img src="${key.img}" class="app-icon-large" onerror="this.src='https://via.placeholder.com/150'" style="margin: 0 auto 15px auto; width: 90px; height: 90px;">
             <h3 style="font-size: 16px; font-weight: 900; color: white; margin-bottom: 5px; line-height: 1.4;">${key.name}</h3>
             <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Mã số: <span style="color:#10b981; font-weight:bold;">${key.code}</span></p>
-            <div id="keyLinkContainer_${index}" class="hidden" style="margin-bottom: 15px; padding: 10px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;">
-                <a href="${key.link}" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 13px;">Bấm vào đây để nhận Key</a>
-            </div>
+            <div id="keyLinkContainer_${index}" class="hidden" style="margin-bottom: 15px; padding: 10px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;"><a href="${key.link}" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 13px;">Bấm vào đây để nhận Key</a></div>
             <button class="btn-app-download" style="width: 100%;" onclick="document.getElementById('keyLinkContainer_${index}').classList.remove('hidden'); showToast('Đã lấy được link!')">GET KEY</button>
         </div>
     `).join('');
-  }
-  
+}
+
 function toggleTheme() {
     document.body.classList.toggle('light-mode');
     const isLight = document.body.classList.contains('light-mode');
@@ -748,15 +839,10 @@ function switchView(viewName) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     document.getElementById('view-' + viewName).classList.add('active');
-    const nav = document.getElementById('nav-' + viewName);
-    if(nav) nav.classList.add('active');
+    const nav = document.getElementById('nav-' + viewName); if(nav) nav.classList.add('active');
     
-    if(viewName === 'napthe') {
-        document.getElementById('supportBtn').classList.add('show');
-    } else {
-        document.getElementById('supportBtn').classList.remove('show');
-        closeSupportModal();
-    }
+    if(viewName === 'napthe') { document.getElementById('supportBtn').classList.add('show'); } 
+    else { document.getElementById('supportBtn').classList.remove('show'); closeSupportModal(); }
     if (viewName === 'history-buy') renderPurchaseHistory();
     if (viewName === 'admin') renderAdminPanel();
     closeMenu(); window.scrollTo({top: 0, behavior: 'smooth'});
@@ -768,45 +854,36 @@ function showSkeleton(id) { const g = document.getElementById(id); if(g) g.inner
 
 function updateAuthUI() {
     const headerAuth = document.getElementById('headerAuth');
-    const homeAvatar = document.getElementById('homeAvatar');
     
     if (currentUser) {
-        const displayName = currentUser.displayName || currentUser.username;
         const coins = Number((currentUser.coins || 0).toFixed(2));
+        const displayName = currentUser.displayName || currentUser.username;
+        
+        // Nếu có ảnh thì hiện ảnh, không có thì hiện Avatar trắng mặc định
         const avatarHtml = currentUser.avatar 
-            ? `<img src="${currentUser.avatar}" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 1px solid var(--purple);">`
-            : `<i class="fa-solid fa-user"></i>`;
+            ? `<img src="${currentUser.avatar}" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;">`
+            : `<i class="fa-solid fa-user" style="font-size: 20px; color: #0f172a;"></i>`;
         
+        // Giao diện Header mới: Avatar trắng (bấm vào để vào trang hồ sơ), Số xu, Nút điểm danh
         headerAuth.innerHTML = `
-            <div class="user-info" onclick="openEditProfile()">
-                ${avatarHtml} 
-                <span>${displayName}</span>
-                <span class="coin-badge"><i class="fa-solid fa-coins"></i> ${coins}</span>
-                <button onclick="dailyCheckIn(event)" style="color: #10b981; font-size: 14px; margin-left: 5px;" title="Điểm danh"><i class="fa-solid fa-gift"></i></button>
-                <button onclick="logout(event)" style="color: red; font-size: 12px; margin-left: 5px;"><i class="fa-solid fa-power-off"></i></button>
+            <div class="flex items-center" style="gap: 10px;">
+                <span class="coin-badge" style="font-size: 15px;"><i class="fa-solid fa-coins"></i> ${coins}</span>
+                <button onclick="dailyCheckIn(event)" style="color: #10b981; font-size: 18px;" title="Điểm danh"><i class="fa-solid fa-gift"></i></button>
+                <div onclick="openProfileView()" style="width: 40px; height: 40px; background: #ffffff; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 2px solid var(--purple); box-shadow: 0 0 10px rgba(139,92,246,0.5); transition: 0.2s;">
+                    ${avatarHtml}
+                </div>
             </div>`;
-        
-        if (homeAvatar) homeAvatar.src = currentUser.avatar || 'logokenzo.png';
+            
     } else {
         headerAuth.innerHTML = `<button class="btn-icon" style="width:auto; padding:0 15px;" onclick="openAuthModal()"><i class="fa-solid fa-user"></i> <span style="margin-left:5px; font-size:12px; font-weight:bold;">Đăng Nhập</span></button>`;
-        if (homeAvatar) homeAvatar.src = 'logokenzo.png';
     }
-}
+  }
 
 function dailyCheckIn(e) {
-    e.stopPropagation();
-    if(!currentUser) return showToast('Vui lòng đăng nhập!');
+    e.stopPropagation(); if(!currentUser) return showToast('Vui lòng đăng nhập!');
     const today = new Date().toLocaleDateString('vi-VN');
-    
-    if (currentUser.lastCheckIn === today) {
-        return showToast('Hôm nay bạn đã điểm danh rồi! Quay lại vào ngày mai nhé ⏰');
-    }
-    db.ref('users/' + currentUser.id).update({
-        lastCheckIn: today,
-        coins: (currentUser.coins || 0) + 0.25
-    }).then(() => {
-        showToast('🎁 Điểm danh thành công! Nhận ngay 0.25 Xu.');
-    }).catch(err => showToast('Lỗi điểm danh: ' + err.message));
+    if (currentUser.lastCheckIn === today) return showToast('Hôm nay bạn đã điểm danh rồi! Quay lại vào ngày mai nhé ⏰');
+    db.ref('users/' + currentUser.id).update({ lastCheckIn: today, coins: (currentUser.coins || 0) + 0.25 }).then(() => { showToast('🎁 Điểm danh thành công! Nhận ngay 0.25 Xu.'); }).catch(err => showToast('Lỗi điểm danh: ' + err.message));
   }
   function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
 function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
@@ -818,111 +895,183 @@ function switchAuthMode() {
 }
 
 function handleLogin() {
-    const user = document.getElementById('authUser').value.trim();
-    const pass = document.getElementById('authPass').value.trim();
+    const user = document.getElementById('authUser').value.trim(), pass = document.getElementById('authPass').value.trim();
     if(!user || !pass) return showToast('Vui lòng nhập đầy đủ!');
     
     if(isRegisterMode) {
         if(users.find(u => u.username === user)) return showToast('Tên đăng nhập đã tồn tại!');
-        let newId = "0000000001";
-        if(users.length > 0) {
-            let maxId = Math.max(...users.map(u => parseInt(u.id)));
-            newId = (maxId + 1).toString().padStart(10, '0');
-        }
-        const newUser = {
-            id: newId, username: user, password: pass, coins: 0,
-            device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN')
-        };
-        db.ref('users/' + newId).set(newUser).then(() => {
-            showToast('Đăng ký thành công!'); switchAuthMode();
-        }).catch(err => showToast('Lỗi: ' + err.message));
+        let newId = "0000000001"; if(users.length > 0) { let maxId = Math.max(...users.map(u => parseInt(u.id))); newId = (maxId + 1).toString().padStart(10, '0'); }
+        const newUser = { id: newId, username: user, password: pass, coins: 0, device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
+        db.ref('users/' + newId).set(newUser).then(() => { showToast('Đăng ký thành công!'); switchAuthMode(); }).catch(err => showToast('Lỗi: ' + err.message));
     } else {
         const foundUser = users.find(u => u.username === user && u.password === pass);
         if(foundUser) {
-            currentUserId = foundUser.id;
-            currentUser = foundUser;
+            currentUserId = foundUser.id; currentUser = foundUser;
             localStorage.setItem('kenzo_currentUserId', currentUserId);
             updateAuthUI(); closeAuthModal(); showToast('Đăng nhập thành công!');
         } else { showToast('Sai tài khoản hoặc mật khẩu!'); }
     }
 }
+
 function logout(e) {
-    e.stopPropagation();
-    currentUser = null; currentUserId = null;
+    e.stopPropagation(); currentUser = null; currentUserId = null;
     localStorage.removeItem('kenzo_currentUserId');
     if (purchaseHistoryRef) { purchaseHistoryRef.off(); purchaseHistoryRef = null; }
     updateAuthUI(); showToast('Đã đăng xuất!');
-  }
-  // ============================================================
-// EDIT PROFILE
-// ============================================================
+}
+
 let pendingAvatarBase64 = null;
 
-function openEditProfile() {
+// Hàm mở trang Hồ Sơ
+function openProfileView() {
     if (!currentUser) return showToast('Vui lòng đăng nhập!');
+    
+    // Điền thông tin hiện tại vào form
     document.getElementById('editDisplayName').value = currentUser.displayName || currentUser.username || '';
     document.getElementById('editBio').value = currentUser.bio || '';
-    document.getElementById('editTelegram').value = currentUser.telegram || '';
-    document.getElementById('editAvatarPreview').src = currentUser.avatar || 'https://via.placeholder.com/150';
+    document.getElementById('profileViewAvatar').src = currentUser.avatar || 'https://via.placeholder.com/150';
     pendingAvatarBase64 = null;
+
+    // Cập nhật trạng thái liên kết
+    let statusTxt = [];
+    if (currentUser.linkedTelegram) statusTxt.push(`Telegram: <b>@${currentUser.linkedTelegram}</b>`);
+    if (currentUser.linkedGmail) statusTxt.push(`Gmail: <b>${currentUser.linkedGmail}</b>`);
     
-    // Tự động hiện nút đồng bộ nếu mở web từ bên trong Telegram
-    if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-        document.getElementById('btnSyncTelegram').classList.remove('hidden');
+    const statusEl = document.getElementById('linkedStatusText');
+    if (statusTxt.length > 0) {
+        statusEl.innerHTML = `Đã liên kết: <br>` + statusTxt.join('<br>');
+        statusEl.style.color = '#10b981';
     } else {
-        document.getElementById('btnSyncTelegram').classList.add('hidden');
+        statusEl.innerHTML = 'Chưa liên kết bảo mật nào. Hãy liên kết để có thể khôi phục tài khoản!';
+        statusEl.style.color = '#ef4444';
     }
-    document.getElementById('editProfileModal').classList.add('active');
+
+    switchView('profile');
 }
 
-function closeEditProfile() { document.getElementById('editProfileModal').classList.remove('active'); }
-
+// Hàm xử lý Upload Ảnh
 function handleAvatarUpload(e) {
-    const file = e.target.files[0]; if (!file) return;
-    if (file.size > 1024 * 1024) return showToast('Ảnh quá lớn, chọn ảnh < 1MB!');
+    const file = e.target.files[0]; 
+    if (!file) return;
+    
+    // Cho phép ảnh lên tới 10MB (thay vì 1MB như cũ)
+    if (file.size > 10 * 1024 * 1024) {
+        return showToast('Ảnh quá lớn (tối đa 10MB), vui lòng chọn ảnh khác!');
+    }
+
+    showToast('Đang xử lý ảnh...');
+
     const reader = new FileReader();
     reader.onload = (evt) => {
-        pendingAvatarBase64 = evt.target.result;
-        document.getElementById('editAvatarPreview').src = pendingAvatarBase64;
+        const img = new Image();
+        img.onload = () => {
+            // Kích thước khung vuông chuẩn (300x300)
+            const size = 300;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            // Thuật toán tự động cắt vuông ở giữa (Center Crop)
+            let srcX = 0, srcY = 0, srcWidth = img.width, srcHeight = img.height;
+            if (img.width > img.height) {
+                // Ảnh ngang -> Cắt 2 bên
+                srcWidth = img.height;
+                srcX = (img.width - srcWidth) / 2;
+            } else {
+                // Ảnh dọc -> Cắt trên dưới
+                srcHeight = img.width;
+                srcY = (img.height - srcHeight) / 2;
+            }
+
+            // Vẽ ảnh đã cắt lên khung vuông
+            ctx.drawImage(img, srcX, srcY, srcWidth, srcHeight, 0, 0, size, size);
+
+            // Nén ảnh xuống 70% chất lượng để nhẹ web
+            const resizedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+
+            // Cập nhật ảnh xem trước
+            pendingAvatarBase64 = resizedBase64;
+            document.getElementById('profileViewAvatar').src = pendingAvatarBase64;
+            showToast('Xử lý ảnh thành công!');
+        };
+        img.src = evt.target.result;
     };
     reader.readAsDataURL(file);
-}
+  }
 
+// Hàm Lưu Thông Tin
 function saveProfile() {
     if (!currentUser) return;
     const displayName = document.getElementById('editDisplayName').value.trim();
     const bio = document.getElementById('editBio').value.trim();
-    const telegram = document.getElementById('editTelegram').value.trim().replace('@','');
+    
     if (!displayName) return showToast('Vui lòng nhập tên hiển thị!');
     
-    const updates = { displayName, bio, telegram };
+    const updates = { displayName: displayName, bio: bio };
     if (pendingAvatarBase64) updates.avatar = pendingAvatarBase64;
     
-    db.ref('users/' + currentUser.id).update(updates).then(() => {
-        showToast('✅ Đã lưu hồ sơ!'); closeEditProfile();
+    db.ref('users/' + currentUser.id).update(updates).then(() => { 
+        showToast('✅ Đã lưu hồ sơ!'); 
+        pendingAvatarBase64 = null;
     }).catch(err => showToast('Lỗi: ' + err.message));
 }
 
-function syncFromTelegram() {
-    if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initDataUnsafe) return showToast('Không tìm thấy Telegram WebApp!');
-    const tgUser = window.Telegram.WebApp.initDataUnsafe.user;
-    if (!tgUser) return showToast('Không lấy được thông tin Telegram!');
-    
-    const displayName = ((tgUser.first_name || '') + ' ' + (tgUser.last_name || '')).trim();
-    document.getElementById('editDisplayName').value = displayName || tgUser.username || 'Người dùng Telegram';
-    if (tgUser.username) document.getElementById('editTelegram').value = tgUser.username;
-    
-    if (tgUser.photo_url) {
-        pendingAvatarBase64 = tgUser.photo_url;
-        document.getElementById('editAvatarPreview').src = tgUser.photo_url;
-    }
-    showToast('Đã lấy thông tin từ Telegram!');
+// ==========================================
+// XỬ LÝ LIÊN KẾT TELEGRAM / GMAIL BẰNG MODAL XỊN
+// ==========================================
+let currentLinkType = ''; // Lưu xem đang liên kết cái gì
+
+function linkTelegram() {
+    currentLinkType = 'telegram';
+    document.getElementById('linkModalTitle').innerText = 'Liên Kết Telegram';
+    document.getElementById('linkModalIcon').className = 'fa-brands fa-telegram';
+    document.getElementById('linkModalIcon').style.color = '#06b6d4';
+    document.getElementById('linkModalLabel').innerText = 'Nhập Username Telegram của bạn (VD: dtn_207):';
+    document.getElementById('linkModalInput').placeholder = 'Nhập username...';
+    document.getElementById('linkModalInput').value = ''; // Xóa trắng ô nhập
+    document.getElementById('linkModal').classList.add('active');
 }
 
-// ============================================================
-// STORE RENDER
-// ============================================================
-function renderStore() {
+function linkGmail() {
+    currentLinkType = 'gmail';
+    document.getElementById('linkModalTitle').innerText = 'Liên Kết Gmail';
+    document.getElementById('linkModalIcon').className = 'fa-brands fa-google';
+    document.getElementById('linkModalIcon').style.color = '#ef4444';
+    document.getElementById('linkModalLabel').innerText = 'Nhập địa chỉ Gmail của bạn (VD: abc@gmail.com):';
+    document.getElementById('linkModalInput').placeholder = 'Nhập địa chỉ gmail...';
+    document.getElementById('linkModalInput').value = ''; // Xóa trắng ô nhập
+    document.getElementById('linkModal').classList.add('active');
+}
+
+function closeLinkModal() {
+    document.getElementById('linkModal').classList.remove('active');
+}
+
+function saveLinkData() {
+    const value = document.getElementById('linkModalInput').value.trim();
+    if (!value) return showToast('Vui lòng nhập thông tin!');
+
+    if (currentLinkType === 'telegram') {
+        const cleanTg = value.replace('@', ''); // Bỏ dấu @ nếu có
+        db.ref('users/' + currentUser.id).update({ linkedTelegram: cleanTg })
+        .then(() => {
+            showToast('Đã liên kết Telegram!');
+            closeLinkModal();
+            openProfileView(); // Load lại trang hồ sơ để cập nhật chữ
+        });
+    } else if (currentLinkType === 'gmail') {
+        if (!value.includes('@')) return showToast('Gmail không hợp lệ!');
+        db.ref('users/' + currentUser.id).update({ linkedGmail: value })
+        .then(() => {
+            showToast('Đã liên kết Gmail!');
+            closeLinkModal();
+            openProfileView(); // Load lại trang hồ sơ để cập nhật chữ
+        });
+    }
+  }
+
+  function renderStore() {
     const list = document.getElementById('appList'); if(!list) return;
     showSkeleton('appList');
     setTimeout(() => {
@@ -938,43 +1087,36 @@ function renderStore() {
 
 function generateAppCard(a) {
     const bannerUrl = a.banner || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80';
-    const isSaved = savedApps.includes(a.id);
-    const isBaoTri = a.size === 'bảo trì';
+    const isSaved = savedApps.includes(a.id), isBaoTri = a.size === 'bảo trì';
     const btnDownloadClass = isBaoTri ? 'btn-app-download disabled' : 'btn-app-download';
     const btnDownloadAttr = isBaoTri ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : `onclick="openModal('${a.id}')"`;
     return `
         <div class="app-list-item">
             <div style="position: relative;">
                 <img src="${bannerUrl}" class="app-banner" alt="${a.name}">
-                <div class="app-banner-overlay"></div>
-                <div class="app-os-badge"><i class="fa-brands fa-android"></i> Android</div>
+                <div class="app-banner-overlay"></div><div class="app-os-badge"><i class="fa-brands fa-android"></i> Android</div>
                 <button class="btn-icon" onclick="toggleSave('${a.id}')" style="position:absolute; top:15px; left:15px; background:rgba(0,0,0,0.5); border-color:${isSaved ? '#fbbf24' : 'var(--border)'}; color:${isSaved ? '#fbbf24' : 'white'}; z-index:3;"><i class="fa-${isSaved ? 'solid' : 'regular'} fa-star"></i></button>
             </div>
             <div class="app-info-container">
                 <div class="app-icon-wrapper"><img src="${a.icon}" class="app-icon-large" onerror="this.src='https://via.placeholder.com/150'"></div>
-                <div class="app-title">${a.name}</div>
-                <div class="app-sub"><span><i class="fa-regular fa-clock"></i> ${isBaoTri ? 'Bảo trì' : 'V1'} | ${a.size}</span></div>
+                <div class="app-title">${a.name}</div><div class="app-sub"><span><i class="fa-regular fa-clock"></i> ${isBaoTri ? 'Bảo trì' : 'V1'} | ${a.size}</span></div>
                 <div class="app-actions">
                     <button class="${btnDownloadClass}" ${btnDownloadAttr}>${isBaoTri ? 'Bảo Trì' : 'Tải Xuống'} <i class="fa-solid fa-download"></i></button>
                     <button class="btn-app-key" onclick="openModal('${a.id}')"><i class="fa-solid fa-key"></i> Get Key</button>
                 </div>
             </div>
-        </div>
-    `;
+        </div>`;
 }
 
 function toggleSave(id) {
-    if (savedApps.includes(id)) savedApps = savedApps.filter(i => i !== id);
-    else savedApps.push(id);
+    if (savedApps.includes(id)) savedApps = savedApps.filter(i => i !== id); else savedApps.push(id);
     localStorage.setItem('yj_saved', JSON.stringify(savedApps));
-    renderStore(); renderSaved();
-    showToast(savedApps.includes(id) ? '⭐ Đã lưu!' : 'Đã bỏ lưu');
-  }
-  function openModal(id) {
-    currentModalAppId = id;
-    let app = apps.find(a => a.id == id); if(!app) return;
-    document.getElementById('modalGameTitle').innerText = app.name;
-    document.getElementById('modalGameSub').innerText = `V1 | ${app.size}`;
+    renderStore(); renderSaved(); showToast(savedApps.includes(id) ? '⭐ Đã lưu!' : 'Đã bỏ lưu');
+}
+
+function openModal(id) {
+    currentModalAppId = id; let app = apps.find(a => a.id == id); if(!app) return;
+    document.getElementById('modalGameTitle').innerText = app.name; document.getElementById('modalGameSub').innerText = `V1 | ${app.size}`;
     const keyBtn = document.getElementById('btnModalGetKey');
     if (app.getKeyLink && app.getKeyLink !== '#' && app.getKeyLink !== '') { keyBtn.style.display = 'flex'; } else { keyBtn.style.display = 'none'; }
     document.getElementById('versionModal').classList.add('active');
@@ -996,8 +1138,7 @@ function executeGetKey() {
 function handleSearch(val) {
     if(val === "2611213") { document.getElementById('searchInput').value = ''; switchView('admin'); renderAdminPanel(); return; }
     if (val.trim().length >= 2 && !recentSearches.includes(val.trim())) {
-        recentSearches.unshift(val.trim()); recentSearches = recentSearches.slice(0, 5);
-        localStorage.setItem('yj_searches', JSON.stringify(recentSearches));
+        recentSearches.unshift(val.trim()); recentSearches = recentSearches.slice(0, 5); localStorage.setItem('yj_searches', JSON.stringify(recentSearches));
     }
     searchQ = val.toLowerCase(); renderStore();
 }
@@ -1007,10 +1148,7 @@ function showRecent() {
     box.classList.add('active');
 }
 function hideRecent() { document.getElementById('recentSearches').classList.remove('active'); }
-function removeRecent(keyword) {
-    recentSearches = recentSearches.filter(s => s !== keyword);
-    localStorage.setItem('yj_searches', JSON.stringify(recentSearches)); showRecent();
-}
+function removeRecent(keyword) { recentSearches = recentSearches.filter(s => s !== keyword); localStorage.setItem('yj_searches', JSON.stringify(recentSearches)); showRecent(); }
 function filterCategory(cat, btn) { currentCat = cat; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderStore(); }
 function toggleNoti() { document.getElementById('notiDropdown').classList.toggle('active'); }
 
@@ -1022,8 +1160,7 @@ function renderCharts() {
             <div class="rank-number" style="color: ${i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#b45309':'var(--text-muted)'}">#${i+1}</div>
             <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'">
             <div style="flex: 1;"><h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3><p style="font-size: 12px; color: var(--text-muted);">${a.downloads} lượt tải</p></div>
-        </div>
-    `).join('');
+        </div>`).join('');
 }
 function renderSaved() {
     const list = document.getElementById('savedList'); if(!list) return;
@@ -1033,45 +1170,26 @@ function renderSaved() {
 function renderHistory() {
     const list = document.getElementById('historyList'); if(!list) return;
     let filtered = apps.filter(a => historyApps.includes(a.id));
-    list.innerHTML = filtered.length ? filtered.map(a => `
-        <div class="top-chart-item" onclick="openModal('${a.id}')">
-            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'">
-            <div style="flex: 1;"><h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3><p style="font-size: 12px; color: #10b981;"><i class="fa-solid fa-check-circle"></i> Đã tải</p></div>
-        </div>
-    `).join('') : `<p style="color: var(--text-muted); text-align: center;">Chưa có lịch sử.</p>`;
+    list.innerHTML = filtered.length ? filtered.map(a => `<div class="top-chart-item" onclick="openModal('${a.id}')"><img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'"><div style="flex: 1;"><h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3><p style="font-size: 12px; color: #10b981;"><i class="fa-solid fa-check-circle"></i> Đã tải</p></div></div>`).join('') : `<p style="color: var(--text-muted); text-align: center;">Chưa có lịch sử.</p>`;
 }
 
 function renderShop() {
     const list = document.getElementById('shopList'); if(!list) return;
-    if (!shopData || shopData.length === 0) {
-        list.innerHTML = '<p style="color: var(--text-muted); text-align:center; grid-column:1/-1;">Đang tải cửa hàng...</p>'; return;
-    }
+    if (!shopData || shopData.length === 0) { list.innerHTML = '<p style="color: var(--text-muted); text-align:center; grid-column:1/-1;">Đang tải cửa hàng...</p>'; return; }
     list.innerHTML = shopData.map(item => {
         let stock = 1; if(item.type === 'account' && item.accounts) stock = item.accounts.length;
-        let isOutOfStock = stock === 0;
-        let btnClass = isOutOfStock ? 'btn-shop-buy disabled' : 'btn-shop-buy';
-        let btnText = isOutOfStock ? 'Hết Hàng' : 'Mua Ngay';
-        let btnAction = isOutOfStock ? '' : `onclick="openBuyConfirm('${item.id}')"`;
+        let isOutOfStock = stock === 0, btnClass = isOutOfStock ? 'btn-shop-buy disabled' : 'btn-shop-buy', btnText = isOutOfStock ? 'Hết Hàng' : 'Mua Ngay', btnAction = isOutOfStock ? '' : `onclick="openBuyConfirm('${item.id}')"`;
         return `
             <div class="shop-card">
                 <img src="${item.img || 'https://via.placeholder.com/300x160'}" class="shop-card-img">
-                <div class="shop-card-content">
-                    <div class="shop-card-title">${item.name}</div>
-                    <div class="shop-card-price"><i class="fa-solid fa-coins"></i> ${item.price} Xu</div>
-                    <div class="shop-card-stock">Còn lại: ${stock}</div>
-                    <button class="${btnClass}" ${btnAction}>${btnText}</button>
-                </div>
-            </div>
-        `;
+                <div class="shop-card-content"><div class="shop-card-title">${item.name}</div><div class="shop-card-price"><i class="fa-solid fa-coins"></i> ${item.price} Xu</div><div class="shop-card-stock">Còn lại: ${stock}</div><button class="${btnClass}" ${btnAction}>${btnText}</button></div>
+            </div>`;
     }).join('');
 }
 function openBuyConfirm(itemId) {
     if(!currentUser) { showToast('Vui lòng đăng nhập!'); return openAuthModal(); }
     let item = shopData.find(i => i.id === itemId); if(!item) return;
-    currentBuyItem = item;
-    document.getElementById('confirmItemName').innerText = item.name;
-    document.getElementById('confirmItemPrice').innerText = item.price;
-    document.getElementById('confirmBuyModal').classList.add('active');
+    currentBuyItem = item; document.getElementById('confirmItemName').innerText = item.name; document.getElementById('confirmItemPrice').innerText = item.price; document.getElementById('confirmBuyModal').classList.add('active');
 }
 function closeBuyConfirm() { document.getElementById('confirmBuyModal').classList.remove('active'); }
   function processBuy() {
@@ -1080,31 +1198,21 @@ function closeBuyConfirm() { document.getElementById('confirmBuyModal').classLis
     const itemId = currentBuyItem.id, priceToPay = currentBuyItem.price, itemName = currentBuyItem.name;
     
     db.ref('shop/' + itemId).once('value').then(snap => {
-        const item = snap.val();
-        if (!item) { showToast('Sản phẩm không tồn tại!'); closeBuyConfirm(); return; }
+        const item = snap.val(); if (!item) { showToast('Sản phẩm không tồn tại!'); closeBuyConfirm(); return; }
         let deliveredInfo = '';
         if (item.type === 'account') {
             if (!item.accounts || item.accounts.length === 0) { showToast('Mặt hàng đã hết!'); closeBuyConfirm(); return; }
-            const acc = item.accounts[0];
-            deliveredInfo = `Tài khoản: <b>${acc.user}</b> <br> Mật khẩu: <b>${acc.pass}</b>`;
+            const acc = item.accounts[0]; deliveredInfo = `Tài khoản: <b>${acc.user}</b> <br> Mật khẩu: <b>${acc.pass}</b>`;
             document.getElementById('accountDetailsContainer').innerHTML = `<div class="acc-display-box"><p>Tài khoản: <b>${acc.user}</b> <button class="btn-copy-acc" onclick="copyAcc('${acc.user}')">Copy</button></p><p>Mật khẩu: <b>${acc.pass}</b> <button class="btn-copy-acc" onclick="copyAcc('${acc.pass}')">Copy</button></p></div>`;
-            
             db.ref('users/' + currentUser.id + '/coins').transaction((coins) => {
-                if (coins === null) return 0;
-                if (coins < priceToPay) return;
-                return coins - priceToPay;
+                if (coins === null) return 0; if (coins < priceToPay) return; return coins - priceToPay;
             }, (err, committed) => {
                 if (!committed || err) { showToast('Giao dịch thất bại, thử lại!'); return; }
                 db.ref('shop/' + itemId + '/accounts').transaction((accounts) => {
-                    if (!accounts || accounts.length === 0) return;
-                    accounts.shift(); return accounts;
+                    if (!accounts || accounts.length === 0) return; accounts.shift(); return accounts;
                 }, (err2, committed2) => {
-                    if (!committed2) {
-                        db.ref('users/' + currentUser.id + '/coins').transaction(c => (c || 0) + priceToPay);
-                        showToast('Hết hàng, đã hoàn xu!'); return;
-                    }
-                    savePurchaseHistory(itemName, priceToPay, deliveredInfo);
-                    closeBuyConfirm(); document.getElementById('successItemName').innerText = itemName;
+                    if (!committed2) { db.ref('users/' + currentUser.id + '/coins').transaction(c => (c || 0) + priceToPay); showToast('Hết hàng, đã hoàn xu!'); return; }
+                    savePurchaseHistory(itemName, priceToPay, deliveredInfo); closeBuyConfirm(); document.getElementById('successItemName').innerText = itemName;
                     document.getElementById('successBuyModal').classList.add('active');
                     sendTelegramMsg(`🛒 KHÁCH MUA HÀNG!\n- ID: ${currentUser.id}\n- Tài khoản: ${currentUser.username}\n- Đã mua: ${itemName}\n- Giá: ${priceToPay} Xu`);
                 });
@@ -1114,10 +1222,8 @@ function closeBuyConfirm() { document.getElementById('confirmBuyModal').classLis
 }
 function copyAcc(text) { navigator.clipboard.writeText(text); showToast('Đã Copy!'); }
 function sendTelegramMsg(text) {
-    return fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text, parse_mode: 'HTML' })
-    }).then(res => res.json()).then(data => { if(!data.ok) throw new Error(data.description || "Lỗi Bot Telegram"); return data; });
+    return fetch(`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ chat_id: TG_CHAT_ID, text: text, parse_mode: 'HTML' }) })
+    .then(res => res.json()).then(data => { if(!data.ok) throw new Error(data.description || "Lỗi Bot Telegram"); return data; });
 }
 
 function submitCard() {
@@ -1142,8 +1248,7 @@ function redeemCode() {
 }
 
 function savePurchaseHistory(itemName, price, info) {
-    if (!currentUser) return;
-    const orderId = 'HD-' + Math.floor(100000 + Math.random() * 900000), dateStr = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN');
+    if (!currentUser) return; const orderId = 'HD-' + Math.floor(100000 + Math.random() * 900000), dateStr = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN');
     db.ref('purchase_history/' + currentUser.id + '/' + orderId).set({ orderId: orderId, date: dateStr, itemName: itemName, price: price, info: info });
 }
 function renderPurchaseHistory() {
@@ -1153,83 +1258,80 @@ function renderPurchaseHistory() {
     purchaseHistoryRef.on('value', snap => {
         const data = snap.val() || {}; const history = Object.values(data).reverse();
         if(history.length === 0) { list.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Bạn chưa mua hàng lần nào.</p>'; return; }
-        list.innerHTML = history.map(h => `
-            <div class="history-card">
-                <div class="history-header"><span class="history-id">Mã Đơn: ${h.orderId}</span><span class="history-date">${h.date}</span></div>
-                <div class="history-info">Đã mua: <b style="color:white">${h.itemName}</b> - <span style="color:#f59e0b">${h.price} Xu</span></div>
-                <div style="font-size: 13px; margin-top: 5px; color: var(--text-muted);">${h.info}</div>
-            </div>
-        `).join('');
+        list.innerHTML = history.map(h => `<div class="history-card"><div class="history-header"><span class="history-id">Mã Đơn: ${h.orderId}</span><span class="history-date">${h.date}</span></div><div class="history-info">Đã mua: <b style="color:white">${h.itemName}</b> - <span style="color:#f59e0b">${h.price} Xu</span></div><div style="font-size: 13px; margin-top: 5px; color: var(--text-muted);">${h.info}</div></div>`).join('');
     });
-  }
+}
       function renderAdminPanel() {
+        // Render Users
         const tbody = document.getElementById('adminUserList'); if(tbody) { tbody.innerHTML = users.map(u => `<tr><td style="color:#f59e0b; font-weight:bold;">${u.id}</td><td>${u.username}</td><td>${u.password}</td><td style="color:#10b981; font-weight:bold;">${u.coins} Xu</td><td style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${u.device}">${(u.device||'').split(' ')[0]}</td></tr>`).join(''); }
         
+        // Render Shop Stock
         const shopContainer = document.getElementById('adminShopList');
-        if(shopContainer) {
-            shopContainer.innerHTML = shopData.map(item => `
-                <div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-                    <div style="flex: 1;"><h4 style="color: white; font-size: 15px;">${item.name}</h4><p style="font-size: 12px; color: #f59e0b;">Giá: ${item.price} Xu</p></div>
-                    <div style="display: flex; align-items: center; gap: 8px;">
-                        <span style="font-size: 13px; color: var(--text-muted);">Số lượng:</span>
-                        <input type="number" id="stockInput_${item.id}" value="${item.type === 'account' && item.accounts ? item.accounts.length : 0}" style="width: 60px; padding: 8px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; text-align: center; font-weight: bold;" min="0">
-                        <button onclick="updateStock('${item.id}')" class="btn-app-download" style="width: auto; padding: 8px 15px; font-size: 12px; border-radius: 8px;">Lưu</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+        if(shopContainer) { shopContainer.innerHTML = shopData.map(item => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 15px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;"><div style="flex: 1;"><h4 style="color: white; font-size: 15px;">${item.name}</h4><p style="font-size: 12px; color: #f59e0b;">Giá: ${item.price} Xu</p></div><div style="display: flex; align-items: center; gap: 8px;"><span style="font-size: 13px; color: var(--text-muted);">Số lượng:</span><input type="number" id="stockInput_${item.id}" value="${item.type === 'account' && item.accounts ? item.accounts.length : 0}" style="width: 60px; padding: 8px; border-radius: 8px; background: #0f172a; border: 1px solid #334155; color: white; text-align: center; font-weight: bold;" min="0"><button onclick="updateStock('${item.id}')" class="btn-app-download" style="width: auto; padding: 8px 15px; font-size: 12px; border-radius: 8px;">Lưu</button></div></div>`).join(''); }
+        
+        // Render Games
         const gameContainer = document.getElementById('adminGameList');
-        if(gameContainer) {
-            gameContainer.innerHTML = apps.map(game => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;"><div style="flex: 1; overflow: hidden;"><h4 style="color: white; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${game.name}</h4><p style="font-size: 11px; color: #94a3b8;">${game.pkg}</p></div><button onclick="deleteGame('${game.id}')" style="background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; margin-left: 10px;">Xóa</button></div>`).join('');
-        }
+        if(gameContainer) { gameContainer.innerHTML = apps.map(game => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;"><div style="flex: 1; overflow: hidden;"><h4 style="color: white; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${game.name}</h4><p style="font-size: 11px; color: #94a3b8;">${game.pkg}</p></div><button onclick="deleteGame('${game.id}')" style="background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; margin-left: 10px;">Xóa</button></div>`).join(''); }
+
+        // Render Admin GetKeys
+        const gkContainer = document.getElementById('adminGetKeyList');
+        if(gkContainer) { gkContainer.innerHTML = getkeyData.map((key, index) => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;"><div style="flex: 1; overflow: hidden;"><h4 style="color: white; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${key.name}</h4><p style="font-size: 11px; color: #94a3b8;">Code: ${key.code}</p></div><button onclick="deleteGetKey(${index})" style="background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; margin-left: 10px;">Xóa</button></div>`).join(''); }
+
+        // Render Admin Shop Items
+        const shopItemContainer = document.getElementById('adminShopItemList');
+        if(shopItemContainer) { shopItemContainer.innerHTML = shopData.map(item => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 12px; border-radius: 12px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;"><div style="flex: 1; overflow: hidden;"><h4 style="color: white; font-size: 14px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${item.name}</h4><p style="font-size: 11px; color: #94a3b8;">Giá: ${item.price} Xu</p></div><button onclick="deleteShopItem('${item.id}')" style="background: rgba(239,68,68,0.2); color: #ef4444; border: 1px solid #ef4444; padding: 6px 12px; border-radius: 8px; font-weight: bold; font-size: 12px; margin-left: 10px;">Xóa</button></div>`).join(''); }
+
+        // Render Cards
         const cardContainer = document.getElementById('adminCardList');
         if(cardContainer) {
             if (cardRequests.length === 0) { cardContainer.innerHTML = '<p style="color: #94a3b8; text-align: center;">Không có thẻ nào đang chờ duyệt.</p>'; } 
             else {
-                cardContainer.innerHTML = cardRequests.map(req => `
-                    <div style="background: rgba(0,0,0,0.3); border: 1px solid #ec4899; padding: 15px; border-radius: 12px; margin-bottom: 10px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><b style="color: #ec4899;">ID: ${req.userId}</b><span style="font-size: 12px; color: #94a3b8;">${req.time}</span></div>
-                        <p style="font-size: 13px; color: white; margin-bottom: 5px;">User: <b>${req.username}</b> - Mệnh giá: <b style="color: #f59e0b;">${req.amount}đ</b></p>
-                        <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Seri: ${req.seri} | Code: ${req.code}</p>
-                        <div style="display: flex; gap: 10px;">
-                            <button onclick="approveCard('${req.id}', '${req.userId}', ${req.amount})" class="btn-app-download" style="background: #10b981; width: 100%; padding: 8px; font-size: 13px;">Duyệt</button>
-                            <button onclick="rejectCard('${req.id}')" class="btn-app-download" style="background: #ef4444; width: 100%; padding: 8px; font-size: 13px;">Từ chối</button>
-                        </div>
-                    </div>
-                `).join('');
+                cardContainer.innerHTML = cardRequests.map(req => `<div style="background: rgba(0,0,0,0.3); border: 1px solid #ec4899; padding: 15px; border-radius: 12px; margin-bottom: 10px;"><div style="display: flex; justify-content: space-between; margin-bottom: 10px;"><b style="color: #ec4899;">ID: ${req.userId}</b><span style="font-size: 12px; color: #94a3b8;">${req.time}</span></div><p style="font-size: 13px; color: white; margin-bottom: 5px;">User: <b>${req.username}</b> - Mệnh giá: <b style="color: #f59e0b;">${req.amount}đ</b></p><p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Seri: ${req.seri} | Code: ${req.code}</p><div style="display: flex; gap: 10px;"><button onclick="approveCard('${req.id}', '${req.userId}', ${req.amount})" class="btn-app-download" style="background: #10b981; width: 100%; padding: 8px; font-size: 13px;">Duyệt</button><button onclick="rejectCard('${req.id}')" class="btn-app-download" style="background: #ef4444; width: 100%; padding: 8px; font-size: 13px;">Từ chối</button></div></div>`).join('');
             }
         }
+
+        // Render Visits
+        const visitContainer = document.getElementById('adminVisitList');
+        if(visitContainer) { visitContainer.innerHTML = visits.map(v => `<tr><td>${v.time}</td><td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${v.device}">${v.device.split(' ')[0]}</td></tr>`).join(''); }
     }
 
+    // THÊM MỚI
     function addNewGame() {
         const name = document.getElementById('gName').value.trim(), pkg = document.getElementById('gPkg').value.trim(), size = document.getElementById('gSize').value.trim(), cat = document.getElementById('gCat').value.trim().toUpperCase() || 'GAME', downloadLink = document.getElementById('gDownload').value.trim(), getKeyLink = document.getElementById('gGetKey').value.trim(), icon = document.getElementById('gIcon').value.trim() || 'logoff.png', banner = document.getElementById('gBanner').value.trim() || 'bannerdv1.png';
         if(!name || !downloadLink) return showToast('Vui lòng nhập Tên và Link Tải!');
-        const newId = Date.now();
-        const newGame = { id: newId, idCode: 'GAME-' + newId.toString().slice(-4), name: name, pkg: pkg, size: size, cat: cat, downloads: 0, icon: icon, banner: banner, desc: name, downloadLink: downloadLink, getKeyLink: getKeyLink };
-        db.ref('apps/game_' + newId).set(newGame).then(() => {
-            showToast('✅ Đã thêm game thành công!'); document.getElementById('gameForm').classList.add('hidden');
-            ['gName','gPkg','gSize','gCat','gDownload','gGetKey','gIcon','gBanner'].forEach(id => document.getElementById(id).value = '');
-        }).catch(err => showToast('Lỗi: ' + err.message));
+        const newId = Date.now(), newGame = { id: newId, idCode: 'GAME-' + newId.toString().slice(-4), name: name, pkg: pkg, size: size, cat: cat, downloads: 0, icon: icon, banner: banner, desc: name, downloadLink: downloadLink, getKeyLink: getKeyLink };
+        db.ref('apps/game_' + newId).set(newGame).then(() => { showToast('✅ Đã thêm game thành công!'); document.getElementById('gameForm').classList.add('hidden'); ['gName','gPkg','gSize','gCat','gDownload','gGetKey','gIcon','gBanner'].forEach(id => document.getElementById(id).value = ''); }).catch(err => showToast('Lỗi: ' + err.message));
     }
-    function deleteGame(id) {
-        showCustomConfirm('Xóa Game Này?', 'Game sẽ biến mất khỏi trang chủ của <b>tất cả người dùng</b>. Không thể hoàn tác!', () => {
-            db.ref('apps').once('value').then(snap => {
-                const data = snap.val();
-                if(data) { for(let key in data) { if(data[key].id == id) { db.ref('apps/' + key).remove().then(() => showToast('Đã xóa game!')); return; } } }
-            });
-        });
+    function deleteGame(id) { showCustomConfirm('Xóa Game Này?', 'Game sẽ biến mất khỏi trang chủ!', () => { db.ref('apps').once('value').then(snap => { const data = snap.val(); if(data) { for(let key in data) { if(data[key].id == id) { db.ref('apps/' + key).remove().then(() => showToast('Đã xóa game!')); return; } } } }); }); }
+
+    function addNewGetKey() {
+        const name = document.getElementById('gkName').value.trim(), code = document.getElementById('gkCode').value.trim(), link = document.getElementById('gkLink').value.trim(), img = document.getElementById('gkImg').value.trim() || 'logoff.png';
+        if(!name || !link) return showToast('Vui lòng nhập Tên và Link lấy Key!');
+        const newKey = { name: name, code: code, link: link, img: img };
+        db.ref('getkeys').push(newKey).then(() => { showToast('✅ Đã thêm GetKey!'); document.getElementById('getkeyForm').classList.add('hidden'); ['gkName','gkCode','gkLink','gkImg'].forEach(id => document.getElementById(id).value = ''); });
     }
+    function deleteGetKey(index) { showCustomConfirm('Xóa GetKey?', 'Thẻ này sẽ biến mất khỏi trang!', () => { db.ref('getkeys').once('value').then(snap => { const data = snap.val(); if(data) { const keys = Object.keys(data); const keyToRemove = keys[index]; if(keyToRemove) db.ref('getkeys/' + keyToRemove).remove().then(() => showToast('Đã xóa GetKey!')); } }); }); }
+
+    function addNewShopItem() {
+        const name = document.getElementById('sName').value.trim(), price = parseInt(document.getElementById('sPrice').value), img = document.getElementById('sImg').value.trim() || 'accclone1.png', accText = document.getElementById('sAccounts').value.trim();
+        if(!name || isNaN(price) || !accText) return showToast('Vui lòng nhập đủ thông tin!');
+        const accLines = accText.split('\n'), accounts = [];
+        accLines.forEach(line => { if(line.includes('|')) { const parts = line.split('|'); accounts.push({ user: parts[0].trim(), pass: parts[1].trim() }); } });
+        if(accounts.length === 0) return showToast('Danh sách acc sai định dạng (user|pass)!');
+        
+        const newId = 'acc_' + Date.now(), newItem = { id: newId, name: name, price: price, img: img, type: 'account', accounts: accounts };
+        db.ref('shop/' + newId).set(newItem).then(() => { showToast('✅ Đã thêm sản phẩm!'); document.getElementById('shopForm').classList.add('hidden'); ['sName','sPrice','sImg','sAccounts'].forEach(id => document.getElementById(id).value = ''); });
+    }
+    function deleteShopItem(id) { showCustomConfirm('Xóa Sản Phẩm?', 'Sản phẩm này sẽ biến mất khỏi cửa hàng!', () => { db.ref('shop/' + id).remove().then(() => showToast('Đã xóa sản phẩm!')); }); }
+
     function approveCard(reqId, userId, amount) {
         db.ref('users/' + userId + '/coins').transaction((coins) => (coins || 0) + parseInt(amount / 1000));
         db.ref('card_requests/' + reqId).remove().then(() => { showToast('Đã duyệt thẻ và cộng xu!'); sendTelegramMsg(`✅ ĐÃ DUYỆT THẺ\nUser ID: ${userId}\nSố tiền: ${amount}đ`); });
     }
-    function rejectCard(reqId) {
-        showCustomConfirm('Từ Chối Thẻ Này?', 'Thẻ sẽ bị xóa vĩnh viễn và <b>không cộng xu</b> cho user.', () => { db.ref('card_requests/' + reqId).remove().then(() => showToast('Đã từ chối thẻ!')); }, 'Từ Chối');
-    }
+    function rejectCard(reqId) { showCustomConfirm('Từ Chối Thẻ Này?', 'Thẻ sẽ bị xóa vĩnh viễn!', () => { db.ref('card_requests/' + reqId).remove().then(() => showToast('Đã từ chối thẻ!')); }, 'Từ Chối'); }
     function updateStock(itemId) {
         let item = shopData.find(i => i.id === itemId); if(!item) return;
-        const newStock = parseInt(document.getElementById('stockInput_' + itemId).value);
-        if(isNaN(newStock) || newStock < 0) return showToast('Số lượng không hợp lệ!');
+        const newStock = parseInt(document.getElementById('stockInput_' + itemId).value); if(isNaN(newStock) || newStock < 0) return showToast('Số lượng không hợp lệ!');
         const defaultItem = defaultShopData.find(i => i.id === itemId), currentAccounts = item.accounts || [];
         if (item.type === 'account' && defaultItem && defaultItem.accounts) {
             if (newStock === 0) { item.accounts = []; } 
@@ -1252,93 +1354,30 @@ function renderPurchaseHistory() {
     }
 
     let _customConfirmCallback = null;
-    function showCustomConfirm(title, desc, callback, btnText = 'Xóa') {
-        document.getElementById('customConfirmTitle').innerText = title; document.getElementById('customConfirmDesc').innerHTML = desc; document.getElementById('customConfirmBtn').innerText = btnText;
-        _customConfirmCallback = callback; document.getElementById('customConfirmModal').classList.add('active');
-    }
+    function showCustomConfirm(title, desc, callback, btnText = 'Xóa') { document.getElementById('customConfirmTitle').innerText = title; document.getElementById('customConfirmDesc').innerHTML = desc; document.getElementById('customConfirmBtn').innerText = btnText; _customConfirmCallback = callback; document.getElementById('customConfirmModal').classList.add('active'); }
     function closeCustomConfirm() { document.getElementById('customConfirmModal').classList.remove('active'); _customConfirmCallback = null; }
     function executeCustomConfirm() { if (_customConfirmCallback) _customConfirmCallback(); closeCustomConfirm(); }
 
     function toggleAIChat() { const w = document.getElementById('aiChatWindow'); w.classList.toggle('active'); if(w.classList.contains('active')) document.getElementById('aiInput').focus(); }
     function handleAIKeyPress(e) { if (e.key === 'Enter') sendAIMessage(); }
-    function sendAIMessage() {
-        const input = document.getElementById('aiInput'); const text = input.value.trim(); if (!text) return;
-        addAIMessage(text, 'user'); input.value = ''; const tId = 'typing-' + Date.now(); addAIMessage('<i class="fa-solid fa-ellipsis fa-fade"></i>', 'bot', tId);
-        setTimeout(() => { const t = document.getElementById(tId); if(t) t.remove(); addAIMessage(getAIResponse(text), 'bot'); }, 1000);
-    }
+    function sendAIMessage() { const input = document.getElementById('aiInput'); const text = input.value.trim(); if (!text) return; addAIMessage(text, 'user'); input.value = ''; const tId = 'typing-' + Date.now(); addAIMessage('<i class="fa-solid fa-ellipsis fa-fade"></i>', 'bot', tId); setTimeout(() => { const t = document.getElementById(tId); if(t) t.remove(); addAIMessage(getAIResponse(text), 'bot'); }, 1000); }
     function addAIMessage(text, sender, id = '') { const msgs = document.getElementById('aiMessages'); const d = document.createElement('div'); d.className = `ai-msg ${sender}`; if(id) d.id = id; d.innerHTML = text; msgs.appendChild(d); msgs.scrollTop = msgs.scrollHeight; }
-    function getAIResponse(msg) {
-        const l = msg.toLowerCase(); const rand = (a) => a[Math.floor(Math.random()*a.length)];
-        if(l.match(/(chào|hello|hi)/)) return rand(["Chào bạn! 🌟", "Hello bạn hiền! 😎"]);
-        if(l.match(/(tải|xuống)/)) return "Vào mục Game, bấm Tải Xuống nhé bạn! 🚀";
-        if(l.match(/(key|getkey)/)) return "Lấy Key ở mục GETKEY hoặc nút Get Key trên game nhé! 🔑";
-        if(l.match(/(nạp|xu|mua)/)) return "Nạp thẻ ở mục NẠP XU, mua ACC ở mục MUA HÀNG. 💸";
-        if(l.match(/(admin|sáng lập)/)) return "Admin là DTN (@DTN_207). 👑";
-        return rand(["Mình chưa hiểu lắm. 😅", "Bạn hỏi về tải game, nạp xu nhé! 👇"]);
-    }
+    function getAIResponse(msg) { const l = msg.toLowerCase(); const rand = (a) => a[Math.floor(Math.random()*a.length)]; if(l.match(/(chào|hello|hi)/)) return rand(["Chào bạn! 🌟", "Hello bạn hiền! 😎"]); if(l.match(/(tải|xuống)/)) return "Vào mục Game, bấm Tải Xuống nhé bạn! 🚀"; if(l.match(/(key|getkey)/)) return "Lấy Key ở mục GETKEY hoặc nút Get Key trên game nhé! 🔑"; if(l.match(/(nạp|xu|mua)/)) return "Nạp thẻ ở mục NẠP XU, mua ACC ở mục MUA HÀNG. 💸"; if(l.match(/(admin|sáng lập)/)) return "Admin là DTN (@DTN_207). 👑"; return rand(["Mình chưa hiểu lắm. 😅", "Bạn hỏi về tải game, nạp xu nhé! 👇"]); }
 
-    function initMouseTrail() {
-        const c = ['#8b5cf6', '#06b6d4', '#ec4899'];
-        document.addEventListener('mousemove', (e) => {
-            const d = document.createElement('div'); d.className = 'trail';
-            d.style.left = e.clientX + 'px'; d.style.top = e.clientY + 'px'; d.style.background = c[Math.floor(Math.random()*c.length)];
-            document.body.appendChild(d); setTimeout(() => d.remove(), 600);
-        });
-    }
-    function initAvatarGlitch() {
-        setInterval(() => {
-            const a1 = document.getElementById('avatar1'), a2 = document.getElementById('avatar2'), a3 = document.getElementById('avatar3');
-            if(a1&&a2&&a3){ a1.classList.add('glitch-av'); a2.classList.add('glitch-av'); a3.classList.add('glitch-av'); setTimeout(()=>{a1.classList.remove('glitch-av'); a2.classList.remove('glitch-av'); a3.classList.remove('glitch-av');}, 2000); }
-        }, 10000);
-    }
-    function toggleMusic() {
-        const a = document.getElementById('bgMusic'), b = document.getElementById('musicBtn');
-        if (a.paused) { a.volume = 0.5; a.play(); b.classList.add('playing'); showToast('Bật nhạc 🎵'); } else { a.pause(); b.classList.remove('playing'); showToast('Tắt nhạc 🔇'); }
-    }
+    function initMouseTrail() { const c = ['#8b5cf6', '#06b6d4', '#ec4899']; document.addEventListener('mousemove', (e) => { const d = document.createElement('div'); d.className = 'trail'; d.style.left = e.clientX + 'px'; d.style.top = e.clientY + 'px'; d.style.background = c[Math.floor(Math.random()*c.length)]; document.body.appendChild(d); setTimeout(() => d.remove(), 600); }); }
+    function initAvatarGlitch() { setInterval(() => { const a1 = document.getElementById('avatar1'), a2 = document.getElementById('avatar2'), a3 = document.getElementById('avatar3'); if(a1&&a2&&a3){ a1.classList.add('glitch-av'); a2.classList.add('glitch-av'); a3.classList.add('glitch-av'); setTimeout(()=>{a1.classList.remove('glitch-av'); a2.classList.remove('glitch-av'); a3.classList.remove('glitch-av');}, 2000); } }, 10000); }
+    function toggleMusic() { const a = document.getElementById('bgMusic'), b = document.getElementById('musicBtn'); if (a.paused) { a.volume = 0.5; a.play(); b.classList.add('playing'); showToast('Bật nhạc 🎵'); } else { a.pause(); b.classList.remove('playing'); showToast('Tắt nhạc 🔇'); } }
     function showToast(msg) { let t = document.getElementById('toast'); t.innerText = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2500); }
 
-    function createSnow() {
-        const screen = document.getElementById('loadingScreen'); if (!screen) return;
-        const snowSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"><line x1="50" y1="5" x2="50" y2="95"/><line x1="11" y1="27" x2="89" y2="73"/><line x1="11" y1="73" x2="89" y2="27"/><line x1="50" y1="22" x2="35" y2="7"/><line x1="50" y1="22" x2="65" y2="7"/><line x1="50" y1="78" x2="35" y2="93"/><line x1="50" y1="78" x2="65" y2="93"/></g></svg>`;
-        for (let i = 0; i < 80; i++) {
-            const flake = document.createElement('div'); flake.className = 'snowflake'; flake.innerHTML = snowSVG;
-            const size = Math.random() * 12 + 8; flake.style.width = size + 'px'; flake.style.height = size + 'px'; flake.style.left = Math.random() * 100 + '%';
-            const duration = Math.random() * 5 + 4; flake.style.animationDuration = duration + 's'; flake.style.animationDelay = (Math.random() * 2) + 's';
-            flake.style.opacity = (Math.random() * 0.5 + 0.4); const randomTop = Math.random() * 200 - 100; flake.style.top = randomTop + 'vh';
-            screen.appendChild(flake);
-        }
-    }
-    function createCherryBlossoms() {
-        const screen = document.getElementById('loadingScreen'); if (!screen) return;
-        const petalSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M50 95 C 20 80, 10 40, 25 15 C 35 25, 45 25, 50 15 C 55 25, 65 25, 75 15 C 90 40, 80 80, 50 95 Z"/></svg>`;
-        const petalColors = ['#ffb7c5', '#ffc0cb', '#ffd1dc', '#ff9eb5', '#ffe0e6'];
-        for (let i = 0; i < 50; i++) {
-            const petal = document.createElement('div'); petal.className = 'petal'; petal.innerHTML = petalSVG;
-            const size = Math.random() * 14 + 14; petal.style.width = size + 'px'; petal.style.height = size + 'px'; petal.style.color = petalColors[Math.floor(Math.random() * petalColors.length)]; petal.style.left = Math.random() * 100 + '%';
-            const duration = Math.random() * 7 + 6; petal.style.animationDuration = duration + 's'; petal.style.animationDelay = (Math.random() * 2) + 's';
-            petal.style.opacity = (Math.random() * 0.4 + 0.5); const randomTop = Math.random() * 200 - 100; petal.style.top = randomTop + 'vh';
-            screen.appendChild(petal);
-        }
-    }
+    function createSnow() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const snowSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"><line x1="50" y1="5" x2="50" y2="95"/><line x1="11" y1="27" x2="89" y2="73"/><line x1="11" y1="73" x2="89" y2="27"/><line x1="50" y1="22" x2="35" y2="7"/><line x1="50" y1="22" x2="65" y2="7"/><line x1="50" y1="78" x2="35" y2="93"/><line x1="50" y1="78" x2="65" y2="93"/></g></svg>`; for (let i = 0; i < 80; i++) { const flake = document.createElement('div'); flake.className = 'snowflake'; flake.innerHTML = snowSVG; const size = Math.random() * 12 + 8; flake.style.width = size + 'px'; flake.style.height = size + 'px'; flake.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 5 + 4; flake.style.animationDuration = duration + 's'; flake.style.animationDelay = (Math.random() * 2) + 's'; flake.style.opacity = (Math.random() * 0.5 + 0.4); const randomTop = Math.random() * 200 - 100; flake.style.top = randomTop + 'vh'; screen.appendChild(flake); } }
+    function createCherryBlossoms() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const petalSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M50 95 C 20 80, 10 40, 25 15 C 35 25, 45 25, 50 15 C 55 25, 65 25, 75 15 C 90 40, 80 80, 50 95 Z"/></svg>`; const petalColors = ['#ffb7c5', '#ffc0cb', '#ffd1dc', '#ff9eb5', '#ffe0e6']; for (let i = 0; i < 50; i++) { const petal = document.createElement('div'); petal.className = 'petal'; petal.innerHTML = petalSVG; const size = Math.random() * 14 + 14; petal.style.width = size + 'px'; petal.style.height = size + 'px'; petal.style.color = petalColors[Math.floor(Math.random() * petalColors.length)]; petal.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 7 + 6; petal.style.animationDuration = duration + 's'; petal.style.animationDelay = (Math.random() * 2) + 's'; petal.style.opacity = (Math.random() * 0.4 + 0.5); const randomTop = Math.random() * 200 - 100; petal.style.top = randomTop + 'vh'; screen.appendChild(petal); } }
     createSnow(); createCherryBlossoms();
 
     function updateClock() { const now = new Date(); const el = document.getElementById('clockDisplay'); if (el) el.innerText = `${now.getHours()}h ${now.getMinutes()}p ${now.getSeconds()}s`; }
     updateClock(); setInterval(updateClock, 1000);
 
-    function startLiveNoti() {
-        setInterval(() => {
-            const names = ['Minh***', 'Hùng***', 'Trang***', 'Khánh***', 'Bảo***'];
-            const app = apps[Math.floor(Math.random() * apps.length)]; const noti = document.getElementById('liveNoti');
-            if(noti && app) {
-                document.getElementById('notiText').innerHTML = `<b>${names[Math.floor(Math.random() * names.length)]}</b> vừa tải <b>${app.name}</b>`;
-                document.getElementById('notiImg').src = app.icon; noti.classList.add('show'); setTimeout(() => noti.classList.remove('show'), 4000);
-            }
-        }, 15000);
-    }
-    window.addEventListener('scroll', () => {
-        const b = document.getElementById('backToTop');
-        if(b) { if (window.scrollY > 300) b.classList.add('show'); else b.classList.remove('show'); }
-    });
+    function startLiveNoti() { setInterval(() => { const names = ['Minh***', 'Hùng***', 'Trang***', 'Khánh***', 'Bảo***']; const app = apps[Math.floor(Math.random() * apps.length)]; const noti = document.getElementById('liveNoti'); if(noti && app) { document.getElementById('notiText').innerHTML = `<b>${names[Math.floor(Math.random() * names.length)]}</b> vừa tải <b>${app.name}</b>`; document.getElementById('notiImg').src = app.icon; noti.classList.add('show'); setTimeout(() => noti.classList.remove('show'), 4000); } }, 15000); }
+    window.addEventListener('scroll', () => { const b = document.getElementById('backToTop'); if(b) { if (window.scrollY > 300) b.classList.add('show'); else b.classList.remove('show'); } });
 </script>
 </body>
 </html>
