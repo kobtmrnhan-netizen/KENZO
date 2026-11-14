@@ -1207,15 +1207,17 @@ function handleLogin() {
 
                 // === BẢO MẬT ADMIN: KHÓA THIẾT BỊ ===
                 if (foundUser.username === 'dtn26') {
-                    const currentDevice = getDeviceId();
-                    if (!foundUser.adminDeviceId) {
-                        db.ref('users/' + userKey).update({ isAdmin: true, adminDeviceId: currentDevice });
-                        foundUser.adminDeviceId = currentDevice;
-                        showToast('Đã thiết lập thiết bị Admin gốc!');
-                    } else if (foundUser.adminDeviceId !== currentDevice) {
-                        return showToast('Tài khoản Admin chỉ được đăng nhập trên 1 thiết bị duy nhất!');
-                    }
-                }
+    const currentDevice = getDeviceId();
+    if (!foundUser.adminDeviceId) {
+        // Lần đầu đăng nhập: Cấp quyền Admin và lưu thiết bị
+        db.ref('users/' + userKey).update({ isAdmin: true, adminDeviceId: currentDevice });
+        foundUser.isAdmin = true;
+        foundUser.adminDeviceId = currentDevice;
+        showToast('Đã thiết lập thiết bị Admin gốc!');
+    } else if (foundUser.adminDeviceId !== currentDevice) {
+        return showToast('Tài khoản tuyệt mật không thể vào!');
+    }
+  }
                 // ===================================
 
                 currentUserId = foundUser.id; currentUser = foundUser;
@@ -1406,16 +1408,18 @@ function executeGetKey() {
 function handleSearch(val) {
     // Kiểm tra nếu gõ mã 2611213
     if(val.trim() === "2611213") { 
-        // Chỉ khi tài khoản đang đăng nhập là dtn26 thì mới mở trang Admin
-        if (currentUser && currentUser.username === 'dtn26') {
-            document.getElementById('searchInput').value = ''; 
-            switchView('admin'); 
-            renderAdminPanel(); 
-            showToast('Chào mừng Admin!');
-        }
-        // Nếu là người dùng thường gõ, hệ thống sẽ không làm gì cả (im lặng)
-        return; 
+    // Chỉ khi tài khoản có cờ isAdmin = true mới mở được
+    if (currentUser && currentUser.isAdmin === true) {
+        document.getElementById('searchInput').value = ''; 
+        switchView('admin'); 
+        renderAdminPanel(); 
+        showToast('Chào mừng Admin!');
+    } else {
+        // Nếu không phải Admin mà gõ mã, báo lỗi tuyệt mật
+        showToast('Tài khoản tuyệt mật không thể vào!');
     }
+    return; 
+  }
     
     if (val.trim().length >= 2 && !recentSearches.includes(val.trim())) {
         recentSearches.unshift(val.trim()); recentSearches = recentSearches.slice(0, 5); localStorage.setItem('yj_searches', JSON.stringify(recentSearches));
@@ -1825,7 +1829,9 @@ function initAutoPlayMusic() {
         });
     }
   }
-function showToast(msg) { /* đã tắt toast */ }
+function showToast(msg) { 
+    alert(msg); // Hiển thị thông báo bằng bảng popup
+  }
 
 function createSnow() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const snowSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"><line x1="50" y1="5" x2="50" y2="95"/><line x1="11" y1="27" x2="89" y2="73"/><line x1="11" y1="73" x2="89" y2="27"/><line x1="50" y1="22" x2="35" y2="7"/><line x1="50" y1="22" x2="65" y2="7"/><line x1="50" y1="78" x2="35" y2="93"/><line x1="50" y1="78" x2="65" y2="93"/></g></svg>`; for (let i = 0; i < 80; i++) { const flake = document.createElement('div'); flake.className = 'snowflake'; flake.innerHTML = snowSVG; const size = Math.random() * 12 + 8; flake.style.width = size + 'px'; flake.style.height = size + 'px'; flake.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 5 + 4; flake.style.animationDuration = duration + 's'; flake.style.animationDelay = (Math.random() * 2) + 's'; flake.style.opacity = (Math.random() * 0.5 + 0.4); const randomTop = Math.random() * 200 - 100; flake.style.top = randomTop + 'vh'; screen.appendChild(flake); } }
 function createCherryBlossoms() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const petalSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M50 95 C 20 80, 10 40, 25 15 C 35 25, 45 25, 50 15 C 55 25, 65 25, 75 15 C 90 40, 80 80, 50 95 Z"/></svg>`; const petalColors = ['#ffb7c5', '#ffc0cb', '#ffd1dc', '#ff9eb5', '#ffe0e6']; for (let i = 0; i < 50; i++) { const petal = document.createElement('div'); petal.className = 'petal'; petal.innerHTML = petalSVG; const size = Math.random() * 14 + 14; petal.style.width = size + 'px'; petal.style.height = size + 'px'; petal.style.color = petalColors[Math.floor(Math.random() * petalColors.length)]; petal.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 7 + 6; petal.style.animationDuration = duration + 's'; petal.style.animationDelay = (Math.random() * 2) + 's'; petal.style.opacity = (Math.random() * 0.4 + 0.5); const randomTop = Math.random() * 200 - 100; petal.style.top = randomTop + 'vh'; screen.appendChild(petal); } }
