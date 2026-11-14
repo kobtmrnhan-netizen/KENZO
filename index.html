@@ -415,6 +415,46 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     75%  { transform: translate(-1px, -2px); filter: hue-rotate(270deg); }
     100% { transform: translate(0, 0);     filter: hue-rotate(360deg); }
     }
+    /* === THÔNG BÁO KENZO STYLE === */
+#kzToastContainer {
+    position: fixed;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+.kz-toast {
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(10px);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 50px;
+    border: 2px solid var(--purple);
+    box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4), 0 0 15px rgba(6, 182, 212, 0.2);
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    max-width: 90vw;
+    text-align: center;
+}
+.kz-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+.kz-toast i {
+    color: var(--blue);
+    font-size: 18px;
+    animation: pulseClock 1s infinite alternate;
+}
           </style>
 </head>
 <body style="overflow: hidden;">
@@ -875,6 +915,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 
 <div id="musicBtn" class="music-player" onclick="toggleMusic()" title="Bật/Tắt nhạc nền"><i id="musicIcon" class="fa-solid fa-compact-disc"></i></div>
 <audio id="bgMusic" loop><source src="https://www.image2url.com/r2/default/files/1793936785502-9c704d47-0aeb-4e5b-b0d5-4a247fb205c6.mp3" type="audio/mpeg"></audio>
+<div id="kzToastContainer"></div>
 <script>
       
 const firebaseConfig = {
@@ -1830,7 +1871,35 @@ function initAutoPlayMusic() {
     }
   }
 function showToast(msg) { 
-    alert(msg); // Hiển thị thông báo bằng bảng popup
+    const container = document.getElementById('kzToastContainer');
+    if (!container) return alert(msg); 
+    
+    const toast = document.createElement('div');
+    toast.className = 'kz-toast';
+    
+    // Thêm icon tùy theo nội dung thông báo
+    let iconClass = 'fa-solid fa-circle-info';
+    if (msg.toLowerCase().includes('lỗi') || msg.toLowerCase().includes('sai') || msg.toLowerCase().includes('không thể')) {
+        iconClass = 'fa-solid fa-triangle-exclamation';
+        toast.style.borderColor = '#ef4444'; // Viền đỏ nếu là lỗi
+        toast.style.boxShadow = '0 10px 30px rgba(239, 68, 68, 0.4)';
+    } else if (msg.toLowerCase().includes('thành công') || msg.toLowerCase().includes('đã lưu') || msg.toLowerCase().includes('đã gửi')) {
+        iconClass = 'fa-solid fa-circle-check';
+        toast.style.borderColor = '#10b981'; // Viền xanh lá nếu thành công
+        toast.style.boxShadow = '0 10px 30px rgba(16, 185, 129, 0.4)';
+    }
+
+    toast.innerHTML = `<i class="${iconClass}"></i> <span>${msg}</span>`;
+    container.appendChild(toast);
+    
+    // Hiệu ứng trượt xuống
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Tự động xóa sau 3 giây
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 400); // Đợi hiệu ứng mờ đi xong
+    }, 3000);
   }
 
 function createSnow() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const snowSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"><line x1="50" y1="5" x2="50" y2="95"/><line x1="11" y1="27" x2="89" y2="73"/><line x1="11" y1="73" x2="89" y2="27"/><line x1="50" y1="22" x2="35" y2="7"/><line x1="50" y1="22" x2="65" y2="7"/><line x1="50" y1="78" x2="35" y2="93"/><line x1="50" y1="78" x2="65" y2="93"/></g></svg>`; for (let i = 0; i < 80; i++) { const flake = document.createElement('div'); flake.className = 'snowflake'; flake.innerHTML = snowSVG; const size = Math.random() * 12 + 8; flake.style.width = size + 'px'; flake.style.height = size + 'px'; flake.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 5 + 4; flake.style.animationDuration = duration + 's'; flake.style.animationDelay = (Math.random() * 2) + 's'; flake.style.opacity = (Math.random() * 0.5 + 0.4); const randomTop = Math.random() * 200 - 100; flake.style.top = randomTop + 'vh'; screen.appendChild(flake); } }
