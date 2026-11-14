@@ -26,12 +26,24 @@
         .hidden { display: none !important; }
         .text-gradient { background: linear-gradient(135deg, #a855f7, #06b6d4, #3b82f6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .glass { background: var(--glass); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
-        .loading-screen { position: fixed; inset: 0; z-index: 10000; background: linear-gradient(180deg, #a1c4fd 0%, #c2e9fb 50%, #84fab0 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease; }
+        .loading-screen { 
+    position: fixed; inset: 0; z-index: 10000; 
+    background: linear-gradient(180deg, #a1c4fd 0%, #c2e9fb 50%, #84fab0 100%); 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+    /* Thêm hiệu ứng thu nhỏ và mờ dần */
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease; 
+    transform-origin: center center;
+                                         }
       .loading-circle { border-color: transparent !important; box-shadow: none !important; }
 .loading-circle::before { content: ''; position: absolute; inset: -20px; border-radius: 50%; background: radial-gradient(circle, rgba(168,85,247,0.8) 0%, rgba(168,85,247,0) 70%); filter: blur(10px); animation: firePulse 0.8s infinite alternate; z-index: 0; }
 .loading-circle::after { content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 4px solid var(--purple); border-bottom-color: transparent; z-index: 3; box-shadow: 0 0 15px var(--purple); }
 .loading-circle img { position: relative; z-index: 2; }
 .loading-text { color: #0f172a; text-align: center; }
+/* Thêm hiệu ứng thu nhỏ cho Logo và Chữ */
+.loading-circle, .loading-text {
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.8s ease;
+    transform-origin: center center;
+}
 .loading-text h1 { font-size: 32px; font-weight: 900; letter-spacing: 2px; margin-bottom: 5px; }
 .loading-text p { font-size: 16px; font-weight: 600; color: #10b981; margin-bottom: 15px; }
 .loading-text .percent { font-size: 24px; font-weight: 900; color: #10b981; }
@@ -45,10 +57,44 @@
 .marquee-container { background: linear-gradient(90deg, rgba(139,92,246,0.2), rgba(6,182,212,0.2)); padding: 8px 0; overflow: hidden; border-bottom: 1px solid var(--border); position: relative; z-index: 39; }
 .marquee-text { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; color: var(--text); font-size: 13px; font-weight: 600; }
 @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
-.clock-bar { background: #0f172a; padding: 8px 25px; display: flex; align-items: center; justify-content: center; gap: 12px; border: 2px solid #8b5cf6; border-radius: 50px; width: max-content; margin: 10px auto; position: relative; z-index: 38; box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), inset 0 0 10px rgba(139, 92, 246, 0.2); }
-.clock-bar i { color: #8b5cf6; font-size: 18px; }
-.clock-bar #clockDisplay { color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 18px; font-weight: 800; letter-spacing: 2px; }
-      header { position: sticky; top: 0; z-index: 40; padding: 12px 20px; }
+/* === CLOCK WIDGET GIỐNG YURI === */
+.clock-widget {
+    display: flex; align-items: center; justify-content: center; gap: 12px;
+    background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px);
+    border: 1.5px solid var(--purple); border-radius: 50px;
+    padding: 10px 22px; margin: 10px auto; width: max-content; max-width: 90%;
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.4), inset 0 0 10px rgba(139, 92, 246, 0.2);
+    position: relative; z-index: 38; cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.clock-greeting {
+    color: #10b981; font-weight: 800; font-size: 14px; white-space: nowrap;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1; max-width: 250px; /* Cho phép hiện chữ */
+}
+
+/* Khi thu gọn thì ẩn lời chào đi */
+.clock-widget.minimized .clock-greeting {
+    opacity: 0; max-width: 0; margin: 0; padding: 0; overflow: hidden;
+}
+
+.clock-time {
+    color: #ffffff; font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 18px; font-weight: 900; letter-spacing: 2px;
+    white-space: nowrap;
+}
+
+.clock-icon {
+    color: var(--purple); font-size: 18px;
+    animation: pulseClock 2s infinite alternate;
+}
+
+@keyframes pulseClock {
+    0% { filter: drop-shadow(0 0 2px var(--purple)); }
+    100% { filter: drop-shadow(0 0 8px #06b6d4); }
+  }
 .header-inner { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
 .logo-area { display: flex; align-items: center; gap: 12px; }
 .btn-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--card-bg); border: 1px solid var(--border); color: var(--text); display: flex; align-items: center; justify-content: center; font-size: 16px; transition: 0.2s; position: relative; }
@@ -368,6 +414,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     50%  { transform: translate(2px, -1px); filter: hue-rotate(180deg); }
     75%  { transform: translate(-1px, -2px); filter: hue-rotate(270deg); }
     100% { transform: translate(0, 0);     filter: hue-rotate(360deg); }
+    }
           </style>
 </head>
 <body style="overflow: hidden;">
@@ -376,7 +423,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     <div class="loading-text"><h1>WELCOME</h1><p>Sẵn sàng!</p><div class="percent" id="loadPercent">0%</div></div>
 </div>
 <div class="marquee-container"><div class="marquee-text">🔥 Chào mừng đến với Kenzo Studio - Cập nhật game & app mới mỗi ngày! Bảo mật 100% - Tốc độ không giới hạn!</div></div>
-<div class="clock-bar"><span id="clockDisplay">00:00:00</span> <i class="fa-regular fa-clock"></i></div>
+<!-- ===== CLOCK WIDGET (GIỐNG YURI) ===== -->
+<div id="clockWidget" class="clock-widget" onclick="toggleClockWidget()">
+    <div class="clock-greeting" id="clockGreeting"></div>
+    <div class="clock-time" id="clockDisplay">00:00:00</div>
+    <div class="clock-icon"><i class="fa-regular fa-clock"></i></div>
+</div>
 <header class="glass">
     <div class="header-inner" style="position: relative; justify-content: center;">
         <!-- Nút Menu 3 gạch nằm bên trái -->
@@ -837,7 +889,17 @@ const firebaseConfig = {
 };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
-
+// Hàm tạo và lấy mã thiết bị duy nhất cho mỗi trình duyệt
+function getDeviceId() {
+    let devId = localStorage.getItem('kenzo_device_id');
+    if (!devId) {
+        // Tạo mã ngẫu nhiên nếu chưa có
+        devId = 'DEV-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem('kenzo_device_id', devId);
+    }
+    return devId;
+  }
+  
 let apps = []; 
 const defaultApps = [
     { id: 1, idCode: 'HT-001', name: 'Huyền thoại hải tặc test (bảo trì)', pkg: 'com.package.huyenthoaihaitactest', size: '271 MB', cat: 'GAME', downloads: 1500, icon: 'logohtht.png', banner: 'bannerhtht.png', desc: 'huyền thoại hải tặc test...', downloadLink: 'https://www.mediafire.com/file/yynia7atfblx4d9/haitacphucsinh-1.1.8.apk/file', getKeyLink: '' },
@@ -905,23 +967,33 @@ db.ref('shop').on('value', (snap) => {
     if (typeof renderAdminPanel === 'function') renderAdminPanel();
 });
 
+// Chỉ tải dữ liệu của CHÍNH NGƯỜI ĐANG ĐĂNG NHẬP (Bảo mật)
+if (currentUserId) {
+    db.ref('users/' + currentUserId).on('value', (snap) => {
+        const userData = snap.val();
+        if (userData) {
+            currentUser = userData;
+            if (currentUser.isLocked) {
+                showToast('Tài khoản của bạn đã bị khóa. Lý do: ' + (currentUser.lockReason || 'Vi phạm'));
+                logout(new Event('click'));
+                return;
+            }
+            if (typeof updateAuthUI === 'function') updateAuthUI();
+        } else {
+            currentUser = null; currentUserId = null;
+            localStorage.removeItem('kenzo_currentUserId');
+            if (typeof updateAuthUI === 'function') updateAuthUI();
+        }
+    });
+}
+
+// Chỉ khi là Admin mới tải toàn bộ danh sách User (để quản lý)
 db.ref('users').on('value', (snap) => {
     const data = snap.val() || {};
-    users = Object.values(data);
-    if (currentUserId && data[currentUserId]) {
-        currentUser = data[currentUserId];
-        if (currentUser.isLocked) {
-            showToast('Tài khoản của bạn đã bị khóa. Lý do: ' + (currentUser.lockReason || 'Vi phạm'));
-            logout(new Event('click'));
-            return;
-        }
-        if (typeof updateAuthUI === 'function') updateAuthUI();
-    } else if (currentUserId && !data[currentUserId]) {
-        currentUser = null; currentUserId = null;
-        localStorage.removeItem('kenzo_currentUserId');
-        if (typeof updateAuthUI === 'function') updateAuthUI();
+    if (currentUser && currentUser.username === 'dtn26') {
+        users = Object.values(data);
+        if (typeof renderAdminPanel === 'function') renderAdminPanel();
     }
-    if (typeof renderAdminPanel === 'function') renderAdminPanel();
 });
 
 db.ref('card_requests').on('value', (snap) => {
@@ -972,7 +1044,20 @@ window.onload = () => {
         count += Math.floor(Math.random() * 5) + 1;
         if(count >= 100) {
             count = 100; clearInterval(intv);
-            setTimeout(() => { document.getElementById('loadingScreen').style.opacity = '0'; setTimeout(() => { document.getElementById('loadingScreen').style.display = 'none'; document.body.style.overflow = 'auto'; }, 800); }, 300);
+            setTimeout(() => { 
+                const loadingScreen = document.getElementById('loadingScreen');
+                const circle = loadingScreen.querySelector('.loading-circle');
+                const text = loadingScreen.querySelector('.loading-text');
+                
+                loadingScreen.style.opacity = '0'; 
+                if (circle) circle.style.transform = 'scale(0)';
+                if (text) text.style.transform = 'scale(0)';
+                
+                setTimeout(() => { 
+                    loadingScreen.style.display = 'none'; 
+                    document.body.style.overflow = 'auto'; 
+                }, 800); 
+            }, 300);
         }
         document.getElementById('loadPercent').innerText = count + '%';
     }, 50);
@@ -984,8 +1069,13 @@ window.onload = () => {
     initGetKey(); initMouseTrail(); initAvatarGlitch(); updateAuthUI();
     setTimeout(initTelegramApp, 1500);
     logVisit();
+    
+        // Khởi chạy đồng hồ thông minh
+    initClock(); 
+    // Khởi chạy tự động phát nhạc
+    initAutoPlayMusic();
 };
-
+  
 function initGetKey() {
     const list = document.getElementById('getkeyList'); if(!list) return;
     list.innerHTML = getkeyData.map((key, index) => `
@@ -1078,23 +1168,71 @@ function switchAuthMode() {
 function handleLogin() {
     const user = document.getElementById('authUser').value.trim(), pass = document.getElementById('authPass').value.trim();
     if(!user || !pass) return showToast('Vui lòng nhập đầy đủ!');
+    
     if(isRegisterMode) {
-        if(users.find(u => u.username === user)) return showToast('Tên đăng nhập đã tồn tại!');
-        let newId = "0000000001"; if(users.length > 0) { let maxId = Math.max(...users.map(u => parseInt(u.id))); newId = (maxId + 1).toString().padStart(10, '0'); }
-        const newUser = { id: newId, username: user, password: pass, coins: 0, device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
-        db.ref('users/' + newId).set(newUser).then(() => { showToast('Đăng ký thành công!'); switchAuthMode(); }).catch(err => showToast('Lỗi: ' + err.message));
+        // Kiểm tra tên đăng nhập tồn tại trên Firebase
+        db.ref('users').orderByChild('username').equalTo(user).once('value').then(snapshot => {
+            if (snapshot.exists()) return showToast('Tên đăng nhập đã tồn tại!');
+            
+            // Tạo ID mới
+            let newId = "0000000001"; 
+            db.ref('users').limitToLast(1).once('value').then(lastSnap => {
+                if (lastSnap.exists()) {
+                    const lastUser = Object.values(lastSnap.val())[0];
+                    let maxId = parseInt(lastUser.id || 0);
+                    newId = (maxId + 1).toString().padStart(10, '0');
+                }
+                const newUser = { id: newId, username: user, password: pass, coins: 0, device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
+                db.ref('users/' + newId).set(newUser).then(() => { showToast('Đăng ký thành công!'); switchAuthMode(); }).catch(err => showToast('Lỗi: ' + err.message));
+            });
+        });
     } else {
-        const foundUser = users.find(u => u.username === user && u.password === pass);
-        if(foundUser) {
-            if (foundUser.isLocked) {
-                return showToast('Tài khoản của bạn đã bị khóa. Lý do: ' + (foundUser.lockReason || 'Vi phạm điều khoản'));
+        // Đăng nhập: Tìm chính xác user trên Firebase
+        db.ref('users').orderByChild('username').equalTo(user).once('value').then(snapshot => {
+            let foundUser = null;
+            let userKey = null;
+            
+            snapshot.forEach(child => {
+                const u = child.val();
+                if (u.password === pass) {
+                    foundUser = u;
+                    userKey = child.key;
+                }
+            });
+
+            if(foundUser) {
+                if (foundUser.isLocked) {
+                    return showToast('Tài khoản của bạn đã bị khóa. Lý do: ' + (foundUser.lockReason || 'Vi phạm điều khoản'));
+                }
+
+                // === BẢO MẬT ADMIN: KHÓA THIẾT BỊ ===
+                if (foundUser.username === 'dtn26') {
+                    const currentDevice = getDeviceId();
+                    if (!foundUser.adminDeviceId) {
+                        db.ref('users/' + userKey).update({ isAdmin: true, adminDeviceId: currentDevice });
+                        foundUser.adminDeviceId = currentDevice;
+                        showToast('Đã thiết lập thiết bị Admin gốc!');
+                    } else if (foundUser.adminDeviceId !== currentDevice) {
+                        return showToast('Tài khoản Admin chỉ được đăng nhập trên 1 thiết bị duy nhất!');
+                    }
+                }
+                // ===================================
+
+                currentUserId = foundUser.id; currentUser = foundUser;
+                localStorage.setItem('kenzo_currentUserId', currentUserId);
+                updateAuthUI(); closeAuthModal(); showToast('Đăng nhập thành công!');
+                
+                // Kích hoạt nghe dữ liệu của riêng user này
+                db.ref('users/' + currentUserId).on('value', (snap) => {
+                    const userData = snap.val();
+                    if (userData) { currentUser = userData; if (typeof updateAuthUI === 'function') updateAuthUI(); }
+                });
+            } else { 
+                showToast('Sai tài khoản hoặc mật khẩu!'); 
             }
-            currentUserId = foundUser.id; currentUser = foundUser;
-            localStorage.setItem('kenzo_currentUserId', currentUserId);
-            updateAuthUI(); closeAuthModal(); showToast('Đăng nhập thành công!');
-        } else { showToast('Sai tài khoản hoặc mật khẩu!'); }
+        }).catch(err => showToast('Lỗi kết nối: ' + err.message));
     }
-}
+  }
 
 function logout(e) {
     if(e) e.stopPropagation(); currentUser = null; currentUserId = null;
@@ -1266,12 +1404,25 @@ function executeGetKey() {
 }
 
 function handleSearch(val) {
-    if(val === "2611213") { document.getElementById('searchInput').value = ''; switchView('admin'); renderAdminPanel(); return; }
+    // Kiểm tra nếu gõ mã 2611213
+    if(val.trim() === "2611213") { 
+        // Chỉ khi tài khoản đang đăng nhập là dtn26 thì mới mở trang Admin
+        if (currentUser && currentUser.username === 'dtn26') {
+            document.getElementById('searchInput').value = ''; 
+            switchView('admin'); 
+            renderAdminPanel(); 
+            showToast('Chào mừng Admin!');
+        }
+        // Nếu là người dùng thường gõ, hệ thống sẽ không làm gì cả (im lặng)
+        return; 
+    }
+    
     if (val.trim().length >= 2 && !recentSearches.includes(val.trim())) {
         recentSearches.unshift(val.trim()); recentSearches = recentSearches.slice(0, 5); localStorage.setItem('yj_searches', JSON.stringify(recentSearches));
     }
     searchQ = val.toLowerCase(); renderStore();
-}
+  }
+  
 function showRecent() {
     const box = document.getElementById('recentSearches'); if (recentSearches.length === 0) return;
     box.innerHTML = recentSearches.map(s => `<div class="recent-item" onclick="document.getElementById('searchInput').value='${s}';handleSearch('${s}');hideRecent();"><span><i class="fa-solid fa-clock-rotate-left" style="margin-right:10px;"></i>${s}</span><i class="fa-solid fa-xmark" onclick="event.stopPropagation();removeRecent('${s}')"></i></div>`).join('');
@@ -1642,22 +1793,90 @@ function initMouseTrail() {
   }
 function initAvatarGlitch() { setInterval(() => { const a1 = document.getElementById('avatar1'), a2 = document.getElementById('avatar2'), a3 = document.getElementById('avatar3'); if(a1&&a2&&a3){ a1.classList.add('glitch-av'); a2.classList.add('glitch-av'); a3.classList.add('glitch-av'); setTimeout(()=>{a1.classList.remove('glitch-av'); a2.classList.remove('glitch-av'); a3.classList.remove('glitch-av');}, 2000); } }, 10000); }
 function toggleMusic() { const a = document.getElementById('bgMusic'), b = document.getElementById('musicBtn'); if (a.paused) { a.volume = 0.5; a.play(); b.classList.add('playing'); showToast('Bật nhạc 🎵'); } else { a.pause(); b.classList.remove('playing'); showToast('Tắt nhạc 🔇'); } }
+// === TỰ ĐỘNG PHÁT NHẠC (CHỜ TƯƠNG TÁC ĐẦU TIÊN) ===
+function initAutoPlayMusic() {
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    if (!audio || !musicBtn) return;
+
+    // Thử phát nhạc ngay lập tức (nếu trình duyệt cho phép)
+    audio.volume = 0.5;
+    let playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            // Phát thành công
+            musicBtn.classList.add('playing');
+        }).catch(() => {
+            // Bị trình duyệt chặn -> Đợi người dùng chạm/click vào màn hình
+            const playOnInteract = () => {
+                audio.play().then(() => {
+                    musicBtn.classList.add('playing');
+                    // Xóa sự kiện sau khi đã phát thành công để không bị lặp
+                    document.removeEventListener('click', playOnInteract);
+                    document.removeEventListener('touchstart', playOnInteract);
+                    document.removeEventListener('scroll', playOnInteract);
+                }).catch(e => console.log("Vẫn chưa thể phát nhạc:", e));
+            };
+            
+            document.addEventListener('click', playOnInteract);
+            document.addEventListener('touchstart', playOnInteract);
+            document.addEventListener('scroll', playOnInteract);
+        });
+    }
+  }
 function showToast(msg) { /* đã tắt toast */ }
 
 function createSnow() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const snowSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="6" stroke-linecap="round" fill="none"><line x1="50" y1="5" x2="50" y2="95"/><line x1="11" y1="27" x2="89" y2="73"/><line x1="11" y1="73" x2="89" y2="27"/><line x1="50" y1="22" x2="35" y2="7"/><line x1="50" y1="22" x2="65" y2="7"/><line x1="50" y1="78" x2="35" y2="93"/><line x1="50" y1="78" x2="65" y2="93"/></g></svg>`; for (let i = 0; i < 80; i++) { const flake = document.createElement('div'); flake.className = 'snowflake'; flake.innerHTML = snowSVG; const size = Math.random() * 12 + 8; flake.style.width = size + 'px'; flake.style.height = size + 'px'; flake.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 5 + 4; flake.style.animationDuration = duration + 's'; flake.style.animationDelay = (Math.random() * 2) + 's'; flake.style.opacity = (Math.random() * 0.5 + 0.4); const randomTop = Math.random() * 200 - 100; flake.style.top = randomTop + 'vh'; screen.appendChild(flake); } }
 function createCherryBlossoms() { const screen = document.getElementById('loadingScreen'); if (!screen) return; const petalSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M50 95 C 20 80, 10 40, 25 15 C 35 25, 45 25, 50 15 C 55 25, 65 25, 75 15 C 90 40, 80 80, 50 95 Z"/></svg>`; const petalColors = ['#ffb7c5', '#ffc0cb', '#ffd1dc', '#ff9eb5', '#ffe0e6']; for (let i = 0; i < 50; i++) { const petal = document.createElement('div'); petal.className = 'petal'; petal.innerHTML = petalSVG; const size = Math.random() * 14 + 14; petal.style.width = size + 'px'; petal.style.height = size + 'px'; petal.style.color = petalColors[Math.floor(Math.random() * petalColors.length)]; petal.style.left = Math.random() * 100 + '%'; const duration = Math.random() * 7 + 6; petal.style.animationDuration = duration + 's'; petal.style.animationDelay = (Math.random() * 2) + 's'; petal.style.opacity = (Math.random() * 0.4 + 0.5); const randomTop = Math.random() * 200 - 100; petal.style.top = randomTop + 'vh'; screen.appendChild(petal); } }
 createSnow(); createCherryBlossoms();
 
+let currentGreeting = "";
+let clockTimeout;
+
 function updateClock() { 
     const now = new Date(); 
     const h = String(now.getHours()).padStart(2, '0');
     const m = String(now.getMinutes()).padStart(2, '0');
     const s = String(now.getSeconds()).padStart(2, '0');
+    
     const el = document.getElementById('clockDisplay'); 
     if (el) el.innerText = `${h}:${m}:${s}`; 
+    
+    const hour = now.getHours();
+    let newGreeting = "";
+    if (hour >= 5 && hour < 11) newGreeting = "Chào buổi sáng 🌅";
+    else if (hour >= 11 && hour < 13) newGreeting = "Chào buổi trưa ☀️";
+    else if (hour >= 13 && hour < 18) newGreeting = "Chào buổi chiều 🌇";
+    else if (hour >= 18 && hour < 22) newGreeting = "Chào buổi tối 🌙";
+    else newGreeting = "Khuya rồi, ngủ ngon! 😴";
+    
+    const greetingEl = document.getElementById('clockGreeting');
+    if (greetingEl && currentGreeting !== newGreeting) {
+        currentGreeting = newGreeting;
+        greetingEl.innerText = newGreeting;
+    }
 }
-updateClock(); setInterval(updateClock, 1000);
 
+function toggleClockWidget() {
+    const widget = document.getElementById('clockWidget');
+    if (widget) {
+        widget.classList.toggle('minimized');
+    }
+}
+
+function initClock() {
+    updateClock(); 
+    setInterval(updateClock, 1000);
+    
+    clockTimeout = setTimeout(() => {
+        const widget = document.getElementById('clockWidget');
+        if (widget && !widget.classList.contains('minimized')) {
+            widget.classList.add('minimized');
+        }
+    }, 4000);
+  }
+  
 </script>
 </body>
 </html>
