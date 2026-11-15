@@ -548,6 +548,25 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 .social-btn.tg { background: linear-gradient(135deg, #06b6d4, #0284c7); box-shadow: 0 5px 15px rgba(6,182,212,0.4); }
 .social-btn.yt { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 5px 15px rgba(239,68,68,0.4); }
 .social-btn i { font-size: 18px; }
+
+/* === USER INFO MODAL === */
+.user-info-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 8px; font-size: 13px; }
+.user-info-row .label { color: var(--text-muted); font-weight: 600; flex-shrink: 0; }
+.user-info-row .value { color: var(--text); font-weight: 700; text-align: right; word-break: break-all; }
+.user-info-section-title { color: #38bdf8; font-size: 12px; font-weight: 900; margin: 18px 0 10px 0; text-transform: uppercase; letter-spacing: 1px; }
+
+/* === BẢO TRÌ OVERLAY === */
+.maintenance-overlay {
+    position: fixed; inset: 0; z-index: 999999;
+    background: linear-gradient(180deg, #07090e 0%, #1a0b2e 50%, #07090e 100%);
+    display: none; flex-direction: column; align-items: center; justify-content: center;
+    padding: 20px; text-align: center;
+}
+.maintenance-overlay.active { display: flex; }
+@keyframes spinGear {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
           </style>
 </head>
 <body style="overflow: hidden;">
@@ -705,6 +724,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <div style="background: var(--card-bg); border: 1px solid #ec4899; padding: 15px; border-radius: 16px; text-align: center;"><div style="font-size: 12px; color: var(--text-muted); margin-bottom: 5px;">Lượt Truy Cập</div><div id="dashVisits" style="font-size: 22px; font-weight: 900; color: #ec4899;">0</div></div>
     </div>
 
+<div class="admin-panel" style="border-color: #ef4444;">
+    <h3 style="color: var(--text); margin-bottom: 15px;">🔧 Chế Độ Bảo Trì</h3>
+    <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Khi bật, tất cả user (trừ tài khoản tuyệt mật <b style="color: #ef4444;">dtn26</b>) sẽ thấy bảng bảo trì và không vào được web.</p>
+    <button id="maintenanceToggleBtn" class="btn-app-download" style="width: 100%;" onclick="toggleMaintenance()">Đang tải...</button>
+</div>
+  
     <div class="admin-panel" style="border-color: #fbbf24;">
     <h3 style="color: var(--text); margin-bottom: 15px;">Gửi Thư Hàng Loạt</h3>
     <div class="flex" style="gap: 10px;">
@@ -1050,7 +1075,52 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <button class="btn-app-download" style="width: 100%;" onclick="sendMessage()">Gửi Thư <i class="fa-solid fa-paper-plane"></i></button>
     </div>
 </div>
-      
+
+<!-- Modal Thông Tin User (Admin) -->
+<div id="userInfoModal" class="modal" style="z-index: 2700; align-items: center;">
+    <div class="modal-content-version" style="max-width: 500px;">
+        <div class="version-header">
+            <h3 id="userInfoTitle" style="color: #38bdf8;">Thông Tin User</h3>
+            <button class="close-btn-modal" onclick="closeUserInfoModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="userInfoBody"></div>
+    </div>
+</div>
+
+<!-- Bảo Trì Overlay -->
+<div id="maintenanceOverlay" class="maintenance-overlay">
+    <div style="position:relative; margin-bottom:25px;">
+        <div style="width:120px;height:120px;border-radius:50%;background:linear-gradient(135deg,#8b5cf6,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:55px;color:#fff;box-shadow:0 0 40px rgba(139,92,246,0.8);animation:spinGear 3s linear infinite;">
+            <i class="fa-solid fa-gear"></i>
+        </div>
+        <div style="position:absolute;inset:-15px;border-radius:50%;border:2px dashed rgba(6,182,212,0.5);animation:spinRing 10s linear infinite;"></div>
+    </div>
+    <h1 style="font-size:32px;font-weight:900;background:linear-gradient(135deg,#a855f7,#06b6d4,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:15px;letter-spacing:2px;">WEBSITE ĐANG BẢO TRÌ</h1>
+    <p style="font-size:16px;color:#94a3b8;max-width:400px;line-height:1.7;margin-bottom:25px;">Website đã bảo trì để nâng cấp, vui lòng kiên nhẫn. Chúng tôi sẽ quay lại sớm nhất!</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+        <a href="https://t.me/sktw10chinh" target="_blank" style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:30px;background:linear-gradient(135deg,#06b6d4,#0284c7);color:#fff;font-weight:800;font-size:13px;text-decoration:none;"><i class="fa-brands fa-telegram"></i> Liên Hệ Admin</a>
+        <button onclick="showAdminLogin()" style="display:flex;align-items:center;gap:8px;padding:10px 20px;border-radius:30px;background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;font-weight:800;font-size:13px;border:none;cursor:pointer;"><i class="fa-solid fa-lock"></i> Đăng Nhập Admin</button>
+    </div>
+    <p style="position:absolute;bottom:20px;font-size:12px;color:#475569;">© 2026 KENZO STUDIO</p>
+</div>
+
+<!-- Modal Đổi Pass -->
+<div id="changePassModal" class="modal" style="z-index: 2700; align-items: center;">
+    <div class="confirm-box" style="border-color: #8b5cf6;">
+        <div class="confirm-icon" style="background: rgba(139,92,246,0.15); color: #8b5cf6; border-color: rgba(139,92,246,0.3);"><i class="fa-solid fa-key"></i></div>
+        <div class="confirm-title">Đổi Mật Khẩu User</div>
+        <div class="confirm-desc" id="changePassUserInfo">Đang tải...</div>
+        <div class="form-group" style="text-align: left; margin-top: 15px;">
+            <label>Mật khẩu mới</label>
+            <input type="text" id="newPasswordInput" class="form-input" placeholder="Nhập mật khẩu mới...">
+        </div>
+        <div class="confirm-actions">
+            <button class="btn-confirm-cancel" onclick="closeChangePassModal()">Hủy</button>
+            <button class="btn-confirm-ok" onclick="confirmChangePass()" style="background: linear-gradient(135deg, #8b5cf6, #06b6d4);">Xác Nhận</button>
+        </div>
+    </div>
+</div>
+ 
 <div id="musicBtn" class="music-player" onclick="toggleMusic()" title="Bật/Tắt nhạc nền"><i id="musicIcon" class="fa-solid fa-compact-disc"></i></div>
 <audio id="bgMusic" loop><source src="https://www.image2url.com/r2/default/files/1793936785502-9c704d47-0aeb-4e5b-b0d5-4a247fb205c6.mp3" type="audio/mpeg"></audio>
 <div id="kzToastContainer"></div>
@@ -1169,7 +1239,7 @@ if (currentUserId) {
 // Chỉ khi là Admin mới tải toàn bộ danh sách User (để quản lý)
 db.ref('users').on('value', (snap) => {
     const data = snap.val() || {};
-    if (currentUser && currentUser.username === 'dtn26') {
+    if (currentUser && (currentUser.username === 'dtn26' || currentUser.username === 'dtn11')) {
         users = Object.values(data);
         if (typeof renderAdminPanel === 'function') renderAdminPanel();
     }
@@ -1250,9 +1320,13 @@ window.onload = () => {
     logVisit();
     
         // Khởi chạy đồng hồ thông minh
-    initClock(); 
-    // Khởi chạy tự động phát nhạc
-    initAutoPlayMusic();
+initClock(); 
+// Khởi chạy kiểm tra bảo trì
+loadMaintenanceState();
+// Tự động tạo tài khoản admin phụ dtn11 nếu chưa có
+ensureAdmin2();
+// Khởi chạy tự động phát nhạc
+initAutoPlayMusic();
 };
   
 function initGetKey() {
@@ -1328,7 +1402,8 @@ function updateAuthUI() {
           </button>`;
   }
   // Khởi tạo / làm mới hộp thư theo user hiện tại
-  if (typeof initInbox === 'function') initInbox();
+if (typeof initInbox === 'function') initInbox();
+if (typeof applyMaintenanceUI === 'function') applyMaintenanceUI();
   }
 
 function dailyCheckIn(e) {
@@ -1338,7 +1413,10 @@ function dailyCheckIn(e) {
     db.ref('users/' + currentUser.id).update({ lastCheckIn: today, coins: (currentUser.coins || 0) + 0.25 }).then(() => { showToast('🎁 Điểm danh thành công! Nhận ngay 0.25 Xu.'); }).catch(err => showToast('Lỗi điểm danh: ' + err.message));
   }
       function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
-function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
+function closeAuthModal() { 
+    document.getElementById('authModal').classList.remove('active'); 
+    if (typeof applyMaintenanceUI === 'function') applyMaintenanceUI();
+  }
 function switchAuthMode() {
     isRegisterMode = !isRegisterMode;
     document.getElementById('authTitle').innerText = isRegisterMode ? 'ĐĂNG KÝ' : 'ĐĂNG NHẬP';
@@ -1387,7 +1465,7 @@ function handleLogin() {
                 }
 
                 // === BẢO MẬT ADMIN: KHÓA THIẾT BỊ ===
-                if (foundUser.username === 'dtn26') {
+if (foundUser.username === 'dtn26' || foundUser.username === 'dtn11') {
     const currentDevice = getDeviceId();
     if (!foundUser.adminDeviceId) {
         // Lần đầu đăng nhập: Cấp quyền Admin và lưu thiết bị
@@ -1779,8 +1857,9 @@ function renderPurchaseHistory() {
                         ? `<button onclick="unlockUser('${u.id}')" style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-size:11px;">Mở Khóa</button>`
                         : `<button onclick="openLockUserModal('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Khóa</button>`
                     }
-                    <button onclick="changeUserPassword('${u.id}')" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8; padding:4px 8px; border-radius:6px; font-size:11px;">Đổi Pass</button>
+                    <button onclick="openChangePassModal('${u.id}')" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8; padding:4px 8px; border-radius:6px; font-size:11px;">Đổi Pass</button>
                     <button onclick="deleteUser('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Xóa</button>
+                    <button onclick="openUserInfoModal('${u.id}')" style="background:rgba(139,92,246,0.2); color:#a855f7; border:1px solid #a855f7; padding:4px 8px; border-radius:6px; font-size:11px;">Thông Tin</button>
                 </div>
             </td>
         </tr>`).join(''); 
@@ -1806,9 +1885,11 @@ function renderPurchaseHistory() {
         }
     }
 
-    const visitContainer = document.getElementById('adminVisitList');
+        const visitContainer = document.getElementById('adminVisitList');
     if(visitContainer) { visitContainer.innerHTML = visits.map(v => `<tr><td>${v.time}</td><td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${v.device}">${v.device.split(' ')[0]}</td></tr>`).join(''); }
-}
+    
+    if (typeof updateMaintenanceBtn === 'function') updateMaintenanceBtn();
+  }
 
 function addNewGame() {
     const name = document.getElementById('gName').value.trim(), pkg = document.getElementById('gPkg').value.trim(), size = document.getElementById('gSize').value.trim(), cat = document.getElementById('gCat').value.trim().toUpperCase() || 'GAME', downloadLink = document.getElementById('gDownload').value.trim(), getKeyLink = document.getElementById('gGetKey').value.trim(), icon = document.getElementById('gIcon').value.trim() || 'logoff.png', banner = document.getElementById('gBanner').value.trim() || 'bannerdv1.png';
@@ -2293,6 +2374,193 @@ function sendBroadcastMail() {
             document.getElementById('broadcastInput').value = '';
         }).catch(err => showToast('Lỗi: ' + err.message));
     }).catch(err => showToast('Lỗi: ' + err.message));
+  }
+
+// === ADMIN XEM THÔNG TIN USER ===
+function openUserInfoModal(userId) {
+    document.getElementById('userInfoModal').classList.add('active');
+    document.getElementById('userInfoTitle').innerText = 'Thông Tin User';
+    document.getElementById('userInfoBody').innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px;">Đang tải...</p>';
+    
+    db.ref('users/' + userId).once('value').then(snap => {
+        const u = snap.val();
+        if (!u) {
+            document.getElementById('userInfoBody').innerHTML = '<p style="color:#ef4444;text-align:center;padding:20px;">Không tìm thấy user!</p>';
+            return;
+        }
+        
+        db.ref('purchase_history/' + userId).once('value').then(histSnap => {
+            const hist = histSnap.val() || {};
+            const histArr = Object.values(hist).reverse();
+            
+            const row = (label, value) => `<div class="user-info-row"><span class="label">${label}</span><span class="value">${value || '<span style="color:#64748b;">Chưa có</span>'}</span></div>`;
+            const rowCopy = (label, value) => {
+                if (!value) return row(label, value);
+                const safe = String(value).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+                return `<div class="user-info-row"><span class="label">${label}</span><span class="value">${value} <button onclick="copyAcc('${safe}')" style="background:rgba(6,182,212,0.2);color:#06b6d4;border:1px solid #06b6d4;padding:2px 8px;border-radius:6px;font-size:10px;margin-left:6px;cursor:pointer;">Copy</button></span></div>`;
+            };
+            
+            const avatar = u.avatar ? `<img src="${u.avatar}" style="width:70px;height:70px;border-radius:50%;object-fit:cover;border:3px solid #8b5cf6;display:block;margin:0 auto 15px auto;">` : '';
+            const verified = u.verified ? '<span style="color:#10b981;">✅ Đã tích xanh</span>' : '<span style="color:#64748b;">Chưa tích xanh</span>';
+            const isAdmin = u.isAdmin ? '<span style="color:#ef4444;">👑 Admin</span>' : '<span style="color:#64748b;">User thường</span>';
+            const status = u.isLocked ? `<span style="color:#ef4444;">🔒 Bị khóa (${escapeHtml(u.lockReason || 'N/A')})</span>` : '<span style="color:#10b981;">✅ Hoạt động</span>';
+            
+            const historyHtml = histArr.length === 0 
+                ? '<p style="color:var(--text-muted);text-align:center;font-size:12px;padding:10px;">Chưa có giao dịch nào.</p>' 
+                : histArr.map(h => `<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);padding:10px;border-radius:10px;margin-bottom:8px;font-size:12px;"><div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span style="color:#f59e0b;font-weight:bold;">${h.orderId}</span><span style="color:#64748b;">${h.date}</span></div><div style="color:white;margin-bottom:3px;">Mua: ${escapeHtml(h.itemName)} - <span style="color:#f59e0b;">${h.price} Xu</span></div><div style="color:#94a3b8;font-size:11px;">${h.info || ''}</div></div>`).join('');
+            
+            document.getElementById('userInfoTitle').innerHTML = `Thông Tin: <span style="color:#a855f7;">${escapeHtml(u.username || u.id)}</span>`;
+            document.getElementById('userInfoBody').innerHTML = `
+                ${avatar}
+                <div class="user-info-section-title">📋 Tài Khoản</div>
+                ${rowCopy('ID', u.id)}
+                ${rowCopy('Tên đăng nhập', u.username)}
+                ${rowCopy('Mật khẩu', u.password)}
+                ${row('Tên hiển thị', escapeHtml(u.displayName || u.username))}
+                ${row('Tiểu sử', escapeHtml(u.bio || ''))}
+                <div class="user-info-row"><span class="label">Số xu</span><span class="value" style="color:#f59e0b;">${Number(u.coins || 0).toFixed(2)} Xu</span></div>
+                <div class="user-info-row"><span class="label">Tích xanh</span><span class="value">${verified}</span></div>
+                <div class="user-info-row"><span class="label">Quyền</span><span class="value">${isAdmin}</span></div>
+                <div class="user-info-row"><span class="label">Trạng thái</span><span class="value">${status}</span></div>
+                
+                <div class="user-info-section-title">🔗 Liên Kết & Thiết Bị</div>
+                ${rowCopy('Telegram', u.linkedTelegram || u.telegram || '')}
+                ${rowCopy('Gmail', u.linkedGmail || '')}
+                ${row('Thiết bị', escapeHtml((u.device || '').substring(0, 80)))}
+                
+                <div class="user-info-section-title">📅 Thời Gian</div>
+                ${row('Ngày tạo', u.createdAt || '')}
+                ${row('Điểm danh cuối', u.lastCheckIn || '')}
+                
+                <div class="user-info-section-title">🧾 Lịch Sử Mua Hàng (${histArr.length})</div>
+                ${historyHtml}
+                
+                <div style="margin-top:15px;padding:10px;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.3);border-radius:10px;font-size:11px;color:#fbbf24;text-align:center;line-height:1.5;">⚠️ Lịch sử tải app lưu trên máy user (localStorage) nên Admin không xem được.</div>
+            `;
+        });
+    }).catch(err => {
+        document.getElementById('userInfoBody').innerHTML = `<p style="color:#ef4444;text-align:center;padding:20px;">Lỗi: ${err.message}</p>`;
+    });
+}
+
+function closeUserInfoModal() { document.getElementById('userInfoModal').classList.remove('active'); }
+
+// === BẢO TRÌ ===
+let maintenanceMode = false;
+
+function loadMaintenanceState() {
+    db.ref('config/maintenance').on('value', snap => {
+        maintenanceMode = snap.val() === true;
+        applyMaintenanceUI();
+        updateMaintenanceBtn();
+    });
+}
+
+function applyMaintenanceUI() {
+    const overlay = document.getElementById('maintenanceOverlay');
+    if (!overlay) return;
+    const isSecretAdmin = currentUser && (currentUser.username === 'dtn26' || currentUser.username === 'dtn11');
+    if (maintenanceMode && !isSecretAdmin) {
+        overlay.classList.add('active');
+    } else {
+        overlay.classList.remove('active');
+    }
+}
+
+function toggleMaintenance() {
+    const newVal = !maintenanceMode;
+    const action = newVal ? 'BẬT' : 'TẮT';
+    const desc = newVal 
+        ? 'Tất cả user sẽ KHÔNG vào được web (trừ dtn26)!' 
+        : 'Mọi người sẽ vào được web bình thường!';
+    showCustomConfirm('Xác Nhận ' + action + ' Bảo Trì?', desc, () => {
+        db.ref('config/maintenance').set(newVal).then(() => {
+            showToast('✅ Đã ' + action.toLowerCase() + ' bảo trì!');
+        }).catch(err => showToast('Lỗi: ' + err.message));
+    }, 'Xác Nhận');
+}
+
+function updateMaintenanceBtn() {
+    const btn = document.getElementById('maintenanceToggleBtn');
+    if (!btn) return;
+    if (maintenanceMode) {
+        btn.innerHTML = '<i class="fa-solid fa-toggle-on"></i> ĐANG BẬT - Bấm để TẮT';
+        btn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+    } else {
+        btn.innerHTML = '<i class="fa-solid fa-toggle-off"></i> ĐANG TẮT - Bấm để BẬT';
+        btn.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+    }
+}
+
+function showAdminLogin() {
+    if (currentUser) {
+        currentUser = null; currentUserId = null;
+        localStorage.removeItem('kenzo_currentUserId');
+        if (purchaseHistoryRef) { purchaseHistoryRef.off(); purchaseHistoryRef = null; }
+    }
+    document.getElementById('maintenanceOverlay').classList.remove('active');
+    openAuthModal();
+}
+
+// === ĐỔI PASS MODAL ===
+let changingPassUserId = null;
+
+function openChangePassModal(id) {
+    changingPassUserId = id;
+    document.getElementById('changePassUserInfo').innerHTML = `Đổi mật khẩu cho user có ID: <b style="color: #f59e0b;">${id}</b>`;
+    document.getElementById('newPasswordInput').value = '';
+    document.getElementById('changePassModal').classList.add('active');
+}
+
+function closeChangePassModal() {
+    document.getElementById('changePassModal').classList.remove('active');
+    changingPassUserId = null;
+}
+
+function confirmChangePass() {
+    const newPass = document.getElementById('newPasswordInput').value.trim();
+    if (!newPass) return showToast('Vui lòng nhập mật khẩu mới!');
+    if (!changingPassUserId) return;
+    db.ref('users/' + changingPassUserId).update({ password: newPass }).then(() => {
+        showToast('✅ Đã đổi mật khẩu!');
+        closeChangePassModal();
+    }).catch(err => showToast('Lỗi: ' + err.message));
+  }
+
+// === TỰ ĐỘNG TẠO TÀI KHOẢN ADMIN PHỤ dtn11 ===
+function ensureAdmin2() {
+    db.ref('users').orderByChild('username').equalTo('dtn11').once('value').then(snap => {
+        if (!snap.exists()) {
+            // Chưa có → tạo mới
+            db.ref('users').limitToLast(1).once('value').then(lastSnap => {
+                let newId = "0000000001";
+                if (lastSnap.exists()) {
+                    const lastUser = Object.values(lastSnap.val())[0];
+                    let maxId = parseInt(lastUser.id || 0);
+                    newId = (maxId + 1).toString().padStart(10, '0');
+                }
+                db.ref('users/' + newId).set({
+                    id: newId,
+                    username: 'dtn11',
+                    password: '2611213@',
+                    coins: 0,
+                    isAdmin: true,
+                    device: 'system',
+                    createdAt: new Date().toLocaleString('vi-VN')
+                }).then(() => {
+                    console.log('✅ Đã tạo tài khoản admin phụ: dtn11');
+                });
+            });
+        } else {
+            // Đã có → đảm bảo isAdmin luôn true (phòng trường hợp bị sửa)
+            snap.forEach(child => {
+                const u = child.val();
+                if (!u.isAdmin) {
+                    db.ref('users/' + child.key).update({ isAdmin: true });
+                }
+            });
+        }
+    });
   }
   
 </script>
