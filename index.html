@@ -455,6 +455,99 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     font-size: 18px;
     animation: pulseClock 1s infinite alternate;
 }
+
+/* === HỘP THƯ === */
+.inbox-badge {
+    position: absolute; top: -5px; right: -5px;
+    min-width: 18px; height: 18px;
+    background: #ef4444; color: #fff;
+    border-radius: 10px; padding: 0 5px;
+    font-size: 11px; font-weight: 900;
+    display: flex; align-items: center; justify-content: center;
+    border: 2px solid var(--bg);
+    pointer-events: none; box-shadow: 0 0 8px rgba(239,68,68,0.7);
+}
+.inbox-badge.hidden { display: none; }
+
+.inbox-modal-content {
+    background: #0f172a; width: 100%; max-width: 500px;
+    max-height: 85vh; border-radius: 25px;
+    border: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+}
+.inbox-header {
+    padding: 20px; border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15));
+    flex-wrap: wrap; gap: 10px;
+}
+.inbox-header h3 { font-size: 20px; font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; }
+.inbox-compose-btn {
+    padding: 8px 15px; border-radius: 20px;
+    background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+    color: #fff; font-weight: 800; font-size: 12px;
+    display: flex; align-items: center; gap: 6px;
+    transition: 0.2s;
+}
+.inbox-compose-btn:hover { transform: scale(1.05); box-shadow: 0 0 15px rgba(139,92,246,0.5); }
+.inbox-list { flex: 1; overflow-y: auto; padding: 15px; }
+.inbox-empty { text-align: center; padding: 40px 20px; color: var(--text-muted); font-size: 14px; }
+.inbox-empty i { font-size: 50px; margin-bottom: 15px; opacity: 0.3; display: block; }
+
+.msg-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 15px; padding: 15px;
+    margin-bottom: 10px; display: flex; gap: 12px;
+    transition: 0.2s;
+}
+.msg-item.unread { background: rgba(139,92,246,0.08); border-color: rgba(139,92,246,0.3); }
+.msg-item:hover { border-color: var(--purple); }
+.msg-avatar {
+    width: 45px; height: 45px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+    border: 2px solid var(--purple);
+    background: #1e293b;
+}
+.msg-body { flex: 1; min-width: 0; }
+.msg-from {
+    display: flex; align-items: center; gap: 5px;
+    font-weight: 800; color: #fff; font-size: 14px; margin-bottom: 4px;
+}
+.msg-content {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 6px; word-wrap: break-word;
+    white-space: pre-wrap; line-height: 1.5;
+}
+.msg-time { font-size: 11px; color: #64748b; }
+
+.verify-badge-inline {
+    width: 16px; height: 16px; flex-shrink: 0;
+    display: inline-block; vertical-align: middle;
+}
+
+.compose-modal-content {
+    background: #0f172a; width: 100%; max-width: 450px;
+    border-radius: 25px; border: 1px solid var(--purple);
+    padding: 25px; position: relative;
+}
+.compose-modal-content textarea {
+    resize: none; font-family: inherit; width: 100%;
+}
+
+/* === NÚT MXH === */
+.social-btn-wrap { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
+.social-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 20px; border-radius: 30px;
+    color: #fff; font-weight: 800; font-size: 13px;
+    transition: transform 0.2s;
+}
+.social-btn:hover { transform: translateY(-2px); }
+.social-btn.tg { background: linear-gradient(135deg, #06b6d4, #0284c7); box-shadow: 0 5px 15px rgba(6,182,212,0.4); }
+.social-btn.yt { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 5px 15px rgba(239,68,68,0.4); }
+.social-btn i { font-size: 18px; }
           </style>
 </head>
 <body style="overflow: hidden;">
@@ -471,11 +564,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 </div>
 <header class="glass">
     <div class="header-inner" style="position: relative; justify-content: center;">
-        <!-- Nút Menu 3 gạch nằm bên trái -->
-        <button class="btn-icon" onclick="openMenu()" style="position: absolute; left: 20px;"><i class="fa-solid fa-bars"></i></button>
-        
-        <!-- Logo nằm chính giữa -->
-        <div class="logo-text glitch" data-text="KENZO 健藏">
+    <button class="btn-icon" onclick="openMenu()" style="position: absolute; left: 20px;"><i class="fa-solid fa-bars"></i></button>
+    
+    <button class="btn-icon" onclick="openInbox()" style="position: absolute; right: 20px;" id="inboxBtn" title="Hộp thư">
+        <i class="fa-solid fa-envelope"></i>
+        <span id="inboxBadge" class="inbox-badge hidden">0</span>
+    </button>
+    
+    <div class="logo-text glitch" data-text="KENZO 健藏">
             <span>KENZO</span><span class="text-gradient">健藏</span>
             <svg class="verify-icon neon-glow" viewBox="0 0 22 22"><defs><linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a855f7"/><stop offset="50%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text></svg>
         </div>
@@ -531,6 +627,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
                 <svg class="verify-icon neon-glow" viewBox="0 0 22 22" style="width: 28px; height: 28px;"><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text></svg>
             </div>
             <div class="profile-welcome">Welcome to kenzo-livid.vercel.app ❤️</div>
+<div class="social-btn-wrap">
+    <a href="https://t.me/sktw10chinh" target="_blank" class="social-btn tg">
+        <i class="fa-brands fa-telegram"></i> Telegram
+    </a>
+    <a href="https://www.youtube.com/@kenzomod-d9d" target="_blank" class="social-btn yt">
+        <i class="fa-brands fa-youtube"></i> YouTube
+    </a>
+</div>
             <div class="profile-stats">
                 <div class="stat-item"><div class="stat-value">2026</div><div class="stat-label">Cập nhật</div></div>
                 <div class="stat-item" style="border-left: 1px solid var(--border); border-right: 1px solid var(--border); padding: 0 20px;"><div class="stat-value">#1 🏆</div><div class="stat-label">Top 1</div></div>
@@ -602,11 +706,11 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 
     <div class="admin-panel" style="border-color: #fbbf24;">
-        <h3 style="color: var(--text); margin-bottom: 15px;">Gửi Thông Báo Hàng Loạt</h3>
-        <div class="flex" style="gap: 10px;">
-            <input type="text" id="broadcastInput" class="form-input" placeholder="Nhập thông báo muốn gửi đến tất cả user...">
-            <button class="btn-app-download" style="width: auto; padding: 0 20px; background: linear-gradient(135deg, #fbbf24, #d97706);" onclick="sendBroadcast()">Gửi</button>
-        </div>
+    <h3 style="color: var(--text); margin-bottom: 15px;">Gửi Thư Hàng Loạt</h3>
+    <div class="flex" style="gap: 10px;">
+        <input type="text" id="broadcastInput" class="form-input" placeholder="Nhập nội dung thư muốn gửi đến tất cả user..." maxlength="500">
+        <button class="btn-app-download" style="width: auto; padding: 0 20px; background: linear-gradient(135deg, #fbbf24, #d97706);" onclick="sendBroadcastMail()">Gửi</button>
+    </div>
     </div>
     
     <div class="admin-panel" style="border-color: #10b981;">
@@ -913,6 +1017,40 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 </div>
 
+<!-- Modal Hộp Thư -->
+<div id="inboxModal" class="modal" style="z-index: 2500; align-items: center;">
+    <div class="inbox-modal-content">
+        <div class="inbox-header">
+            <h3><i class="fa-solid fa-inbox"></i> Hộp Thư</h3>
+            <div class="flex" style="gap: 8px;">
+                <button class="inbox-compose-btn" onclick="openComposeModal()"><i class="fa-solid fa-pen"></i> Viết Thư Mới</button>
+                <button class="close-btn-modal" onclick="closeInbox()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+        </div>
+        <div class="inbox-list" id="inboxList"></div>
+    </div>
+</div>
+
+<!-- Modal Viết Thư -->
+<div id="composeModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="compose-modal-content">
+        <div class="version-header">
+            <h3 style="color: #fff; font-size: 20px; font-weight: 900;">Viết Thư Mới</h3>
+            <button class="close-btn-modal" onclick="closeComposeModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="form-group">
+            <label>Người nhận (Username hoặc ID)</label>
+            <input type="text" id="composeTo" class="form-input" placeholder="Nhập username hoặc ID...">
+        </div>
+        <div class="form-group">
+            <label>Nội dung (tối đa 500 ký tự)</label>
+            <textarea id="composeContent" class="form-input" rows="5" maxlength="500" placeholder="Nhập nội dung thư..."></textarea>
+            <div style="text-align: right; font-size: 11px; color: var(--text-muted); margin-top: 5px;"><span id="composeCharCount">0</span>/500</div>
+        </div>
+        <button class="btn-app-download" style="width: 100%;" onclick="sendMessage()">Gửi Thư <i class="fa-solid fa-paper-plane"></i></button>
+    </div>
+</div>
+      
 <div id="musicBtn" class="music-player" onclick="toggleMusic()" title="Bật/Tắt nhạc nền"><i id="musicIcon" class="fa-solid fa-compact-disc"></i></div>
 <audio id="bgMusic" loop><source src="https://www.image2url.com/r2/default/files/1793936785502-9c704d47-0aeb-4e5b-b0d5-4a247fb205c6.mp3" type="audio/mpeg"></audio>
 <div id="kzToastContainer"></div>
@@ -1172,7 +1310,7 @@ function updateAuthUI() {
                         ${avatarHtml}
                     </div>
                     <div style="flex: 1;">
-                        <div style="font-weight: 800; font-size: 15px;">${currentUser.displayName || currentUser.username}</div>
+                        <div style="font-weight: 800; font-size: 15px; display: flex; align-items: center; gap: 5px;">${currentUser.displayName || currentUser.username}${currentUser.verified ? ` <svg class="verify-badge-inline" viewBox="0 0 22 22"><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#fff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5" text-anchor="middle" letter-spacing="-0.5">KZ</text></svg>` : ''}</div>
                         <div style="font-size: 13px; color: #f59e0b; font-weight: bold;"><i class="fa-solid fa-coins"></i> ${coins} Xu</div>
                     </div>
                 </div>
@@ -1185,10 +1323,12 @@ function updateAuthUI() {
     } else {
         // Hiển thị nút Đăng Nhập trong Menu
         headerAuth.innerHTML = `
-            <button class="btn-app-download" style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="openAuthModal()">
-                <i class="fa-solid fa-user"></i> Đăng Nhập / Đăng Ký
-            </button>`;
-    }
+                      <button class="btn-app-download" style="width: 100%; padding: 12px; font-size: 14px; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="openAuthModal()">
+              <i class="fa-solid fa-user"></i> Đăng Nhập / Đăng Ký
+          </button>`;
+  }
+  // Khởi tạo / làm mới hộp thư theo user hiện tại
+  if (typeof initInbox === 'function') initInbox();
   }
 
 function dailyCheckIn(e) {
@@ -1574,13 +1714,36 @@ function submitCard() {
         showToast('Đã gửi thẻ! Chờ Admin duyệt.'); document.getElementById('cardSeri').value = ''; document.getElementById('cardCode').value = '';
     }).catch((error) => { console.error("Lỗi nạp thẻ:", error); if(errorBox) { errorBox.classList.remove('hidden'); errorBox.scrollIntoView({behavior: 'smooth', block: 'center'}); } });
 }
+
 function redeemCode() {
     if(!currentUser) return showToast('Vui lòng đăng nhập!');
-    const codeInput = document.getElementById('redeemCode').value.toUpperCase();
+    const codeInput = document.getElementById('redeemCode').value.toUpperCase().trim();
+    
+    // Mã kích hoạt tích xanh
+    if (codeInput === 'TICHADMIN') {
+        if (currentUser.verified === true) {
+            showToast('Bạn đã có tích xanh rồi!');
+            document.getElementById('redeemCode').value = '';
+            return;
+        }
+        db.ref('users/' + currentUser.id).update({ verified: true }).then(() => {
+            showToast('✅ Đã kích hoạt tích xanh!');
+            document.getElementById('redeemCode').value = '';
+        }).catch(err => showToast('Lỗi: ' + err.message));
+        return;
+    }
+    
+    // Mã nạp xu
     const validCodes = { 'KENZO_10K': 10, 'KENZO_20K': 20, 'KENZO_50K': 50, 'KENZO_100K': 100 };
-    if(validCodes[codeInput]) { db.ref('users/' + currentUser.id + '/coins').transaction(c => (c || 0) + validCodes[codeInput]); showToast(`Nhận được ${validCodes[codeInput]} Xu.`); document.getElementById('redeemCode').value = ''; } else { showToast('Mã Code không hợp lệ!'); }
-}
-
+    if(validCodes[codeInput]) { 
+        db.ref('users/' + currentUser.id + '/coins').transaction(c => (c || 0) + validCodes[codeInput]); 
+        showToast(`Nhận được ${validCodes[codeInput]} Xu.`); 
+        document.getElementById('redeemCode').value = ''; 
+    } else { 
+        showToast('Mã Code không hợp lệ!'); 
+    }
+  }
+  
 function savePurchaseHistory(itemName, price, info) {
     if (!currentUser) return; const orderId = 'HD-' + Math.floor(100000 + Math.random() * 900000), dateStr = new Date().toLocaleDateString('vi-VN') + ' ' + new Date().toLocaleTimeString('vi-VN');
     db.ref('purchase_history/' + currentUser.id + '/' + orderId).set({ orderId: orderId, date: dateStr, itemName: itemName, price: price, info: info });
@@ -1950,6 +2113,186 @@ function initClock() {
             widget.classList.add('minimized');
         }
     }, 4000);
+  }
+
+// =========================================================
+// === HỘP THƯ (INBOX) ===
+// =========================================================
+let inboxRef = null;
+let inboxMessages = [];
+let inboxUnreadCount = 0;
+let currentInboxUserId = null;
+
+function initInbox() {
+    if (!currentUser) {
+        if (inboxRef) { inboxRef.off(); inboxRef = null; }
+        currentInboxUserId = null;
+        inboxMessages = [];
+        inboxUnreadCount = 0;
+        updateInboxBadge(0);
+        return;
+    }
+    if (currentInboxUserId === currentUser.id && inboxRef) return;
+    
+    if (inboxRef) inboxRef.off();
+    currentInboxUserId = currentUser.id;
+    inboxRef = db.ref('inbox/' + currentUser.id);
+    inboxRef.on('value', (snap) => {
+        const data = snap.val() || {};
+        inboxMessages = Object.entries(data)
+            .map(([key, msg]) => ({ key, ...msg }))
+            .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        inboxUnreadCount = inboxMessages.filter(m => !m.read).length;
+        updateInboxBadge(inboxUnreadCount);
+        if (document.getElementById('inboxModal').classList.contains('active')) {
+            renderInbox();
+        }
+    });
+}
+
+function updateInboxBadge(count) {
+    const badge = document.getElementById('inboxBadge');
+    if (!badge) return;
+    if (count > 0) {
+        badge.textContent = count > 99 ? '99+' : count;
+        badge.classList.remove('hidden');
+    } else {
+        badge.classList.add('hidden');
+    }
+}
+
+function openInbox() {
+    if (!currentUser) { showToast('Vui lòng đăng nhập!'); return openAuthModal(); }
+    document.getElementById('inboxModal').classList.add('active');
+    renderInbox();
+    setTimeout(() => markAllRead(), 1500);
+}
+
+function closeInbox() { document.getElementById('inboxModal').classList.remove('active'); }
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text || '');
+    return div.innerHTML;
+}
+function escapeAttr(text) {
+    return String(text || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+function renderInbox() {
+    const list = document.getElementById('inboxList');
+    if (!list) return;
+    if (inboxMessages.length === 0) {
+        list.innerHTML = `<div class="inbox-empty"><i class="fa-regular fa-envelope-open"></i>Hộp thư của bạn đang trống.</div>`;
+        return;
+    }
+    const verifySvg = `<svg class="verify-badge-inline" viewBox="0 0 22 22"><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#fff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5" text-anchor="middle" letter-spacing="-0.5">KZ</text></svg>`;
+    
+    list.innerHTML = inboxMessages.map(msg => {
+        const avatar = escapeAttr(msg.fromAvatar || 'logokenzo.png');
+        return `<div class="msg-item ${msg.read ? '' : 'unread'}">
+            <img src="${avatar}" class="msg-avatar" onerror="this.src='https://via.placeholder.com/45'">
+            <div class="msg-body">
+                <div class="msg-from">${escapeHtml(msg.fromName || 'Ẩn danh')} ${msg.fromVerified ? verifySvg : ''}</div>
+                <div class="msg-content">${escapeHtml(msg.content || '')}</div>
+                <div class="msg-time"><i class="fa-regular fa-clock"></i> ${escapeHtml(msg.time || '')}</div>
+            </div>
+        </div>`;
+    }).join('');
+}
+
+function markAllRead() {
+    if (!currentUser || inboxUnreadCount === 0) return;
+    const updates = {};
+    inboxMessages.forEach(msg => {
+        if (!msg.read) updates['inbox/' + currentUser.id + '/' + msg.key + '/read'] = true;
+    });
+    db.ref().update(updates);
+}
+
+function openComposeModal() {
+    if (!currentUser) return showToast('Vui lòng đăng nhập!');
+    document.getElementById('composeTo').value = '';
+    document.getElementById('composeContent').value = '';
+    document.getElementById('composeCharCount').textContent = '0';
+    document.getElementById('composeModal').classList.add('active');
+}
+function closeComposeModal() { document.getElementById('composeModal').classList.remove('active'); }
+
+// Đếm ký tự
+document.addEventListener('DOMContentLoaded', () => {
+    const ta = document.getElementById('composeContent');
+    if (ta) ta.addEventListener('input', function () {
+        document.getElementById('composeCharCount').textContent = this.value.length;
+    });
+});
+
+function sendMessage() {
+    if (!currentUser) return showToast('Vui lòng đăng nhập!');
+    const to = document.getElementById('composeTo').value.trim();
+    const content = document.getElementById('composeContent').value.trim();
+    if (!to) return showToast('Nhập người nhận!');
+    if (!content) return showToast('Nhập nội dung thư!');
+    if (content.length > 500) return showToast('Nội dung tối đa 500 ký tự!');
+    
+    db.ref('users').once('value').then(snap => {
+        const usersData = snap.val() || {};
+        let recipientId = null;
+        if (usersData[to]) {
+            recipientId = to;
+        } else {
+            for (let id in usersData) {
+                if (usersData[id].username === to) { recipientId = id; break; }
+            }
+        }
+        if (!recipientId) return showToast('Không tìm thấy người nhận!');
+        
+        const now = new Date();
+        const msgData = {
+            fromId: currentUser.id,
+            fromName: currentUser.displayName || currentUser.username,
+            fromAvatar: currentUser.avatar || '',
+            fromVerified: currentUser.verified === true,
+            content: content,
+            time: now.toLocaleString('vi-VN'),
+            timestamp: now.getTime(),
+            read: false
+        };
+        db.ref('inbox/' + recipientId).push(msgData).then(() => {
+            showToast('✅ Đã gửi thư!');
+            closeComposeModal();
+        }).catch(err => showToast('Lỗi: ' + err.message));
+    }).catch(err => showToast('Lỗi: ' + err.message));
+}
+
+// === ADMIN GỬI THƯ HÀNG LOẠT ===
+function sendBroadcastMail() {
+    const msg = document.getElementById('broadcastInput').value.trim();
+    if (!msg) return showToast('Nhập nội dung thư!');
+    if (msg.length > 500) return showToast('Nội dung tối đa 500 ký tự!');
+    
+    db.ref('users').once('value').then(snap => {
+        const usersData = snap.val() || {};
+        const now = new Date();
+        const msgData = {
+            fromId: 'admin',
+            fromName: 'KENZO STUDIO',
+            fromAvatar: 'logokenzo.png',
+            fromVerified: true,
+            content: msg,
+            time: now.toLocaleString('vi-VN'),
+            timestamp: now.getTime(),
+            read: false
+        };
+        const promises = [];
+        for (let uid in usersData) {
+            promises.push(db.ref('inbox/' + uid).push(msgData));
+        }
+        Promise.all(promises).then(() => {
+            showToast(`✅ Đã gửi thư cho ${promises.length} user!`);
+            document.getElementById('broadcastInput').value = '';
+        }).catch(err => showToast('Lỗi: ' + err.message));
+    }).catch(err => showToast('Lỗi: ' + err.message));
   }
   
 </script>
