@@ -10,6 +10,140 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+      /* === NÚT HỖ TRỢ NỔI GÓC DƯỚI BÊN TRÁI === */
+.support-float-btn {
+    position: fixed;
+    bottom: 75px;
+    left: 20px;
+    padding: 12px 18px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    z-index: 1450;
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.5), 0 0 0 3px rgba(239, 68, 68, 0.15);
+    transition: transform .2s, box-shadow .2s;
+    user-select: none;
+}
+.support-float-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 25px rgba(239, 68, 68, 0.8);
+}
+
+/* === NÚT GÓP Ý NỔI GÓC DƯỚI BÊN TRÁI === */
+.feedback-float-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 18px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    z-index: 1450;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5), 0 0 0 3px rgba(16, 185, 129, 0.15);
+    transition: transform .2s, box-shadow .2s;
+    user-select: none;
+}
+.feedback-float-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+}
+
+@media (max-width: 480px) {
+    .support-float-btn { bottom: 65px; left: 15px; padding: 10px 15px; font-size: 13px; }
+    .feedback-float-btn { bottom: 15px; left: 15px; padding: 10px 15px; font-size: 13px; }
+}
+
+      /* === NÚT GÓP Ý NỔI GÓC DƯỚI BÊN TRÁI === */
+.feedback-float-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    padding: 12px 18px;
+    border-radius: 50px;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    cursor: pointer;
+    z-index: 1450;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5), 0 0 0 3px rgba(16, 185, 129, 0.15);
+    transition: transform .2s, box-shadow .2s;
+    user-select: none;
+}
+
+.feedback-float-btn:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 25px rgba(16, 185, 129, 0.8);
+}
+
+@media (max-width: 480px) {
+    .feedback-float-btn {
+        bottom: 15px;
+        left: 15px;
+        padding: 10px 15px;
+        font-size: 13px;
+    }
+}
+
+      /* === CSS CHO NÚT MẠNG XÃ HỘI (TELEGRAM & YOUTUBE) === */
+.social-buttons-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 25px;
+}
+
+.social-pill-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--border);
+    padding: 10px 18px;
+    border-radius: 30px;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.social-pill-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--purple);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+}
+
+.social-pill-btn i.fa-telegram {
+    color: #0088cc;
+    font-size: 18px;
+}
+
+.social-pill-btn i.fa-youtube {
+    color: #ff0000;
+    font-size: 18px;
+}
+
         :root {
             --bg: #07090e; --glass: rgba(20, 27, 45, 0.85); --border: rgba(255, 255, 255, 0.1);
             --purple: #8b5cf6; --blue: #06b6d4; --pink: #ec4899; --text: #f3f4f6; --text-muted: #9ca3af; --card-bg: rgba(255,255,255,0.02);
@@ -455,14 +589,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     font-size: 18px;
     animation: pulseClock 1s infinite alternate;
 }
-
-.social-btn-wrap { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; flex-wrap: wrap; }
-.social-btn { display: flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 30px; color: #fff; font-weight: 800; font-size: 13px; transition: transform 0.2s; }
-.social-btn:hover { transform: translateY(-2px); }
-.social-btn.tg { background: linear-gradient(135deg, #06b6d4, #0284c7); box-shadow: 0 5px 15px rgba(6,182,212,0.4); }
-.social-btn.yt { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 5px 15px rgba(239,68,68,0.4); }
-.social-btn i { font-size: 18px; }
-      
           </style>
 </head>
 <body style="overflow: hidden;">
@@ -538,15 +664,16 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
                 KENZO
                 <svg class="verify-icon neon-glow" viewBox="0 0 22 22" style="width: 28px; height: 28px;"><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text></svg>
             </div>
-            <div class="social-btn-wrap">
-    <a href="https://t.me/sktw10chinh" target="_blank" class="social-btn tg">
+            <div class="profile-welcome">Welcome to kenzo-livid.vercel.app ❤️</div>
+          <!-- KHU VỰC NÚT MẠNG XÃ HỘI -->
+<div class="social-buttons-container">
+    <a href="https://t.me/sktw10chinh" target="_blank" class="social-pill-btn">
         <i class="fa-brands fa-telegram"></i> Telegram
     </a>
-    <a href="https://www.youtube.com/@kenzomod-d9d" target="_blank" class="social-btn yt">
+    <a href="https://www.youtube.com/@kenzomod-d9d" target="_blank" class="social-pill-btn">
         <i class="fa-brands fa-youtube"></i> YouTube
     </a>
-            </div>
-            <div class="profile-welcome">Welcome to kenzo-livid.vercel.app ❤️</div>
+</div>
             <div class="profile-stats">
                 <div class="stat-item"><div class="stat-value">2026</div><div class="stat-label">Cập nhật</div></div>
                 <div class="stat-item" style="border-left: 1px solid var(--border); border-right: 1px solid var(--border); padding: 0 20px;"><div class="stat-value">#1 🏆</div><div class="stat-label">Top 1</div></div>
@@ -897,6 +1024,22 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 </div>
 
+<div id="userInfoModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="modal-content-version" style="max-width: 450px;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #38bdf8;">CHI TIẾT TÀI KHOẢN</div>
+                <h3 id="uiModalUsername">Tên User</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeUserInfoModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div id="userInfoContent" style="background: rgba(0,0,0,0.3); border: 1px solid #334155; border-radius: 12px; padding: 15px; font-size: 13px; line-height: 1.8; color: var(--text); max-height: 60vh; overflow-y: auto; word-break: break-all;">
+            <!-- Dữ liệu chi tiết sẽ tự động đổ vào đây -->
+        </div>
+        <button class="btn-app-download" style="width: 100%; margin-top: 15px; background: #334155;" onclick="closeUserInfoModal()">Đóng</button>
+    </div>
+</div>
+
 <div id="lockUserModal" class="modal" style="z-index: 2500;">
     <div class="modal-content-version" style="max-width: 400px;">
         <div class="version-header">
@@ -929,44 +1072,182 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 </div>
 
+<!-- NÚT GÓP Ý NỔI -->
+<div id="feedbackFloatBtn" class="feedback-float-btn" onclick="openFeedbackModal()">
+    <i class="fa-solid fa-comment-dots"></i> Góp Ý
+</div>
+
+<!-- MODAL NHẬP GÓP Ý -->
+<div id="feedbackModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="modal-content-version" style="max-width: 420px;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #10b981;">HÒM THƯ GÓP Ý</div>
+                <h3>Gửi Phản Hồi Cho Admin</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="form-group">
+            <label>Tên của bạn (Không bắt buộc)</label>
+            <input type="text" id="fbSenderName" class="form-input" placeholder="Nhập tên hoặc để trống...">
+        </div>
+        <div class="form-group">
+            <label>Nội dung góp ý / Báo lỗi</label>
+            <textarea id="fbContent" class="form-input" rows="4" placeholder="Nhập ý kiến đóng góp, yêu cầu mod game hoặc báo lỗi tại đây..."></textarea>
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="submitFeedback()">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Góp Ý
+        </button>
+    </div>
+</div>
+
+<!-- NÚT HỖ TRỢ NỔI -->
+<div id="floatSupportBtn" class="support-float-btn" onclick="openCustomSupportModal()">
+    <i class="fa-solid fa-headset"></i> Hỗ Trợ
+</div>
+
+<!-- MODAL THÔNG TIN HỖ TRỢ / ĐÀM PHÁN -->
+<div id="customSupportModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="confirm-box" style="border-color: #ef4444;">
+        <div class="confirm-icon" style="background: rgba(239,68,68,0.15); color: #ef4444; border-color: rgba(239,68,68,0.3);"><i class="fa-solid fa-headset"></i></div>
+        <div class="confirm-title" style="color: #ef4444;">Hỗ Trợ & Đàm Phán</div>
+        <div class="confirm-desc" style="font-size: 14px; line-height: 1.6;">
+            Nếu Có Lỗi Hoặc Muốn Đàm Phán Với Chủ Website Thì Hãy Liên Hệ Telegram <a href="https://t.me/DTN_207" target="_blank" style="color: #06b6d4; font-weight: bold; text-decoration: underline;">t.me/DTN_207</a>. Cảm Ơn!
+        </div>
+        <div class="confirm-actions">
+            <a href="https://t.me/DTN_207" target="_blank" class="btn-app-download" style="flex: 1; text-align: center; background: linear-gradient(135deg, #06b6d4, #3b82f6); text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <i class="fa-brands fa-telegram"></i> Nhắn Telegram
+            </a>
+            <button class="btn-confirm-cancel" onclick="closeCustomSupportModal()" style="flex: 1;">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- NÚT GÓP Ý NỔI -->
+<div id="feedbackFloatBtn" class="feedback-float-btn" onclick="openFeedbackModal()">
+    <i class="fa-solid fa-comment-dots"></i> Góp Ý
+</div>
+
+<!-- MODAL NHẬP GÓP Ý -->
+<div id="feedbackModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="modal-content-version" style="max-width: 420px;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #10b981;">HÒM THƯ GÓP Ý</div>
+                <h3>Gửi Phản Hồi Cho Admin</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="form-group">
+            <label>Tên của bạn (Không bắt buộc)</label>
+            <input type="text" id="fbSenderName" class="form-input" placeholder="Nhập tên hoặc để trống...">
+        </div>
+        <div class="form-group">
+            <label>Nội dung góp ý / Báo lỗi</label>
+            <textarea id="fbContent" class="form-input" rows="4" placeholder="Nhập ý kiến đóng góp, yêu cầu mod game hoặc báo lỗi tại đây..."></textarea>
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="submitFeedback()">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Góp Ý
+        </button>
+    </div>
+</div>
+
 <div id="musicBtn" class="music-player" onclick="toggleMusic()" title="Bật/Tắt nhạc nền"><i id="musicIcon" class="fa-solid fa-compact-disc"></i></div>
 <audio id="bgMusic" loop><source src="https://www.image2url.com/r2/default/files/1793936785502-9c704d47-0aeb-4e5b-b0d5-4a247fb205c6.mp3" type="audio/mpeg"></audio>
 <div id="kzToastContainer"></div>
-
-<!-- MODAL XEM CHI TIẾT USER CHO ADMIN -->
-<div id="userDetailModal" class="modal" style="z-index: 2600;">
-    <div class="modal-content-version" style="max-width: 450px;">
-        <div class="version-header">
-            <h3 style="color: #a855f7;"><i class="fa-solid fa-user-shield"></i> Thông Tin Tài Khoản</h3>
-            <button class="close-btn-modal" onclick="closeUserDetailModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div id="userDetailContent" style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 14px; border: 1px solid #334155; font-size: 13px; line-height: 1.8; color: var(--text);">
-            <!-- Nội dung JS sẽ đổ vào đây -->
-        </div>
-        <button class="btn-app-download" style="width: 100%; margin-top: 15px; background: #1e293b; border: 1px solid #475569;" onclick="closeUserDetailModal()">Đóng</button>
-    </div>
-</div>
-
-<!-- MODAL ĐỔI MẬT KHẨU CHO ADMIN -->
-<div id="changePassModal" class="modal" style="z-index: 2650;">
-    <div class="modal-content-version" style="max-width: 400px; border-color: #38bdf8;">
-        <div class="version-header">
-            <div>
-                <div class="sub" style="color: #38bdf8;">BẢO MẬT ADMIN</div>
-                <h3 style="color: white;">Đổi Mật Khẩu User</h3>
-            </div>
-            <button class="close-btn-modal" onclick="closeChangePassModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="form-group" style="text-align: left; margin-bottom: 15px;">
-            <label style="color: var(--text-muted); font-size: 13px; margin-bottom: 5px; display: block;">Mật khẩu mới:</label>
-            <input type="text" id="newPasswordInput" class="form-input" placeholder="Nhập mật khẩu mới...">
-        </div>
-        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #0284c7, #38bdf8);" onclick="executeChangePassword()">Xác Nhận Đổi</button>
-    </div>
-</div>
-  
 <script>
-      
+
+  // === XỬ LÝ MỞ/ĐÓNG MODAL HỖ TRỢ ===
+function openCustomSupportModal() {
+    document.getElementById('customSupportModal').classList.add('active');
+}
+
+function closeCustomSupportModal() {
+    document.getElementById('customSupportModal').classList.remove('active');
+}
+
+// === XỬ LÝ GỬI GÓP Ý VỀ BOT TELEGRAM ===
+function openFeedbackModal() {
+    if (currentUser) {
+        document.getElementById('fbSenderName').value = currentUser.displayName || currentUser.username;
+    }
+    document.getElementById('feedbackModal').classList.add('active');
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedbackModal').classList.remove('active');
+}
+
+function submitFeedback() {
+    const content = document.getElementById('fbContent').value.trim();
+    const senderInput = document.getElementById('fbSenderName').value.trim();
+
+    if (!content) {
+        return showToast('Vui lòng nhập nội dung góp ý!');
+    }
+
+    const senderInfo = currentUser 
+        ? `${currentUser.username} (ID: ${currentUser.id})` 
+        : (senderInput || 'Khách ẩn danh');
+
+    const msg = `💌 CÓ GÓP Ý MỚI TỪ WEB!\n👤 Người gửi: ${senderInfo}\n🕒 Thời gian: ${new Date().toLocaleString('vi-VN')}\n📝 Nội dung:\n${content}`;
+
+    showToast('Đang gửi góp ý...');
+
+    // Gọi trực tiếp hàm gửi Telegram của web (dùng chung bot với nạp thẻ)
+    sendTelegramMsg(msg)
+        .then(() => {
+            showToast('✅ Cảm ơn bạn! Góp ý đã được gửi đến Admin.');
+            document.getElementById('fbContent').value = '';
+            closeFeedbackModal();
+        })
+        .catch((err) => {
+            console.error('Lỗi gửi góp ý:', err);
+            showToast('Lỗi khi gửi góp ý, vui lòng thử lại sau!');
+        });
+}
+
+  // === XỬ LÝ GỬI GÓP Ý VỀ BOT TELEGRAM ===
+function openFeedbackModal() {
+    if (currentUser) {
+        document.getElementById('fbSenderName').value = currentUser.displayName || currentUser.username;
+    }
+    document.getElementById('feedbackModal').classList.add('active');
+}
+
+function closeFeedbackModal() {
+    document.getElementById('feedbackModal').classList.remove('active');
+}
+
+function submitFeedback() {
+    const content = document.getElementById('fbContent').value.trim();
+    const senderInput = document.getElementById('fbSenderName').value.trim();
+
+    if (!content) {
+        return showToast('Vui lòng nhập nội dung góp ý!');
+    }
+
+    const senderInfo = currentUser 
+        ? `${currentUser.username} (ID: ${currentUser.id})` 
+        : (senderInput || 'Khách ẩn danh');
+
+    const msg = `💌 CÓ GÓP Ý MỚI TỪ WEB!\n👤 Người gửi: ${senderInfo}\n🕒 Thời gian: ${new Date().toLocaleString('vi-VN')}\n📝 Nội dung:\n${content}`;
+
+    showToast('Đang gửi góp ý...');
+
+    // Gọi trực tiếp hàm gửi Telegram của web (dùng chung bot với nạp thẻ)
+    sendTelegramMsg(msg)
+        .then(() => {
+            showToast('✅ Cảm ơn bạn! Góp ý đã được gửi đến Admin.');
+            document.getElementById('fbContent').value = '';
+            closeFeedbackModal();
+        })
+        .catch((err) => {
+            console.error('Lỗi gửi góp ý:', err);
+            showToast('Lỗi khi gửi góp ý, vui lòng thử lại sau!');
+        });
+}
+
 const firebaseConfig = {
     apiKey: "AIzaSyBZIdpuiCmcgj68fJGIwqV7U7dGzepe4xA",
     authDomain: "kenzo-web-d229c.firebaseapp.com",
@@ -1077,12 +1358,20 @@ if (currentUserId) {
     });
 }
 
-// Chỉ khi là Admin mới tải toàn bộ danh sách User (để quản lý)
+// Cho phép tài khoản dtn11 hoặc các tài khoản có cờ isAdmin được tải danh sách user
 db.ref('users').on('value', (snap) => {
     const data = snap.val() || {};
-    const adminList = ['dtn26', 'dtn11'];
-    if (currentUser && adminList.includes(currentUser.username)) {
-        users = Object.values(data);
+    if (currentUser && (currentUser.isAdmin === true || currentUser.username === 'dtn26' || currentUser.username === 'dtn11')) {
+        let validUsers = [];
+        Object.keys(data).forEach(key => {
+            const u = data[key];
+            if (!u || !u.username || !u.id) {
+                db.ref('users/' + key).remove(); // Tự động xóa sạch rác undefined
+            } else {
+                validUsers.push(u);
+            }
+        });
+        users = validUsers;
         if (typeof renderAdminPanel === 'function') renderAdminPanel();
     }
 });
@@ -1222,7 +1511,11 @@ function updateAuthUI() {
                         ${avatarHtml}
                     </div>
                     <div style="flex: 1;">
-                        <div style="font-weight: 800; font-size: 15px;">${currentUser.displayName || currentUser.username}</div>
+                           <div style="font-weight: 800; font-size: 15px; display: flex; align-items: center;">
+                            ${currentUser.displayName || currentUser.username} 
+                            ${(currentUser.username === 'dtn26' || currentUser.username === 'dtn11' || currentUser.isAdmin === true) ? getVerifiedBadgeHTML() : ''}
+                        </div>
+                        </div>
                         <div style="font-size: 13px; color: #f59e0b; font-weight: bold;"><i class="fa-solid fa-coins"></i> ${coins} Xu</div>
                     </div>
                 </div>
@@ -1265,16 +1558,24 @@ function handleLogin() {
         db.ref('users').orderByChild('username').equalTo(user).once('value').then(snapshot => {
             if (snapshot.exists()) return showToast('Tên đăng nhập đã tồn tại!');
             
-            // Tạo ID mới
-            let newId = "0000000001"; 
-            db.ref('users').limitToLast(1).once('value').then(lastSnap => {
-                if (lastSnap.exists()) {
-                    const lastUser = Object.values(lastSnap.val())[0];
-                    let maxId = parseInt(lastUser.id || 0);
-                    newId = (maxId + 1).toString().padStart(10, '0');
+                        // Tạo ID mới chuẩn xác không bao giờ bị trùng
+            db.ref('users').once('value').then(allSnap => {
+                let maxId = 0;
+                if (allSnap.exists()) {
+                    allSnap.forEach(child => {
+                        const val = child.val();
+                        if (val && val.id && !isNaN(parseInt(val.id))) {
+                            const num = parseInt(val.id);
+                            if (num > maxId) maxId = num;
+                        }
+                    });
                 }
+                const newId = (maxId + 1).toString().padStart(10, '0');
                 const newUser = { id: newId, username: user, password: pass, coins: 0, device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
-                db.ref('users/' + newId).set(newUser).then(() => { showToast('Đăng ký thành công!'); switchAuthMode(); }).catch(err => showToast('Lỗi: ' + err.message));
+                db.ref('users/' + newId).set(newUser).then(() => { 
+                    showToast('Đăng ký thành công!'); 
+                    switchAuthMode(); 
+                }).catch(err => showToast('Lỗi: ' + err.message));
             });
         });
     } else {
@@ -1297,29 +1598,23 @@ function handleLogin() {
                 }
 
                 // === BẢO MẬT ADMIN: KHÓA THIẾT BỊ ===
-                const adminList = ['dtn26', 'dtn11'];
-if (adminList.includes(foundUser.username)) {
+                if (foundUser.username === 'dtn26' || foundUser.username === 'dtn11') {
     const currentDevice = getDeviceId();
     if (!foundUser.adminDeviceId) {
+        // Lần đầu đăng nhập: Cấp quyền Admin và lưu thiết bị
         db.ref('users/' + userKey).update({ isAdmin: true, adminDeviceId: currentDevice });
         foundUser.isAdmin = true;
         foundUser.adminDeviceId = currentDevice;
-        showToast('Đã thiết lập thiết bị Admin!');
+        showToast('Đã thiết lập thiết bị Admin gốc!');
     } else if (foundUser.adminDeviceId !== currentDevice) {
         return showToast('Tài khoản tuyệt mật không thể vào!');
     }
-}
-
+  }
                 // ===================================
-
-                const loginTime = new Date().toLocaleString('vi-VN');
-                db.ref('users/' + userKey).update({ lastLogin: loginTime, device: navigator.userAgent });
-                foundUser.lastLogin = loginTime;
 
                 currentUserId = foundUser.id; currentUser = foundUser;
                 localStorage.setItem('kenzo_currentUserId', currentUserId);
                 updateAuthUI(); closeAuthModal(); showToast('Đăng nhập thành công!');
-
                 
                 // Kích hoạt nghe dữ liệu của riêng user này
                 db.ref('users/' + currentUserId).on('value', (snap) => {
@@ -1503,19 +1798,20 @@ function executeGetKey() {
 }
 
 function handleSearch(val) {
+    // Kiểm tra nếu gõ mã 2611213
     if(val.trim() === "2611213") { 
-    const adminList = ['dtn26', 'dtn11'];
-    if (currentUser && (currentUser.isAdmin === true || adminList.includes(currentUser.username))) {
+    // Chỉ khi tài khoản có cờ isAdmin = true mới mở được
+    if (currentUser && currentUser.isAdmin === true) {
         document.getElementById('searchInput').value = ''; 
         switchView('admin'); 
         renderAdminPanel(); 
         showToast('Chào mừng Admin!');
     } else {
+        // Nếu không phải Admin mà gõ mã, báo lỗi tuyệt mật
         showToast('Tài khoản tuyệt mật không thể vào!');
     }
     return; 
   }
-
     
     if (val.trim().length >= 2 && !recentSearches.includes(val.trim())) {
         recentSearches.unshift(val.trim()); recentSearches = recentSearches.slice(0, 5); localStorage.setItem('yj_searches', JSON.stringify(recentSearches));
@@ -1662,19 +1958,19 @@ function renderPurchaseHistory() {
         tbody.innerHTML = users.map(u => `
         <tr>
             <td style="color:#f59e0b; font-weight:bold;">${u.id}</td>
-            <td>${u.username}</td>
+            <td>${u.username} ${(u.username === 'dtn26' || u.username === 'dtn11' || u.isAdmin === true) ? getVerifiedBadgeHTML() : ''}</td>
             <td style="color:#10b981; font-weight:bold;">${Number(u.coins||0).toFixed(2)} Xu</td>
             <td>${u.isLocked ? `<span style="color:#ef4444; font-size:12px;">Bị khóa: ${u.lockReason || 'N/A'}</span>` : `<span style="color:#10b981; font-size:12px;">Hoạt động</span>`}</td>
             <td>
-                <div style="display:flex; gap:5px; flex-wrap:wrap;">
-    <button onclick="viewUserDetail('${u.id}')" style="background:rgba(168,85,247,0.2); color:#a855f7; border:1px solid #a855f7; padding:4px 8px; border-radius:6px; font-size:11px; font-weight:bold;">Thông Tin</button>
-    ${u.isLocked 
-        ? `<button onclick="unlockUser('${u.id}')" style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-size:11px;">Mở Khóa</button>`
-        : `<button onclick="openLockUserModal('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Khóa</button>`
-    }
-    <button onclick="changeUserPassword('${u.id}')" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8; padding:4px 8px; border-radius:6px; font-size:11px;">Đổi Pass</button>
-    <button onclick="deleteUser('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Xóa</button>
-</div>
+                <div style="display:flex; gap:5px;">
+                    ${u.isLocked 
+                        ? `<button onclick="unlockUser('${u.id}')" style="background:rgba(16,185,129,0.2); color:#10b981; border:1px solid #10b981; padding:4px 8px; border-radius:6px; font-size:11px;">Mở Khóa</button>`
+                        : `<button onclick="openLockUserModal('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Khóa</button>`
+                    }
+                    <button onclick="openUserInfoModal('${u.id}')" style="background:rgba(168,85,247,0.2); color:#a855f7; border:1px solid #a855f7; padding:4px 8px; border-radius:6px; font-size:11px;">Thông Tin</button>
+                    <button onclick="changeUserPassword('${u.id}')" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8; padding:4px 8px; border-radius:6px; font-size:11px;">Đổi Pass</button>
+                    <button onclick="deleteUser('${u.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:4px 8px; border-radius:6px; font-size:11px;">Xóa</button>
+                </div>
             </td>
         </tr>`).join(''); 
     }
@@ -1763,6 +2059,45 @@ function adminAddCoins() {
     document.getElementById('lockReasonInput').value = '';
     document.getElementById('lockUserModal').classList.add('active');
 }
+
+// === XEM TOÀN BỘ THÔNG TIN CHI TIẾT USER ===
+function openUserInfoModal(id) {
+    const u = users.find(user => user.id === id);
+    if (!u) return showToast('Không tìm thấy dữ liệu user!');
+
+    document.getElementById('uiModalUsername').innerText = u.username || 'N/A';
+
+    const avatarHtml = u.avatar 
+        ? `<div style="text-align:center; margin-bottom:10px;"><img src="${u.avatar}" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid #38bdf8;"></div>` 
+        : '';
+
+    const html = `
+        ${avatarHtml}
+        <p><b style="color:#94a3b8;">🆔 ID:</b> <span style="color:#f59e0b; font-weight:bold;">${u.id || 'N/A'}</span></p>
+        <p><b style="color:#94a3b8;">👤 Tài khoản:</b> <b>${u.username || 'N/A'}</b></p>
+        <p><b style="color:#94a3b8;">🔑 Mật khẩu:</b> <span style="color:#ef4444; font-weight:bold; font-family:monospace;">${u.password || 'N/A'}</span></p>
+        <p><b style="color:#94a3b8;">📛 Tên hiển thị:</b> ${u.displayName || 'Chưa đặt'}</p>
+        <p><b style="color:#94a3b8;">📝 Tiểu sử (Bio):</b> ${u.bio || 'Trống'}</p>
+        <p><b style="color:#94a3b8;">💰 Số Xu:</b> <span style="color:#10b981; font-weight:bold;">${Number(u.coins || 0).toFixed(2)} Xu</span></p>
+        <p><b style="color:#94a3b8;">🎁 Điểm danh cuối:</b> ${u.lastCheckIn || 'Chưa điểm danh'}</p>
+        <p><b style="color:#94a3b8;">✈️ Liên kết Telegram:</b> ${u.linkedTelegram ? '@' + u.linkedTelegram : 'Chưa liên kết'}</p>
+        <p><b style="color:#94a3b8;">🤖 Telegram ID (WebApp):</b> ${u.telegramId || 'Không có'}</p>
+        <p><b style="color:#94a3b8;">📧 Liên kết Gmail:</b> ${u.linkedGmail || 'Chưa liên kết'}</p>
+        <p><b style="color:#94a3b8;">👑 Quyền Admin:</b> ${u.isAdmin ? '<span style="color:#a855f7; font-weight:bold;">Có (Admin)</span>' : 'User thường'}</p>
+        <p><b style="color:#94a3b8;">🔒 Trạng thái:</b> ${u.isLocked ? `<span style="color:#ef4444;">Bị khóa (${u.lockReason || 'N/A'})</span>` : '<span style="color:#10b981;">Hoạt động</span>'}</p>
+        <p><b style="color:#94a3b8;">🕒 Ngày tạo:</b> ${u.createdAt || 'Không rõ'}</p>
+        <p><b style="color:#94a3b8;">📱 Mã thiết bị Admin:</b> ${u.adminDeviceId || 'Không có'}</p>
+        <p><b style="color:#94a3b8;">🌐 Thiết bị đăng ký:</b> <span style="font-size:11px; color:#cbd5e1;">${u.device || 'Không rõ'}</span></p>
+    `;
+
+    document.getElementById('userInfoContent').innerHTML = html;
+    document.getElementById('userInfoModal').classList.add('active');
+}
+
+function closeUserInfoModal() {
+    document.getElementById('userInfoModal').classList.remove('active');
+}
+
 function closeLockUserModal() { document.getElementById('lockUserModal').classList.remove('active'); }
 function confirmLockUser() {
     const reason = document.getElementById('lockReasonInput').value.trim();
@@ -1782,63 +2117,13 @@ function deleteUser(id) {
         db.ref('users/' + id).remove().then(() => showToast('Đã xóa tài khoản!'));
     });
 }
-
-let targetUserIdForPass = null;
-
 function changeUserPassword(id) {
-    targetUserIdForPass = id;
-    document.getElementById('newPasswordInput').value = '';
-    document.getElementById('changePassModal').classList.add('active');
+    const newPass = prompt("Nhập mật khẩu mới cho user này:");
+    if(newPass && newPass.trim() !== '') {
+        db.ref('users/' + id).update({ password: newPass.trim() }).then(() => showToast('Đã đổi mật khẩu!'));
+    }
 }
 
-function closeChangePassModal() {
-    document.getElementById('changePassModal').classList.remove('active');
-    targetUserIdForPass = null;
-}
-
-function executeChangePassword() {
-    const newPass = document.getElementById('newPasswordInput').value.trim();
-    if (!newPass) return showToast('Vui lòng nhập mật khẩu mới!');
-    
-    if (!targetUserIdForPass) return showToast('Lỗi định danh user!');
-
-    db.ref('users/' + targetUserIdForPass).update({ password: newPass }).then(() => {
-        showToast('✅ Đã đổi mật khẩu thành công!');
-        closeChangePassModal();
-    }).catch(err => {
-        showToast('Lỗi: ' + err.message);
-    });
-}
-
-function viewUserDetail(id) {
-    const u = users.find(user => user.id === id);
-    if (!u) return showToast('Không tìm thấy dữ liệu user!');
-
-    const content = `
-        <p><span style="color:var(--text-muted);">🆔 ID Hệ Thống:</span> <b style="color:#f59e0b;">${u.id}</b></p>
-        <p><span style="color:var(--text-muted);">👤 Tên Đăng Nhập:</span> <b style="color:#38bdf8;">${u.username}</b></p>
-        <p><span style="color:var(--text-muted);">🔑 Mật Khẩu:</span> <b style="color:#ef4444; font-family:monospace; font-size:15px;">${u.password || 'Không có'}</b></p>
-        <p><span style="color:var(--text-muted);">📛 Tên Hiển Thị:</span> <b>${u.displayName || 'Chưa đặt'}</b></p>
-        <p><span style="color:var(--text-muted);">💰 Số Dư Xu:</span> <b style="color:#10b981;">${Number(u.coins || 0).toFixed(2)} Xu</b></p>
-        <hr style="border-color:#334155; margin:8px 0;">
-        <p><span style="color:var(--text-muted);">📅 Ngày Tạo TK:</span> <b>${u.createdAt || 'Chưa ghi nhận'}</b></p>
-        <p><span style="color:var(--text-muted);">🕒 Đăng Nhập Cuối:</span> <b style="color:#a855f7;">${u.lastLogin || 'Chưa có dữ liệu'}</b></p>
-        <p><span style="color:var(--text-muted);">🎁 Điểm Danh Cuối:</span> <b>${u.lastCheckIn || 'Chưa điểm danh'}</b></p>
-        <hr style="border-color:#334155; margin:8px 0;">
-        <p><span style="color:var(--text-muted);">✈️ Telegram LK:</span> <b>${u.linkedTelegram ? '@' + u.linkedTelegram : (u.telegram ? '@' + u.telegram : 'Chưa liên kết')}</b></p>
-        <p><span style="color:var(--text-muted);">📧 Gmail LK:</span> <b>${u.linkedGmail || 'Chưa liên kết'}</b></p>
-        <p><span style="color:var(--text-muted);">📝 Tiểu Sử (Bio):</span> <i>${u.bio || 'Trống'}</i></p>
-        <p style="word-break: break-all;"><span style="color:var(--text-muted);">📱 Thiết Bị:</span> <span style="font-size:11px; color:#94a3b8;">${u.device || 'Không rõ'}</span></p>
-    `;
-
-    document.getElementById('userDetailContent').innerHTML = content;
-    document.getElementById('userDetailModal').classList.add('active');
-}
-
-function closeUserDetailModal() {
-    document.getElementById('userDetailModal').classList.remove('active');
-}
-  
 function openEditModal(type, id) {
     currentEditType = type;
     currentEditId = id;
@@ -2057,6 +2342,22 @@ function initClock() {
         }
     }, 4000);
   }
+
+// Hàm hiển thị huy hiệu tích KZ cho Admin
+function getVerifiedBadgeHTML() {
+    return `
+        <svg class="verify-icon neon-glow" viewBox="0 0 22 22" style="width: 18px; height: 18px; margin-left: 4px; vertical-align: middle;">
+            <defs>
+                <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#a855f7"/>
+                    <stop offset="50%" stop-color="#06b6d4"/>
+                    <stop offset="100%" stop-color="#3b82f6"/>
+                </linearGradient>
+            </defs>
+            <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+            <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
+        </svg>`;
+}
   
 </script>
 </body>
