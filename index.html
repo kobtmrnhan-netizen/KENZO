@@ -10,6 +10,116 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
+      /* === VÒNG TRÒN CHẠY THEO PHẦN TRĂM (CONIC GRADIENT) === */
+.loading-circle {
+    position: relative !important;
+    width: 150px !important;
+    height: 150px !important;
+    margin-bottom: 20px !important;
+    display: flex !important; 
+    align-items: center !important; 
+    justify-content: center !important;
+    border-radius: 50% !important;
+    /* Hiệu ứng viền chạy theo % (từ 0% đến 100%) */
+    background: conic-gradient(#10b981 0deg, rgba(255, 255, 255, 0.1) 0deg);
+    padding: 5px; /* Độ dày của vòng chạy */
+    box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+    transition: background 0.1s linear;
+}
+
+/* Phần nền bên trong để đè lên tạo thành khung viền tròn mỏng */
+.loading-circle img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    background: var(--bg, #0f172a);
+    position: relative;
+    z-index: 2;
+}
+
+      /* === CSS NÚT TRONG HỘP THƯ === */
+.inbox-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+}
+.btn-inbox-reply {
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--blue);
+    border: 1px solid var(--blue);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.2s;
+}
+.btn-inbox-reply:hover {
+    background: rgba(6, 182, 212, 0.3);
+}
+.btn-inbox-delete {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid #ef4444;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.2s;
+}
+.btn-inbox-delete:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+      /* === CSS HỘP THƯ === */
+.inbox-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.inbox-item:hover {
+    border-color: var(--blue);
+}
+.inbox-item.unread {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+}
+.inbox-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+.inbox-sender {
+    font-weight: 800;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.inbox-body {
+    font-size: 14px;
+    color: var(--text);
+    word-break: break-all;
+}
+
       /* === NÚT HỖ TRỢ NỔI GÓC DƯỚI BÊN TRÁI === */
 .support-float-btn {
     position: fixed;
@@ -611,8 +721,14 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <!-- Logo nằm chính giữa -->
         <div class="logo-text glitch" data-text="KENZO 健藏">
             <span>KENZO</span><span class="text-gradient">健藏</span>
-            <svg class="verify-icon neon-glow" viewBox="0 0 22 22"><defs><linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#a855f7"/><stop offset="50%" stop-color="#06b6d4"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/><text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text></svg>
+            <svg class="verify-icon neon-glow" viewBox="0 0 22 22">...</svg>
         </div>
+
+        <!-- Nút Hộp Thư Phong Bì nằm bên phải -->
+        <button class="btn-icon" onclick="openInboxModal()" style="position: absolute; right: 20px;" title="Hộp thư">
+            <i class="fa-solid fa-envelope"></i>
+            <span id="inboxNotiBadge" class="hidden" style="position: absolute; top: 5px; right: 5px; width: 8px; height: 8px; background: red; border-radius: 50%;"></span>
+        </button>
     </div>
 </header>
 <div id="sideDrawer" class="drawer-overlay" onclick="closeMenu(event)">
@@ -751,7 +867,23 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
             <button class="btn-app-download" style="width: auto; padding: 0 20px; background: linear-gradient(135deg, #fbbf24, #d97706);" onclick="sendBroadcast()">Gửi</button>
         </div>
     </div>
-    
+
+      <!-- KHUNG QUẢN LÝ CỘNG TRỪ XU CHO USER -->
+    <div class="admin-panel" style="border-color: #f59e0b;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">💰 Cộng / Trừ Xu Thành Viên</h3>
+        <div class="form-group">
+            <label>Nhập ID User (VD: 0000000001)</label>
+            <input type="text" id="adminCoinUserId" class="form-input" placeholder="Nhập ID chính xác của user...">
+        </div>
+        <div class="form-group">
+            <label>Số Xu cần cộng (hoặc trừ nếu để số âm VD: -50)</label>
+            <input type="number" id="adminCoinAmount" class="form-input" placeholder="Nhập số lượng xu (VD: 100 hoặc -50)...">
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #f59e0b, #d97706);" onclick="adminAddCoins()">
+            <i class="fa-solid fa-coins"></i> Xác Nhận Thay Đổi Xu
+        </button>
+    </div>
+
     <div class="admin-panel" style="border-color: #10b981;">
         <h3 style="color: var(--text); margin-bottom: 15px;">Quản Lý Kho Game</h3>
         <button class="btn-app-download" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #10b981, #059669);" onclick="document.getElementById('gameForm').classList.toggle('hidden')">Thêm Game Mới +</button>
@@ -793,6 +925,25 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
     <div id="adminShopItemList"></div>
 </div>
+
+    <div class="admin-panel" style="border-color: #06b6d4;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">🏅 Cấp Tích / Huy Hiệu Thành Viên</h3>
+        <div class="form-group">
+            <label>Nhập ID hoặc Tên đăng nhập (Username)</label>
+            <input type="text" id="badgeTargetInput" class="form-input" placeholder="VD: 0000000003 hoặc tenuser...">
+        </div>
+        <div class="form-group">
+            <label>Chọn loại tích muốn cấp</label>
+            <select id="badgeTypeSelect" class="form-input">
+                <option value="kz">✨ Tích KZ (Độc quyền Kenzo Studio)</option>
+                <option value="blue">✔️ Tích Xanh (Xác minh chính chủ)</option>
+                <option value="none">❌ Gỡ bỏ tích</option>
+            </select>
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="grantUserBadge()">
+            <i class="fa-solid fa-certificate"></i> Xác Nhận Cấp Tích
+        </button>
+    </div>
 
 <div class="admin-panel" style="border-color: #ec4899;">
     <h3 style="color: var(--text); margin-bottom: 15px;">Duyệt Thẻ Cào</h3>
@@ -1152,10 +1303,211 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 </div>
 
+<!-- MODAL HỘP THƯ (INBOX) -->
+<div id="inboxModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="modal-content-version" style="max-width: 500px; max-height: 80vh;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #06b6d4;">HỘP THƯ CỘNG ĐỒNG</div>
+                <h3>Tin Nhắn Của Tôi</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeInboxModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div style="margin-bottom: 15px;">
+            <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #6366f1, #4f46e5);" onclick="openComposeModal()">
+                <i class="fa-solid fa-pen-to-square"></i> Viết Thư Mới
+            </button>
+        </div>
+        <div id="inboxMessageList" style="overflow-y: auto; max-height: 50vh; display: flex; flex-direction: column; gap: 10px;">
+            <!-- Danh sách tin nhắn sẽ đổ vào đây -->
+        </div>
+    </div>
+</div>
+
+<!-- MODAL VIẾT THƯ MỚI HOẶC TRẢ LỜI -->
+<div id="composeModal" class="modal" style="z-index: 2700; align-items: center;">
+    <div class="modal-content-version" style="max-width: 420px;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #10b981;" id="composeSubtitle">SOẠN THƯ</div>
+                <h3 id="composeTitle">Gửi Tin Nhắn Mới</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeComposeModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="form-group">
+            <label>Gửi đến</label>
+            <input type="text" id="msgReceiverInput" class="form-input" placeholder="Nhập username hoặc ID...">
+        </div>
+        <div class="form-group">
+            <label>Nội dung (Tối đa 500 ký tự)</label>
+            <textarea id="msgContentInput" class="form-input" rows="4" maxlength="500" placeholder="Nhập nội dung thư..."></textarea>
+        </div>
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="sendPrivateMessage()">
+            <i class="fa-solid fa-paper-plane"></i> Gửi Thư Ngay
+        </button>
+    </div>
+</div>
+
 <div id="musicBtn" class="music-player" onclick="toggleMusic()" title="Bật/Tắt nhạc nền"><i id="musicIcon" class="fa-solid fa-compact-disc"></i></div>
 <audio id="bgMusic" loop><source src="https://www.image2url.com/r2/default/files/1793936785502-9c704d47-0aeb-4e5b-b0d5-4a247fb205c6.mp3" type="audio/mpeg"></audio>
 <div id="kzToastContainer"></div>
 <script>
+  // === HỆ THỐNG HỘP THƯ (INBOX) ===
+let inboxListenerRef = null;
+
+function openInboxModal() {
+    if (!currentUser) {
+        showToast('Vui lòng đăng nhập để xem hộp thư!');
+        return openAuthModal();
+    }
+    document.getElementById('inboxModal').classList.add('active');
+    loadInboxMessages();
+}
+
+function closeInboxModal() {
+    document.getElementById('inboxModal').classList.remove('active');
+}
+
+function openComposeModal(replyUsername = '') {
+    document.getElementById('composeSubtitle').innerText = replyUsername ? 'TRẢ LỜI TIN NHẮN' : 'SOẠN THƯ';
+    document.getElementById('composeTitle').innerText = replyUsername ? `Trả lời: ${replyUsername}` : 'Gửi Tin Nhắn Mới';
+    
+    const receiverInput = document.getElementById('msgReceiverInput');
+    receiverInput.value = replyUsername;
+    if (replyUsername) {
+        receiverInput.setAttribute('readonly', true); // Khóa không cho sửa người nhận khi bấm trả lời
+    } else {
+        receiverInput.removeAttribute('readonly');
+    }
+
+    document.getElementById('msgContentInput').value = '';
+    document.getElementById('composeModal').classList.add('active');
+}
+
+function closeComposeModal() {
+    document.getElementById('composeModal').classList.remove('active');
+}
+
+function sendPrivateMessage() {
+    if (!currentUser) return showToast('Vui lòng đăng nhập!');
+    const receiverKeyInput = document.getElementById('msgReceiverInput').value.trim();
+    const content = document.getElementById('msgContentInput').value.trim();
+
+    if (!receiverKeyInput || !content) {
+        return showToast('Vui lòng nhập người nhận và nội dung!');
+    }
+
+    if (content.length > 500) {
+        return showToast('Nội dung tối đa 500 ký tự!');
+    }
+
+    showToast('Đang gửi thư...');
+
+    // Tìm xem người nhận tồn tại bằng ID hoặc Username trên Firebase
+    db.ref('users').once('value').then(snapshot => {
+        let receiverId = null;
+        snapshot.forEach(child => {
+            const u = child.val();
+            if (u.id === receiverKeyInput || u.username === receiverKeyInput) {
+                receiverId = u.id;
+            }
+        });
+
+        if (!receiverId) {
+            return showToast('Không tìm thấy người nhận này!');
+        }
+
+        if (receiverId === currentUser.id) {
+            return showToast('Bạn không thể tự gửi thư cho chính mình!');
+        }
+
+        const msgId = 'MSG_' + Date.now();
+        const msgData = {
+            id: msgId,
+            senderId: currentUser.id,
+            senderName: currentUser.displayName || currentUser.username,
+            senderUsername: currentUser.username,
+            senderIsAdmin: currentUser.isAdmin || currentUser.username === 'dtn26' || currentUser.username === 'dtn11',
+            senderAvatar: currentUser.avatar || '',
+            senderBadgeType: currentUser.badgeType || ((currentUser.isAdmin || currentUser.username === 'dtn26' || currentUser.username === 'dtn11') ? 'kz' : ''),
+            content: content,
+            time: new Date().toLocaleString('vi-VN'),
+            read: false
+        };
+
+        db.ref('inbox/' + receiverId + '/' + msgId).set(msgData).then(() => {
+            showToast('✅ Gửi thư thành công!');
+            closeComposeModal();
+        }).catch(err => {
+            showToast('Lỗi gửi thư: ' + err.message);
+        });
+    });
+}
+
+function loadInboxMessages() {
+    if (!currentUser) return;
+    const listContainer = document.getElementById('inboxMessageList');
+    const badge = document.getElementById('inboxNotiBadge');
+
+    db.ref('inbox/' + currentUser.id).on('value', snap => {
+        const data = snap.val() || {};
+        const messages = Object.values(data).reverse();
+
+        let unreadCount = 0;
+        messages.forEach(m => { if (!m.read) unreadCount++; });
+
+        if (badge) {
+            if (unreadCount > 0) badge.classList.remove('hidden');
+            else badge.classList.add('hidden');
+        }
+
+        if (messages.length === 0) {
+            listContainer.innerHTML = '<p style="color: var(--text-muted); text-align: center; padding: 20px;">Hộp thư trống.</p>';
+            return;
+        }
+
+        listContainer.innerHTML = messages.map(m => {
+            const badgeType = m.senderBadgeType || ((m.senderIsAdmin || m.senderUsername === 'dtn26' || m.senderUsername === 'dtn11') ? 'kz' : '');
+            const verifyBadge = getUserBadgeHTML({ badgeType: badgeType });
+            const unreadClass = m.read ? '' : 'unread';
+
+            return `
+                <div class="inbox-item ${unreadClass}" onclick="markAsRead('${m.id}')">
+                    <div class="inbox-header-row">
+                        <span class="inbox-sender">
+                            ${m.senderAvatar ? `<img src="${m.senderAvatar}" style="width:20px;height:20px;border-radius:50%;object-fit:cover;">` : ''}
+                            ${m.senderName} (${m.senderUsername}) ${verifyBadge}
+                        </span>
+                        <span>${m.time}</span>
+                    </div>
+                    <div class="inbox-body">${m.content}</div>
+                    <div class="inbox-actions" onclick="event.stopPropagation()">
+                        <button class="btn-inbox-reply" onclick="openComposeModal('${m.senderUsername}')">
+                            <i class="fa-solid fa-reply"></i> Trả lời
+                        </button>
+                        <button class="btn-inbox-delete" onclick="deleteInboxMessage('${m.id}')">
+                            <i class="fa-solid fa-trash"></i> Xóa
+                        </button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    });
+}
+
+function markAsRead(msgId) {
+    if (!currentUser) return;
+    db.ref('inbox/' + currentUser.id + '/' + msgId).update({ read: true });
+}
+
+function deleteInboxMessage(msgId) {
+    if (!currentUser) return;
+    showCustomConfirm('Xóa Thư Này?', 'Thư sẽ bị xóa vĩnh viễn khỏi hộp thư của bạn!', () => {
+        db.ref('inbox/' + currentUser.id + '/' + msgId).remove().then(() => {
+            showToast('Đã xóa thư!');
+        });
+    }, 'Xóa');
+}
 
   // === XỬ LÝ MỞ/ĐÓNG MODAL HỖ TRỢ ===
 function openCustomSupportModal() {
@@ -1420,17 +1772,23 @@ function logVisit() {
 
 window.onload = () => {
     let count = 0;
+    const circleEl = document.querySelector('.loading-circle'); 
     let intv = setInterval(() => {
         count += Math.floor(Math.random() * 5) + 1;
         if(count >= 100) {
-            count = 100; clearInterval(intv);
+            count = 100; 
+            clearInterval(intv);
+            
+            if (circleEl) {
+                circleEl.style.background = `conic-gradient(#10b981 360deg, rgba(255, 255, 255, 0.1) 360deg)`;
+            }
+
             setTimeout(() => { 
                 const loadingScreen = document.getElementById('loadingScreen');
-                const circle = loadingScreen.querySelector('.loading-circle');
                 const text = loadingScreen.querySelector('.loading-text');
                 
                 loadingScreen.style.opacity = '0'; 
-                if (circle) circle.style.transform = 'scale(0)';
+                if (circleEl) circleEl.style.transform = 'scale(0)';
                 if (text) text.style.transform = 'scale(0)';
                 
                 setTimeout(() => { 
@@ -1439,20 +1797,34 @@ window.onload = () => {
                 }, 800); 
             }, 300);
         }
+        
         document.getElementById('loadPercent').innerText = count + '%';
+
+        if (circleEl) {
+            const degrees = count * 3.6;
+            circleEl.style.background = `conic-gradient(#10b981 ${degrees}deg, rgba(255, 255, 255, 0.1) ${degrees}deg)`;
+        }
+
     }, 50);
 
     if(localStorage.getItem('yj_theme') === 'light') {
-        document.body.classList.add('light-mode'); document.getElementById('themeIcon').className = 'fa-solid fa-sun';
+        document.body.classList.add('light-mode'); 
+        document.getElementById('themeIcon').className = 'fa-solid fa-sun';
     }
-    renderStore(); renderCharts(); renderSaved(); renderHistory();
-    initGetKey(); initMouseTrail(); initAvatarGlitch(); updateAuthUI();
+    
+    renderStore(); 
+    renderCharts(); 
+    renderSaved(); 
+    renderHistory();
+    initGetKey(); 
+    initMouseTrail(); 
+    initAvatarGlitch(); 
+    updateAuthUI();
     setTimeout(initTelegramApp, 1500);
     logVisit();
     
-        // Khởi chạy đồng hồ thông minh
+    // 🔥 QUAN TRỌNG: Phải có 2 dòng này thì đồng hồ và nhạc mới chạy!
     initClock(); 
-    // Khởi chạy tự động phát nhạc
     initAutoPlayMusic();
 };
   
@@ -1512,8 +1884,7 @@ function updateAuthUI() {
                     </div>
                     <div style="flex: 1;">
                            <div style="font-weight: 800; font-size: 15px; display: flex; align-items: center;">
-                            ${currentUser.displayName || currentUser.username} 
-                            ${(currentUser.username === 'dtn26' || currentUser.username === 'dtn11' || currentUser.isAdmin === true) ? getVerifiedBadgeHTML() : ''}
+                            ${currentUser.displayName || currentUser.username} ${getUserBadgeHTML(currentUser)}
                         </div>
                         </div>
                         <div style="font-size: 13px; color: #f59e0b; font-weight: bold;"><i class="fa-solid fa-coins"></i> ${coins} Xu</div>
@@ -1958,7 +2329,7 @@ function renderPurchaseHistory() {
         tbody.innerHTML = users.map(u => `
         <tr>
             <td style="color:#f59e0b; font-weight:bold;">${u.id}</td>
-            <td>${u.username} ${(u.username === 'dtn26' || u.username === 'dtn11' || u.isAdmin === true) ? getVerifiedBadgeHTML() : ''}</td>
+            <td>${u.username} ${getUserBadgeHTML(u)}</td>
             <td style="color:#10b981; font-weight:bold;">${Number(u.coins||0).toFixed(2)} Xu</td>
             <td>${u.isLocked ? `<span style="color:#ef4444; font-size:12px;">Bị khóa: ${u.lockReason || 'N/A'}</span>` : `<span style="color:#10b981; font-size:12px;">Hoạt động</span>`}</td>
             <td>
@@ -2343,22 +2714,111 @@ function initClock() {
     }, 4000);
   }
 
-// Hàm hiển thị huy hiệu tích KZ cho Admin
-function getVerifiedBadgeHTML() {
-    return `
-        <svg class="verify-icon neon-glow" viewBox="0 0 22 22" style="width: 18px; height: 18px; margin-left: 4px; vertical-align: middle;">
-            <defs>
-                <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#a855f7"/>
-                    <stop offset="50%" stop-color="#06b6d4"/>
-                    <stop offset="100%" stop-color="#3b82f6"/>
-                </linearGradient>
-            </defs>
-            <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
-            <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
-        </svg>`;
+// === HÀM HIỂN THỊ HUY HIỆU TÍCH KZ HOẶC TÍCH XANH ===
+function getUserBadgeHTML(userObj) {
+    if (!userObj) return '';
+    
+    // Xác định loại tích (ưu tiên trường badgeType trên Firebase, mặc định admin gốc có tích KZ)
+    let type = userObj.badgeType || '';
+    if (!type && (userObj.username === 'dtn26' || userObj.username === 'dtn11' || userObj.isAdmin === true)) {
+        type = 'kz';
+    }
+
+    if (type === 'kz') {
+        return `
+            <svg class="verify-icon neon-glow" viewBox="0 0 22 22" style="width: 18px; height: 18px; margin-left: 4px; vertical-align: middle;">
+                <defs>
+                    <linearGradient id="brandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#a855f7"/>
+                        <stop offset="50%" stop-color="#06b6d4"/>
+                        <stop offset="100%" stop-color="#3b82f6"/>
+                    </linearGradient>
+                </defs>
+                <path fill="url(#brandGrad)" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                <text x="11" y="14.5" fill="#ffffff" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="900" font-size="8.5px" text-anchor="middle" letter-spacing="-0.5px">KZ</text>
+            </svg>`;
+    } else if (type === 'blue') {
+        return `
+            <svg class="verify-icon" viewBox="0 0 22 22" style="width: 18px; height: 18px; margin-left: 4px; vertical-align: middle;">
+                <path fill="#38bdf8" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
+                <path fill="#ffffff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
+            </svg>`;
+    }
+    return '';
 }
-  
+
+// === HÀM XỬ LÝ CẤP TÍCH TRONG TRANG ADMIN ===
+function grantUserBadge() {
+    const target = document.getElementById('badgeTargetInput').value.trim();
+    const badgeType = document.getElementById('badgeTypeSelect').value;
+
+    if (!target) return showToast('Vui lòng nhập ID hoặc Username!');
+
+    showToast('Đang tìm tài khoản...');
+
+    db.ref('users').once('value').then(snapshot => {
+        let foundUserKey = null;
+        let foundUsername = '';
+
+        snapshot.forEach(child => {
+            const u = child.val();
+            if (u && (u.id === target || (u.username && u.username.toLowerCase() === target.toLowerCase()))) {
+                foundUserKey = child.key;
+                foundUsername = u.username;
+            }
+        });
+
+        if (!foundUserKey) {
+            return showToast('❌ Không tìm thấy tài khoản này!');
+        }
+
+        db.ref('users/' + foundUserKey).update({ badgeType: badgeType }).then(() => {
+            if (badgeType === 'none') {
+                showToast(`✅ Đã gỡ bỏ tích của ${foundUsername}!`);
+            } else {
+                const label = badgeType === 'kz' ? 'Tích KZ' : 'Tích Xanh';
+                showToast(`🎉 Đã cấp ${label} cho ${foundUsername}!`);
+            }
+            document.getElementById('badgeTargetInput').value = '';
+        }).catch(err => {
+            showToast('Lỗi cập nhật: ' + err.message);
+        });
+    });
+}
+
+  // === HÀM CỘNG / TRỪ XU CHO USER TỪ TRANG ADMIN ===
+function adminAddCoins() {
+    const targetId = document.getElementById('adminCoinUserId').value.trim();
+    const amount = parseFloat(document.getElementById('adminCoinAmount').value);
+
+    if (!targetId || isNaN(amount)) {
+        return showToast('Vui lòng nhập đầy đủ ID và số Xu hợp lệ!');
+    }
+
+    showToast('Đang cập nhật số xu...');
+
+    db.ref('users/' + targetId).once('value').then(snapshot => {
+        if (!snapshot.exists()) {
+            return showToast('❌ Không tìm thấy user với ID này!');
+        }
+
+        const userData = snapshot.val();
+        const currentCoins = userData.coins || 0;
+        const newCoins = currentCoins + amount;
+
+        // Đảm bảo xu không bị âm dưới 0
+        const finalCoins = newCoins < 0 ? 0 : newCoins;
+
+        db.ref('users/' + targetId + '/coins').set(finalCoins).then(() => {
+            showToast(`✅ Đã cập nhật thành công! User ${userData.username} hiện có: ${finalCoins} Xu`);
+            document.getElementById('adminCoinUserId').value = '';
+            document.getElementById('adminCoinAmount').value = '';
+        }).catch(err => {
+            showToast('Lỗi cập nhật: ' + err.message);
+        });
+    });
+}
+
 </script>
 </body>
 </html>
