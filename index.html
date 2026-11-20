@@ -884,6 +884,102 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         </button>
     </div>
 
+      <div class="admin-panel" style="border-color: #f43f5e;">
+        <h3 style="color: var(--text); margin-bottom: 15px;">🛡️ Tạo & Phân Quyền Tài Khoản Admin</h3>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #334155;">
+            <div class="form-group">
+                <label>Tên đăng nhập (Username)</label>
+                <input type="text" id="newAdmUsername" class="form-input" placeholder="VD: mod_kenzo01 (viết liền, không dấu)">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="text" id="newAdmPassword" class="form-input" placeholder="Nhập mật khẩu cho tài khoản...">
+            </div>
+
+            <div class="form-group">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+                    <label style="margin:0;">Chọn quyền chức năng Admin (chọn nhiều ô vuông)</label>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" onclick="toggleAllAdminPerms(true)" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700;">Chọn tất cả</button>
+                        <button type="button" onclick="toggleAllAdminPerms(false)" style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid #ef4444; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700;">Bỏ chọn hết</button>
+                    </div>
+                </div>
+
+                <div id="adminPermCheckboxes" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:8px; background:rgba(15,23,42,0.7); padding:12px; border-radius:12px; border:1px solid #334155;">
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="broadcast" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Gửi thông báo hàng loạt</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="coins" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Cộng / Trừ xu thành viên</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="games" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Quản lý kho game</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="getkeys" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Quản lý kho GetKey</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="shop_items" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Quản lý cửa hàng (Acc)</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="badges" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Cấp tích thành viên</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="cards" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Duyệt thẻ cào</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="visits" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Lịch sử truy cập web</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="users" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Quản lý tài khoản user</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="stock" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Quản lý số lượng kho acc</span>
+                    </label>
+                    <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text); cursor:pointer; margin:0;">
+                        <input type="checkbox" class="adm-perm-cb" value="admin_accounts" style="width:16px; height:16px; accent-color:#f43f5e;">
+                        <span>Tạo & phân quyền acc admin</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Tích xác minh</label>
+                <select id="newAdmBadge" class="form-input">
+                    <option value="kz">✨ Tích KZ</option>
+                    <option value="blue">✔️ Tích Xanh</option>
+                    <option value="none">❌ Không có tích</option>
+                </select>
+            </div>
+
+            <button class="btn-app-download" id="btnExportAdminAcc" style="width: 100%; background: linear-gradient(135deg, #f43f5e, #a855f7);" onclick="exportAdminAccount()">
+                <i class="fa-solid fa-file-export"></i> Xuất Tài Khoản & Lưu Hệ Thống
+            </button>
+
+            <div id="exportedAdminAccBox" class="acc-display-box hidden" style="margin-top: 15px; border-color: #38bdf8;">
+                <p style="font-size: 13px; color: #38bdf8; font-weight: 800; margin-bottom: 8px;">✅ ĐÃ XUẤT TÀI KHOẢN THÀNH CÔNG</p>
+                <p>ID User: <b id="expAdmId">-</b> <button type="button" class="btn-copy-acc" onclick="copyAcc(document.getElementById('expAdmId').innerText)">Copy</button></p>
+                <p>Tài khoản: <b id="expAdmUser">-</b> <button type="button" class="btn-copy-acc" onclick="copyAcc(document.getElementById('expAdmUser').innerText)">Copy</button></p>
+                <p>Mật khẩu: <b id="expAdmPass">-</b> <button type="button" class="btn-copy-acc" onclick="copyAcc(document.getElementById('expAdmPass').innerText)">Copy</button></p>
+                <p style="font-size: 13px; color: var(--text-muted);">Quyền đã chọn & Tích: <span id="expAdmMeta" style="color:#fff;font-weight:700;">-</span></p>
+            </div>
+        </div>
+
+        <h4 style="color: var(--text); font-size: 15px; margin-bottom: 10px;">📋 Danh Sách Acc Admin Đã Tạo</h4>
+        <div id="adminCreatedList"></div>
+    </div>
+
     <div class="admin-panel" style="border-color: #10b981;">
         <h3 style="color: var(--text); margin-bottom: 15px;">Quản Lý Kho Game</h3>
         <button class="btn-app-download" style="width: 100%; margin-bottom: 15px; background: linear-gradient(135deg, #10b981, #059669);" onclick="document.getElementById('gameForm').classList.toggle('hidden')">Thêm Game Mới +</button>
@@ -1077,6 +1173,101 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
             <button class="btn-app-download" style="width: 100%; background: #1e293b; border: 1px solid #ef4444; color: #ef4444;" onclick="logout(event)">Đăng Xuất</button>
         </div>
     </div>
+
+  <div id="editAdminAccModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="modal-content-version" style="max-width: 480px;">
+        <div class="version-header">
+            <div>
+                <div class="sub" style="color: #f43f5e;">PHÂN QUYỀN & CHỈNH SỬA</div>
+                <h3 id="editAdmModalTitle">Sửa Tài Khoản Admin</h3>
+            </div>
+            <button class="close-btn-modal" onclick="closeEditAdminAccModal()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <input type="hidden" id="editAdmId">
+
+        <div class="form-group">
+            <label>Tên đăng nhập (Username)</label>
+            <input type="text" id="editAdmUsername" class="form-input" placeholder="Nhập tên đăng nhập...">
+        </div>
+
+        <div class="form-group">
+            <label>Mật khẩu</label>
+            <input type="text" id="editAdmPassword" class="form-input" placeholder="Nhập mật khẩu mới...">
+        </div>
+
+        <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px;">
+                <label style="margin:0;">Các ô vuông quyền chức năng Admin</label>
+                <div style="display:flex; gap:6px;">
+                    <button type="button" onclick="toggleEditAdminPerms(true)" style="background:rgba(16,185,129,0.15); color:#10b981; border:1px solid #10b981; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700;">Chọn tất cả</button>
+                    <button type="button" onclick="toggleEditAdminPerms(false)" style="background:rgba(239,68,68,0.15); color:#ef4444; border:1px solid #ef4444; padding:4px 10px; border-radius:8px; font-size:11px; font-weight:700;">Bỏ chọn hết</button>
+                </div>
+            </div>
+
+            <div id="editAdminPermCheckboxes" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px; background:rgba(15,23,42,0.7); padding:12px; border-radius:12px; border:1px solid #334155;">
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="broadcast" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Gửi thông báo hàng loạt</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="coins" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Cộng / Trừ xu thành viên</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="games" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Quản lý kho game</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="getkeys" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Quản lý kho GetKey</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="shop_items" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Quản lý cửa hàng (Acc)</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="badges" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Cấp tích thành viên</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="cards" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Duyệt thẻ cào</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="visits" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Lịch sử truy cập web</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="users" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Quản lý tài khoản user</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="stock" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Quản lý số lượng kho acc</span>
+                </label>
+                <label style="display:flex; align-items:center; gap:8px; font-size:12px; color:var(--text); cursor:pointer; margin:0;">
+                    <input type="checkbox" class="edit-adm-perm-cb" value="admin_accounts" style="width:15px; height:15px; accent-color:#f43f5e;">
+                    <span>Tạo & phân quyền acc admin</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tích xác minh</label>
+            <select id="editAdmBadge" class="form-input">
+                <option value="kz">✨ Tích KZ</option>
+                <option value="blue">✔️ Tích Xanh</option>
+                <option value="none">❌ Không có tích</option>
+            </select>
+        </div>
+
+        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="saveEditedAdminAccount()">
+            <i class="fa-solid fa-floppy-disk"></i> Lưu Quyền & Đồng Bộ
+        </button>
+    </div>
+</div>
+
 </main>
 <footer style="text-align: center; padding: 30px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 13px;">
     <p>© 2026 <strong style="color: var(--text);">KENZO 健藏</strong> Studio. All Rights Reserved.</p>
@@ -2818,6 +3009,431 @@ function adminAddCoins() {
         });
     });
 }
+
+  const ADMIN_PERMISSION_LABELS = {
+    broadcast: 'Gửi thông báo hàng loạt',
+    coins: 'Cộng / Trừ xu thành viên',
+    games: 'Quản lý kho game',
+    getkeys: 'Quản lý kho GetKey',
+    shop_items: 'Quản lý cửa hàng (Acc)',
+    badges: 'Cấp tích thành viên',
+    cards: 'Duyệt thẻ cào',
+    visits: 'Lịch sử truy cập web',
+    users: 'Quản lý tài khoản user',
+    stock: 'Quản lý số lượng kho acc',
+    admin_accounts: 'Tạo & phân quyền acc admin'
+};
+
+let adminAccountsData = [];
+
+function canUseAdminFeature() {
+    if (!currentUser) return false;
+    if (currentUser.username === 'dtn26' || currentUser.username === 'dtn11') return true;
+    const perms = Array.isArray(currentUser.adminPermissions) ? currentUser.adminPermissions : [];
+    return currentUser.isAdmin === true || perms.includes('admin_accounts');
+}
+
+function toggleAllAdminPerms(checked) {
+    document.querySelectorAll('.adm-perm-cb').forEach(cb => {
+        cb.checked = !!checked;
+    });
+}
+
+function getSelectedAdminPerms() {
+    const selected = [];
+    document.querySelectorAll('.adm-perm-cb:checked').forEach(cb => {
+        if (cb.value) selected.push(cb.value);
+    });
+    return selected;
+}
+
+function exportAdminAccount() {
+    if (!canUseAdminFeature()) {
+        return showToast('Tài khoản tuyệt mật không thể vào!');
+    }
+
+    const username = (document.getElementById('newAdmUsername')?.value || '').trim();
+    const password = (document.getElementById('newAdmPassword')?.value || '').trim();
+    const badgeType = document.getElementById('newAdmBadge')?.value || 'none';
+    const permissions = getSelectedAdminPerms();
+
+    if (!username || !password) {
+        return showToast('Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu!');
+    }
+
+    if (/\s/.test(username)) {
+        return showToast('Tên đăng nhập không được chứa khoảng trắng!');
+    }
+
+    const btn = document.getElementById('btnExportAdminAcc');
+    if (btn) {
+        btn.disabled = true;
+        btn.style.opacity = '0.6';
+    }
+
+    showToast('Đang xuất & lưu tài khoản...');
+
+    db.ref('users').once('value').then(snapshot => {
+        let isDuplicate = false;
+        let maxId = 0;
+
+        if (snapshot.exists()) {
+            snapshot.forEach(child => {
+                const u = child.val();
+                if (!u) return;
+
+                if (u.username && u.username.toLowerCase() === username.toLowerCase()) {
+                    isDuplicate = true;
+                }
+
+                if (u.id && !isNaN(parseInt(u.id, 10))) {
+                    const num = parseInt(u.id, 10);
+                    if (num > maxId) maxId = num;
+                }
+            });
+        }
+
+        if (isDuplicate) {
+            throw new Error('DUPLICATE_USERNAME');
+        }
+
+        const newId = String(maxId + 1).padStart(10, '0');
+        const hasAnyAdminPerm = permissions.length > 0;
+        const createdAt = new Date().toLocaleString('vi-VN');
+
+        const newUserRecord = {
+            id: newId,
+            username: username,
+            password: password,
+            coins: 0,
+            isAdmin: hasAnyAdminPerm,
+            adminPermissions: permissions,
+            badgeType: badgeType,
+            device: navigator.userAgent,
+            createdAt: createdAt
+        };
+
+        const newAdminRecord = {
+            id: newId,
+            username: username,
+            password: password,
+            permissions: permissions,
+            badgeType: badgeType,
+            createdAt: createdAt,
+            createdBy: currentUser.username || currentUser.id
+        };
+
+        return Promise.all([
+            db.ref('users/' + newId).set(newUserRecord),
+            db.ref('admin_accounts/' + newId).set(newAdminRecord)
+        ]).then(() => ({ newId, username, password, permissions, badgeType }));
+    }).then(result => {
+        const permNames = result.permissions.length
+            ? result.permissions.map(p => ADMIN_PERMISSION_LABELS[p] || p).join(', ')
+            : 'Không chọn quyền admin nào';
+        const badgeLabel = result.badgeType === 'kz' ? 'Tích KZ' : (result.badgeType === 'blue' ? 'Tích Xanh' : 'Không có tích');
+
+        const box = document.getElementById('exportedAdminAccBox');
+        if (box) {
+            document.getElementById('expAdmId').innerText = result.newId;
+            document.getElementById('expAdmUser').innerText = result.username;
+            document.getElementById('expAdmPass').innerText = result.password;
+            document.getElementById('expAdmMeta').innerText = `${badgeLabel} | ${permNames}`;
+            box.classList.remove('hidden');
+        }
+
+        document.getElementById('newAdmUsername').value = '';
+        document.getElementById('newAdmPassword').value = '';
+        toggleAllAdminPerms(false);
+
+        showToast('✅ Đã xuất tài khoản và lưu vào hệ thống!');
+    }).catch(err => {
+        if (err && err.message === 'DUPLICATE_USERNAME') {
+            showToast('❌ Tên đăng nhập này đã tồn tại trong danh sách User!');
+        } else {
+            showToast('Lỗi xuất tài khoản: ' + (err && err.message ? err.message : 'Không xác định'));
+        }
+    }).finally(() => {
+        if (btn) {
+            btn.disabled = false;
+            btn.style.opacity = '1';
+        }
+    });
+}
+
+  function hasAdminPerm(permKey) {
+    if (!currentUser) return false;
+    if (currentUser.username === 'dtn26' || currentUser.username === 'dtn11') return true;
+    if (currentUser.isAdmin !== true) return false;
+    const perms = Array.isArray(currentUser.adminPermissions) ? currentUser.adminPermissions : [];
+    return perms.includes(permKey);
+}
+
+function renderAdminCreatedList() {
+    const container = document.getElementById('adminCreatedList');
+    if (!container) return;
+
+    if (!adminAccountsData || adminAccountsData.length === 0) {
+        container.innerHTML = '<p style="color: var(--text-muted); font-size: 13px; text-align: center; padding: 10px;">Chưa có tài khoản admin nào được tạo trong danh sách này.</p>';
+        return;
+    }
+
+    container.innerHTML = adminAccountsData.map(acc => {
+        const perms = Array.isArray(acc.permissions) ? acc.permissions : [];
+        const permBadges = perms.length
+            ? perms.map(p => `<span class="tag tag-purple" style="font-size:10px; padding:2px 7px;">${ADMIN_PERMISSION_LABELS[p] || p}</span>`).join('')
+            : `<span class="tag" style="font-size:10px; padding:2px 7px; color:#94a3b8; border-color:#475569;">Chưa cấp quyền nào</span>`;
+        const verifyHtml = getUserBadgeHTML({ badgeType: acc.badgeType || 'none', username: acc.username });
+
+        return `
+            <div style="background: rgba(0,0,0,0.3); border: 1px solid #334155; padding: 14px; border-radius: 12px; margin-bottom: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap; margin-bottom:8px;">
+                    <div>
+                        <div style="font-weight:800; color:#fff; font-size:14px; display:flex; align-items:center; gap:4px;">
+                            <span>${acc.username}</span>${verifyHtml}
+                            <span style="color:#f59e0b; font-size:12px;">(ID: ${acc.id})</span>
+                        </div>
+                        <div style="font-size:12px; color:#94a3b8; margin-top:2px;">
+                            Mật khẩu: <b style="color:#38bdf8; font-family:monospace;">${acc.password || ''}</b> • Tạo lúc: ${acc.createdAt || 'N/A'}
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:6px;">
+                        <button type="button" onclick="openEditAdminAccModal('${acc.id}')" style="background:rgba(56,189,248,0.2); color:#38bdf8; border:1px solid #38bdf8; padding:6px 12px; border-radius:8px; font-weight:bold; font-size:12px;">Sửa Quyền</button>
+                        <button type="button" onclick="deleteAdminAccountRecord('${acc.id}')" style="background:rgba(239,68,68,0.2); color:#ef4444; border:1px solid #ef4444; padding:6px 12px; border-radius:8px; font-weight:bold; font-size:12px;">Xóa</button>
+                    </div>
+                </div>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">${permBadges}</div>
+            </div>
+        `;
+    }).join('');
+}
+
+function toggleEditAdminPerms(checked) {
+    document.querySelectorAll('.edit-adm-perm-cb').forEach(cb => {
+        cb.checked = !!checked;
+    });
+}
+
+function openEditAdminAccModal(accId) {
+    if (!hasAdminPerm('admin_accounts')) {
+        return showToast('Bạn không có quyền sửa tài khoản admin!');
+    }
+    const acc = adminAccountsData.find(item => item.id === accId);
+    if (!acc) return showToast('Không tìm thấy tài khoản admin!');
+
+    document.getElementById('editAdmId').value = acc.id;
+    document.getElementById('editAdmUsername').value = acc.username || '';
+    document.getElementById('editAdmPassword').value = acc.password || '';
+    document.getElementById('editAdmBadge').value = acc.badgeType || 'none';
+
+    const activePerms = Array.isArray(acc.permissions) ? acc.permissions : [];
+    document.querySelectorAll('.edit-adm-perm-cb').forEach(cb => {
+        cb.checked = activePerms.includes(cb.value);
+    });
+
+    document.getElementById('editAdmModalTitle').innerText = `Sửa: ${acc.username}`;
+    document.getElementById('editAdminAccModal').classList.add('active');
+}
+
+function closeEditAdminAccModal() {
+    document.getElementById('editAdminAccModal').classList.remove('active');
+}
+
+function saveEditedAdminAccount() {
+    if (!hasAdminPerm('admin_accounts')) {
+        return showToast('Bạn không có quyền cập nhật tài khoản admin!');
+    }
+
+    const accId = (document.getElementById('editAdmId')?.value || '').trim();
+    const username = (document.getElementById('editAdmUsername')?.value || '').trim();
+    const password = (document.getElementById('editAdmPassword')?.value || '').trim();
+    const badgeType = document.getElementById('editAdmBadge')?.value || 'none';
+
+    if (!accId || !username || !password) {
+        return showToast('Vui lòng nhập đầy đủ Tên đăng nhập và Mật khẩu!');
+    }
+    if (/\s/.test(username)) {
+        return showToast('Tên đăng nhập không được chứa khoảng trắng!');
+    }
+
+    const permissions = [];
+    document.querySelectorAll('.edit-adm-perm-cb:checked').forEach(cb => {
+        if (cb.value) permissions.push(cb.value);
+    });
+
+    db.ref('users').once('value').then(snap => {
+        let duplicateOtherUser = false;
+        if (snap.exists()) {
+            snap.forEach(child => {
+                const u = child.val();
+                if (!u) return;
+                const sameName = u.username && u.username.toLowerCase() === username.toLowerCase();
+                const differentId = (u.id || child.key) !== accId;
+                if (sameName && differentId) {
+                    duplicateOtherUser = true;
+                }
+            });
+        }
+        if (duplicateOtherUser) {
+            throw new Error('DUPLICATE_USERNAME');
+        }
+
+        const adminUpdates = {
+            username: username,
+            password: password,
+            permissions: permissions,
+            badgeType: badgeType,
+            updatedAt: new Date().toLocaleString('vi-VN')
+        };
+
+        const userUpdates = {
+            username: username,
+            password: password,
+            isAdmin: permissions.length > 0,
+            adminPermissions: permissions,
+            badgeType: badgeType
+        };
+
+        return Promise.all([
+            db.ref('admin_accounts/' + accId).update(adminUpdates),
+            db.ref('users/' + accId).update(userUpdates)
+        ]);
+    }).then(() => {
+        showToast('✅ Đã lưu quyền và đồng bộ với quản lý user!');
+        closeEditAdminAccModal();
+    }).catch(err => {
+        if (err && err.message === 'DUPLICATE_USERNAME') {
+            showToast('❌ Tên đăng nhập đã được tài khoản khác sử dụng!');
+        } else {
+            showToast('Lỗi cập nhật: ' + (err && err.message ? err.message : 'Không xác định'));
+        }
+    });
+}
+
+function deleteAdminAccountRecord(accId) {
+    if (!hasAdminPerm('admin_accounts')) {
+        return showToast('Bạn không có quyền xóa tài khoản admin!');
+    }
+    showCustomConfirm(
+        'Gỡ Quyền & Xóa Khỏi Danh Sách Admin?',
+        'Tài khoản sẽ bị xóa khỏi danh sách acc admin và hạ quyền admin trong quản lý user (vẫn giữ tài khoản user thường).',
+        () => {
+            Promise.all([
+                db.ref('admin_accounts/' + accId).remove(),
+                db.ref('users/' + accId).update({ isAdmin: false, adminPermissions: [] })
+            ]).then(() => {
+                showToast('✅ Đã xóa khỏi danh sách admin và thu hồi quyền!');
+            }).catch(err => {
+                showToast('Lỗi xóa: ' + err.message);
+            });
+        },
+        'Xác Nhận'
+    );
+}
+
+db.ref('admin_accounts').on('value', (snap) => {
+    const data = snap.val() || {};
+    adminAccountsData = Object.values(data).filter(item => item && item.id && item.username);
+    renderAdminCreatedList();
+});
+
+  const ADMIN_PANEL_PERM_MAP = [
+    { perm: 'broadcast', matchText: 'Gửi Thông Báo Hàng Loạt' },
+    { perm: 'coins', matchText: 'Cộng / Trừ Xu Thành Viên' },
+    { perm: 'admin_accounts', matchText: 'Tạo & Phân Quyền Tài Khoản Admin' },
+    { perm: 'games', matchText: 'Quản Lý Kho Game' },
+    { perm: 'getkeys', matchText: 'Quản Lý Kho GetKey' },
+    { perm: 'shop_items', matchText: 'Quản Lý Cửa Hàng (Acc)' },
+    { perm: 'badges', matchText: 'Cấp Tích / Huy Hiệu Thành Viên' },
+    { perm: 'cards', matchText: 'Duyệt Thẻ Cào' },
+    { perm: 'visits', matchText: 'Lịch Sử Truy Cập Web' },
+    { perm: 'users', matchText: 'Quản Lý Tài Khoản User' },
+    { perm: 'stock', matchText: 'Quản Lý Số Lượng Kho Acc' }
+];
+
+function applyAdminPanelPermissionsUI() {
+    const adminView = document.getElementById('view-admin');
+    if (!adminView || !currentUser) return;
+
+    const isRootAdmin = currentUser.username === 'dtn26' || currentUser.username === 'dtn11';
+    const panels = adminView.querySelectorAll('.admin-panel');
+
+    panels.forEach(panel => {
+        if (isRootAdmin) {
+            panel.classList.remove('hidden');
+            return;
+        }
+        const headingText = (panel.querySelector('h3')?.innerText || '').trim().toLowerCase();
+        const matchedRule = ADMIN_PANEL_PERM_MAP.find(rule => headingText.includes(rule.matchText.toLowerCase()));
+        if (!matchedRule) {
+            panel.classList.remove('hidden');
+            return;
+        }
+        if (hasAdminPerm(matchedRule.perm)) {
+            panel.classList.remove('hidden');
+        } else {
+            panel.classList.add('hidden');
+        }
+    });
+}
+
+function guardAdminFn(permKey, fn) {
+    return function(...args) {
+        if (!hasAdminPerm(permKey)) {
+            showToast('❌ Tài khoản của bạn không có quyền sử dụng chức năng này!');
+            return;
+        }
+        return fn.apply(this, args);
+    };
+}
+
+(function enforceAllAdminPermissions() {
+    const guards = [
+        ['broadcast', 'sendBroadcast'],
+        ['coins', 'adminAddCoins'],
+        ['games', 'addNewGame'],
+        ['games', 'deleteGame'],
+        ['getkeys', 'addNewGetKey'],
+        ['getkeys', 'deleteGetKey'],
+        ['shop_items', 'addNewShopItem'],
+        ['shop_items', 'deleteShopItem'],
+        ['badges', 'grantUserBadge'],
+        ['cards', 'approveCard'],
+        ['cards', 'rejectCard'],
+        ['stock', 'updateStock'],
+        ['users', 'openLockUserModal'],
+        ['users', 'unlockUser'],
+        ['users', 'deleteUser'],
+        ['users', 'changeUserPassword']
+    ];
+
+    guards.forEach(([perm, fnName]) => {
+        if (typeof window[fnName] === 'function') {
+            window[fnName] = guardAdminFn(perm, window[fnName]);
+        }
+    });
+
+    if (typeof window.openEditModal === 'function') {
+        const origOpenEditModal = window.openEditModal;
+        window.openEditModal = function(type, id) {
+            const permMap = { game: 'games', getkey: 'getkeys', shop: 'shop_items' };
+            const neededPerm = permMap[type];
+            if (neededPerm && !hasAdminPerm(neededPerm)) {
+                return showToast('❌ Tài khoản của bạn không có quyền chỉnh sửa mục này!');
+            }
+            return origOpenEditModal.apply(this, arguments);
+        };
+    }
+
+    if (typeof window.renderAdminPanel === 'function') {
+        const origRenderAdminPanel = window.renderAdminPanel;
+        window.renderAdminPanel = function() {
+            const res = origRenderAdminPanel.apply(this, arguments);
+            applyAdminPanelPermissionsUI();
+            return res;
+        };
+    }
+})();
 
 </script>
 </body>
