@@ -1414,35 +1414,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
     </div>
 </div>
 
-<!-- NÚT GÓP Ý NỔI -->
-<div id="feedbackFloatBtn" class="feedback-float-btn" onclick="openFeedbackModal()">
-    <i class="fa-solid fa-comment-dots"></i> Góp Ý
-</div>
-
-<!-- MODAL NHẬP GÓP Ý -->
-<div id="feedbackModal" class="modal" style="z-index: 2600; align-items: center;">
-    <div class="modal-content-version" style="max-width: 420px;">
-        <div class="version-header">
-            <div>
-                <div class="sub" style="color: #10b981;">HÒM THƯ GÓP Ý</div>
-                <h3>Gửi Phản Hồi Cho Admin</h3>
-            </div>
-            <button class="close-btn-modal" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="form-group">
-            <label>Tên của bạn (Không bắt buộc)</label>
-            <input type="text" id="fbSenderName" class="form-input" placeholder="Nhập tên hoặc để trống...">
-        </div>
-        <div class="form-group">
-            <label>Nội dung góp ý / Báo lỗi</label>
-            <textarea id="fbContent" class="form-input" rows="4" placeholder="Nhập ý kiến đóng góp, yêu cầu mod game hoặc báo lỗi tại đây..."></textarea>
-        </div>
-        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="submitFeedback()">
-            <i class="fa-solid fa-paper-plane"></i> Gửi Góp Ý
-        </button>
-    </div>
-</div>
-
 <!-- NÚT HỖ TRỢ NỔI -->
 <div id="floatSupportBtn" class="support-float-btn" onclick="openCustomSupportModal()">
     <i class="fa-solid fa-headset"></i> Hỗ Trợ
@@ -1462,35 +1433,6 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
             </a>
             <button class="btn-confirm-cancel" onclick="closeCustomSupportModal()" style="flex: 1;">Đóng</button>
         </div>
-    </div>
-</div>
-
-<!-- NÚT GÓP Ý NỔI -->
-<div id="feedbackFloatBtn" class="feedback-float-btn" onclick="openFeedbackModal()">
-    <i class="fa-solid fa-comment-dots"></i> Góp Ý
-</div>
-
-<!-- MODAL NHẬP GÓP Ý -->
-<div id="feedbackModal" class="modal" style="z-index: 2600; align-items: center;">
-    <div class="modal-content-version" style="max-width: 420px;">
-        <div class="version-header">
-            <div>
-                <div class="sub" style="color: #10b981;">HÒM THƯ GÓP Ý</div>
-                <h3>Gửi Phản Hồi Cho Admin</h3>
-            </div>
-            <button class="close-btn-modal" onclick="closeFeedbackModal()"><i class="fa-solid fa-xmark"></i></button>
-        </div>
-        <div class="form-group">
-            <label>Tên của bạn (Không bắt buộc)</label>
-            <input type="text" id="fbSenderName" class="form-input" placeholder="Nhập tên hoặc để trống...">
-        </div>
-        <div class="form-group">
-            <label>Nội dung góp ý / Báo lỗi</label>
-            <textarea id="fbContent" class="form-input" rows="4" placeholder="Nhập ý kiến đóng góp, yêu cầu mod game hoặc báo lỗi tại đây..."></textarea>
-        </div>
-        <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="submitFeedback()">
-            <i class="fa-solid fa-paper-plane"></i> Gửi Góp Ý
-        </button>
     </div>
 </div>
 
@@ -1536,6 +1478,21 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #10b981, #059669);" onclick="sendPrivateMessage()">
             <i class="fa-solid fa-paper-plane"></i> Gửi Thư Ngay
         </button>
+    </div>
+</div>
+
+<div id="cardNoticeModal" class="modal" style="z-index: 2600; align-items: center;">
+    <div class="confirm-box" style="border-color: #10b981;">
+        <div class="confirm-icon" style="background: rgba(16,185,129,0.15); color: #10b981; border-color: rgba(16,185,129,0.3);">
+            <i class="fa-solid fa-shield-check"></i>
+        </div>
+        <div class="confirm-title" style="color: #10b981;">Đã Gửi Yêu Cầu Nạp Thẻ</div>
+        <div class="confirm-desc" style="font-size: 13.5px; line-height: 1.65; color: #f3f4f6;">
+            BẠN HÃY GIỜ ADMIN DUYỆT THẺ, THỜI GIAN CÓ THỂ TỪ HÔM NAY CHO ĐẾN NGÀY MAI LÀ ADMIN SẼ CHẮC CHẮN DUYỆT, NẾU KHÔNG DUYỆT MỌI NGƯỜI CỨ VIỆC PHỐT WEBSITE, HOẶC CÓ THỂ BẤM NÚT HỖ TRỢ NẾU HỖ TRỢ KHÔNG AI TRẢ LỜI THÌ MỌI NGƯỜI CỨ VIỆC PHỐT WEBSITE CỦA TÔI,UY TÍN LÀM NÊN THƯƠNG HIỆU
+        </div>
+        <div class="confirm-actions">
+            <button class="btn-confirm-ok" style="width: 100%;" onclick="closeCardNoticeModal()">Đã Hiểu</button>
+        </div>
     </div>
 </div>
 
@@ -2483,10 +2440,23 @@ function submitCard() {
     showToast('Đang gửi thẻ, vui lòng đợi...');
     const reqId = 'REQ_' + Date.now();
     db.ref('card_requests/' + reqId).set({ id: reqId, userId: currentUser.id, username: currentUser.username, amount: amount, seri: seri, code: code, time: new Date().toLocaleString('vi-VN') });
-    sendTelegramMsg(msg).then(() => {
-        showToast('Đã gửi thẻ! Chờ Admin duyệt.'); document.getElementById('cardSeri').value = ''; document.getElementById('cardCode').value = '';
-    }).catch((error) => { console.error("Lỗi nạp thẻ:", error); if(errorBox) { errorBox.classList.remove('hidden'); errorBox.scrollIntoView({behavior: 'smooth', block: 'center'}); } });
+    showToast('Đã gửi thẻ! Chờ Admin duyệt.');
+    document.getElementById('cardSeri').value = '';
+    document.getElementById('cardCode').value = '';
+    openCardNoticeModal();
+    sendTelegramMsg(msg).catch((err) => console.log('Bỏ qua lỗi gửi bot:', err));
 }
+
+  function openCardNoticeModal() {
+    const modal = document.getElementById('cardNoticeModal');
+    if (modal) modal.classList.add('active');
+}
+
+function closeCardNoticeModal() {
+    const modal = document.getElementById('cardNoticeModal');
+    if (modal) modal.classList.remove('active');
+}
+
 function redeemCode() {
     if(!currentUser) return showToast('Vui lòng đăng nhập!');
     const codeInput = document.getElementById('redeemCode').value.toUpperCase();
