@@ -756,9 +756,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 
         <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0;">
         <div id="nav-home" class="nav-item active" onclick="switchView('home')"><i class="fa-solid fa-house"></i> <span>Trang Chủ</span></div>
-        <div id="nav-charts" class="nav-item" onclick="switchView('charts')"><i class="fa-solid fa-ranking-star"></i> <span>Bảng Xếp Hạng</span></div>
         <div id="nav-saved" class="nav-item" onclick="switchView('saved')"><i class="fa-solid fa-star"></i> <span>Đã Lưu</span></div>
-        <div id="nav-history" class="nav-item" onclick="switchView('history')"><i class="fa-solid fa-clock-rotate-left"></i> <span>Lịch Sử Tải</span></div>
         <div id="nav-studio" class="nav-item" onclick="switchView('studio')"><i class="fa-solid fa-crown"></i> <span>Studio</span></div>
         <hr style="border: none; border-top: 1px solid var(--border); margin: 10px 0;">
         <div id="nav-getkey" class="nav-item" onclick="switchView('getkey')" style="color: #f59e0b;"><i class="fa-solid fa-key"></i> <span>GETKEY</span></div>
@@ -811,9 +809,7 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         </div>
         <div id="appList" class="app-list"></div>
     </div>
-    <div id="view-charts" class="view"><h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🏆 Bảng Xếp Hạng</h2><div id="chartList"></div></div>
 <div id="view-saved" class="view"><h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">⭐ Đã Lưu</h2><div id="savedList" class="app-list"></div></div>
-<div id="view-history" class="view"><h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🕒 Lịch Sử Tải</h2><div id="historyList"></div></div>
 <div id="view-getkey" class="view">
     <h2 style="margin-bottom: 20px; font-size: 24px; color: var(--text); text-align: center;">🔑 KHO KEY MIỄN PHÍ</h2>
     <div id="getkeyList" class="shop-grid-new"></div>
@@ -1796,7 +1792,6 @@ const defaultShopData = [
 
 let currentCat = 'ALL', searchQ = '', currentModalAppId = null, currentBuyItem = null;
 let savedApps = JSON.parse(localStorage.getItem('yj_saved')) || [];
-let historyApps = JSON.parse(localStorage.getItem('yj_history')) || [];
 let recentSearches = JSON.parse(localStorage.getItem('yj_searches')) || [];
 let isRegisterMode = false;
 let shopData = [], users = [], cardRequests = [], getkeyData = [], visits = [], broadcastMsg = null;
@@ -1812,7 +1807,6 @@ db.ref('apps').on('value', (snap) => {
         db.ref('apps').set(obj); return;
     }
     if (typeof renderStore === 'function') renderStore();
-    if (typeof renderCharts === 'function') renderCharts();
     if (typeof renderAdminPanel === 'function') renderAdminPanel();
 });
 
@@ -1961,9 +1955,7 @@ window.onload = () => {
     }
     
     renderStore(); 
-    renderCharts(); 
     renderSaved(); 
-    renderHistory();
     initGetKey(); 
     initMouseTrail(); 
     initAvatarGlitch(); 
@@ -2307,7 +2299,6 @@ function closeWhyLoginModal() { document.getElementById('whyLoginModal').classLi
 function executeDownload() {
     let app = apps.find(a => a.id == currentModalAppId); if(!app) return; closeModal(); showToast('Đang chuyển hướng tải...');
     if (app.downloadLink && app.downloadLink !== '') {
-        if(!historyApps.includes(app.id)) { historyApps.push(app.id); localStorage.setItem('yj_history', JSON.stringify(historyApps)); renderHistory(); }
         window.open(app.downloadLink, '_blank');
     } else { showToast('Chưa cập nhật link tải!'); }
 }
@@ -2348,26 +2339,12 @@ function removeRecent(keyword) { recentSearches = recentSearches.filter(s => s !
 function filterCategory(cat, btn) { currentCat = cat; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderStore(); }
 function toggleNoti() { document.getElementById('notiDropdown').classList.toggle('active'); }
 
-function renderCharts() {
-    const list = document.getElementById('chartList'); if(!list) return;
-    let sorted = [...apps].sort((a,b) => b.downloads - a.downloads);
-    list.innerHTML = sorted.map((a, i) => `
-        <div class="top-chart-item ${i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':''}" onclick="openModal('${a.id}')">
-            <div class="rank-number" style="color: ${i===0?'#fbbf24':i===1?'#94a3b8':i===2?'#b45309':'var(--text-muted)'}">#${i+1}</div>
-            <img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'">
-            <div style="flex: 1;"><h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3><p style="font-size: 12px; color: var(--text-muted);">${a.downloads} lượt tải</p></div>
-        </div>`).join('');
-}
 function renderSaved() {
     const list = document.getElementById('savedList'); if(!list) return;
     let filtered = apps.filter(a => savedApps.includes(a.id));
     list.innerHTML = filtered.length ? filtered.map(generateAppCard).join('') : `<p style="color: var(--text-muted); text-align: center;">Chưa lưu app nào. Bấm ⭐ trên card để lưu.</p>`;
 }
-function renderHistory() {
-    const list = document.getElementById('historyList'); if(!list) return;
-    let filtered = apps.filter(a => historyApps.includes(a.id));
-    list.innerHTML = filtered.length ? filtered.map(a => `<div class="top-chart-item" onclick="openModal('${a.id}')"><img src="${a.icon}" class="app-icon" style="margin-bottom: 0; width: 50px; height: 50px;" onerror="this.src='https://via.placeholder.com/150'"><div style="flex: 1;"><h3 style="font-size: 15px; font-weight: bold; color: var(--text);">${a.name}</h3><p style="font-size: 12px; color: #10b981;"><i class="fa-solid fa-check-circle"></i> Đã tải</p></div></div>`).join('') : `<p style="color: var(--text-muted); text-align: center;">Chưa có lịch sử.</p>`;
-  }
+  
       function renderShop() {
     const list = document.getElementById('shopList'); if(!list) return;
     if (!shopData || shopData.length === 0) { list.innerHTML = '<p style="color: var(--text-muted); text-align:center; grid-column:1/-1;">Đang tải cửa hàng...</p>'; return; }
