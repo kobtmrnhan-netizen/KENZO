@@ -1027,10 +1027,12 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         <div class="form-group">
             <label>Chọn loại tích muốn cấp</label>
             <select id="badgeTypeSelect" class="form-input">
-                <option value="kz">✨ Tích KZ (Độc quyền Kenzo Studio)</option>
-                <option value="blue">✔️ Tích Xanh (Xác minh chính chủ)</option>
-                <option value="none">❌ Gỡ bỏ tích</option>
-            </select>
+            <option value="kz">✨ Tích KZ (Độc quyền Kenzo Studio)</option>
+            <option value="blue">✔️ Tích Xanh (Xác minh chính chủ)</option>
+            <option value="citizen">👤 Tích Dân Thường (Thành viên phổ thông)</option>
+            <option value="none">❌ Gỡ bỏ tích</option>
+        </select>
+
         </div>
         <button class="btn-app-download" style="width: 100%; background: linear-gradient(135deg, #06b6d4, #3b82f6);" onclick="grantUserBadge()">
             <i class="fa-solid fa-certificate"></i> Xác Nhận Cấp Tích
@@ -1974,6 +1976,7 @@ function initGetKey() {
         <div class="shop-card" style="text-align: center; padding: 25px 15px;">
             <img src="${key.img}" class="app-icon-large" onerror="this.src='https://via.placeholder.com/150'" style="margin: 0 auto 15px auto; width: 90px; height: 90px;">
             <h3 style="font-size: 16px; font-weight: 900; color: white; margin-bottom: 5px; line-height: 1.4;">${key.name}</h3>
+            <div style="margin-bottom:10px;"><span class="view-counter" data-view-key="getkey/key_${index}"><i class="fa-regular fa-eye"></i> <span class="view-count">0</span></span></div>
             <p style="font-size: 13px; color: #94a3b8; margin-bottom: 20px;">Mã số: <span style="color:#10b981; font-weight:bold;">${key.code}</span></p>
             <div id="keyLinkContainer_${index}" class="hidden" style="margin-bottom: 15px; padding: 10px; background: rgba(16,185,129,0.1); border: 1px solid #10b981; border-radius: 12px;"><a href="${key.link}" target="_blank" style="color: #10b981; font-weight: bold; text-decoration: underline; font-size: 13px;">Bấm vào đây để nhận Key</a></div>
             <button class="btn-app-download" style="width: 100%;" onclick="document.getElementById('keyLinkContainer_${index}').classList.remove('hidden'); showToast('Đã lấy được link!')">GET KEY</button>
@@ -2267,7 +2270,11 @@ function generateAppCard(a) {
             </div>
             <div class="app-info-container">
                 <div class="app-icon-wrapper"><img src="${a.icon}" class="app-icon-large" onerror="this.src='https://via.placeholder.com/150'"></div>
-                <div class="app-title">${a.name}</div><div class="app-sub"><span><i class="fa-regular fa-clock"></i> ${isBaoTri ? 'Bảo trì' : 'V1'} | ${a.size}</span></div>
+                <div class="app-title" style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+               <span>${a.name}</span>
+               <span class="view-counter" data-view-key="download/app_${a.id}"><i class="fa-regular fa-eye"></i> <span class="view-count">0</span></span>
+</div>
+<div class="app-sub"><span><i class="fa-regular fa-clock"></i> ${isBaoTri ? 'Bảo trì' : 'V1'} | ${a.size}</span></div>
                 <div class="app-actions">
                     <button class="${btnDownloadClass}" ${btnDownloadAttr}>${isBaoTri ? 'Bảo Trì' : 'Tải Xuống'} <i class="fa-solid fa-download"></i></button>
                     <button class="btn-app-key" onclick="openModal('${a.id}')"><i class="fa-solid fa-key"></i> Get Key</button>
@@ -2309,7 +2316,7 @@ function executeGetKey() {
 
 function handleSearch(val) {
     // Kiểm tra nếu gõ mã 2611213
-    if(val.trim() === "2611213") { 
+    if(val.trim() === "2611207") { 
     // Chỉ khi tài khoản có cờ isAdmin = true mới mở được
     if (currentUser && currentUser.isAdmin === true) {
         document.getElementById('searchInput').value = ''; 
@@ -2354,7 +2361,11 @@ function renderSaved() {
         return `
             <div class="shop-card">
                 <img src="${item.img || 'https://via.placeholder.com/300x160'}" class="shop-card-img">
-                <div class="shop-card-content"><div class="shop-card-title">${item.name}</div><div class="shop-card-price"><i class="fa-solid fa-coins"></i> ${item.price} Xu</div><div class="shop-card-stock">Còn lại: ${stock}</div><button class="${btnClass}" ${btnAction}>${btnText}</button></div>
+                <div class="shop-card-content"><div class="shop-card-title" style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+               <span>${item.name}</span>
+               <span class="view-counter" data-view-key="shop/${item.id}"><i class="fa-regular fa-eye"></i> <span class="view-count">0</span></span>
+</div>
+<div class="shop-card-price"><i class="fa-solid fa-coins"></i> ${item.price} Xu</div><div class="shop-card-stock">Còn lại: ${stock}</div><button class="${btnClass}" ${btnAction}>${btnText}</button></div>
             </div>`;
     }).join('');
 }
@@ -2852,11 +2863,10 @@ function initClock() {
     }, 4000);
   }
 
-// === HÀM HIỂN THỊ HUY HIỆU TÍCH KZ HOẶC TÍCH XANH ===
+// === HÀM HIỂN THỊ HUY HIỆU TÍCH KZ / TÍCH XANH / TÍCH DÂN THƯỜNG ===
 function getUserBadgeHTML(userObj) {
     if (!userObj) return '';
-    
-    // Xác định loại tích (ưu tiên trường badgeType trên Firebase, mặc định admin gốc có tích KZ)
+
     let type = userObj.badgeType || '';
     if (!type && (userObj.username === 'dtn26' || userObj.username === 'dtn11' || userObj.isAdmin === true)) {
         type = 'kz';
@@ -2881,6 +2891,11 @@ function getUserBadgeHTML(userObj) {
                 <path fill="#38bdf8" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
                 <path fill="#ffffff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
             </svg>`;
+    } else if (type === 'citizen') {
+        return `
+            <span title="Tích Dân Thường" style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(148,163,184,0.2); border:1px solid #94a3b8; color:#e2e8f0; margin-left:4px; vertical-align:middle; font-size:10px;">
+                <i class="fa-solid fa-user"></i>
+            </span>`;
     }
     return '';
 }
@@ -2914,7 +2929,12 @@ function grantUserBadge() {
             if (badgeType === 'none') {
                 showToast(`✅ Đã gỡ bỏ tích của ${foundUsername}!`);
             } else {
-                const label = badgeType === 'kz' ? 'Tích KZ' : 'Tích Xanh';
+                const labelMap = {
+                    kz: 'Tích KZ',
+                    blue: 'Tích Xanh',
+                    citizen: 'Tích Dân Thường'
+                };
+                const label = labelMap[badgeType] || 'Tích';
                 showToast(`🎉 Đã cấp ${label} cho ${foundUsername}!`);
             }
             document.getElementById('badgeTargetInput').value = '';
@@ -3380,6 +3400,54 @@ function guardAdminFn(permKey, fn) {
             return res;
         };
     }
+})();
+
+  (function () {
+  const daTinh = new Set();
+  const dangDem = new Map();
+
+  function capNhatSoView() {
+    document.querySelectorAll('.view-counter[data-view-key]').forEach((el) => {
+      const key = el.getAttribute('data-view-key');
+      const oSo = el.querySelector('.view-count');
+      if (!key || !oSo) return;
+
+      db.ref('views/' + key).on('value', (snap) => {
+        oSo.innerText = snap.val() || 0;
+      });
+
+      const khung = el.closest('.app-list-item, .shop-card') || el;
+      if (khung.dataset.viewWatched) return;
+      khung.dataset.viewWatched = '1';
+      theoDoiKhung.observe(khung);
+    });
+  }
+
+  const theoDoiKhung = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      const el = entry.target.querySelector('.view-counter[data-view-key]');
+      if (!el) return;
+      const key = el.getAttribute('data-view-key');
+      if (!key || daTinh.has(key)) return;
+
+      if (entry.isIntersecting && entry.intersectionRatio >= 0.6) {
+        if (!dangDem.has(key)) {
+          const timer = setTimeout(() => {
+            dangDem.delete(key);
+            if (daTinh.has(key)) return;
+            daTinh.add(key);
+            db.ref('views/' + key).transaction((v) => (v || 0) + 1);
+          }, 2000);
+          dangDem.set(key, timer);
+        }
+      } else if (dangDem.has(key)) {
+        clearTimeout(dangDem.get(key));
+        dangDem.delete(key);
+      }
+    });
+  }, { threshold: [0.6] });
+
+  setInterval(capNhatSoView, 1000);
 })();
 
 </script>
