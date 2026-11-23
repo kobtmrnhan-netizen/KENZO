@@ -461,6 +461,28 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
 .tag-green { color: #10b981; border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.1); }
 .verify-icon { width: 22px; height: 22px; flex-shrink: 0; display: inline-block; vertical-align: middle; }
 .neon-glow { animation: neonPulse 1.5s ease-in-out infinite alternate; }
+.vip-shimmer {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 6px;
+    margin-left: 5px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.6px;
+    color: #fffbeb;
+    background: linear-gradient(120deg, #b45309 0%, #f59e0b 25%, #fef08a 50%, #f59e0b 75%, #b45309 100%);
+    background-size: 220% auto;
+    border: 1px solid rgba(254, 240, 138, 0.8);
+    box-shadow: 0 0 10px rgba(251, 191, 36, 0.65);
+    vertical-align: middle;
+    animation: vipGoldShine 2.2s linear infinite;
+}
+@keyframes vipGoldShine {
+    0% { background-position: 0% center; }
+    100% { background-position: 220% center; }
+}
 @keyframes neonPulse { 0% { filter: drop-shadow(0 0 2px rgba(168, 85, 247, 0.8)); } 100% { filter: drop-shadow(0 0 8px rgba(6, 182, 212, 1)); } }
       .admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 14px; }
 .admin-table th, .admin-table td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); color: var(--text); }
@@ -1026,9 +1048,10 @@ main { max-width: 1200px; margin: 0 auto; padding: 20px; min-height: 80vh; }
         </div>
         <div class="form-group">
             <label>Chọn loại tích muốn cấp</label>
-            <select id="badgeTypeSelect" class="form-input">
+                        <select id="badgeTypeSelect" class="form-input">
             <option value="kz">✨ Tích KZ (Độc quyền Kenzo Studio)</option>
             <option value="blue">✔️ Tích Xanh (Xác minh chính chủ)</option>
+            <option value="vip">👑 Tích VIP (Vàng óng ánh)</option>
             <option value="citizen">👤 Tích Dân Thường (Thành viên phổ thông)</option>
             <option value="none">❌ Gỡ bỏ tích</option>
         </select>
@@ -2052,8 +2075,29 @@ function dailyCheckIn(e) {
     e.stopPropagation(); if(!currentUser) return showToast('Vui lòng đăng nhập!');
     const today = new Date().toLocaleDateString('vi-VN');
     if (currentUser.lastCheckIn === today) return showToast('Hôm nay bạn đã điểm danh rồi! Quay lại vào ngày mai nhé ⏰');
-    db.ref('users/' + currentUser.id).update({ lastCheckIn: today, coins: (currentUser.coins || 0) + 0.25 }).then(() => { showToast('🎁 Điểm danh thành công! Nhận ngay 0.25 Xu.'); }).catch(err => showToast('Lỗi điểm danh: ' + err.message));
-  }
+
+    const isFirstCheckIn = !currentUser.lastCheckIn;
+    const isAdminAccount = currentUser.isAdmin === true || currentUser.username === 'dtn26' || currentUser.username === 'dtn11';
+    const hasHigherBadge = currentUser.badgeType === 'kz' || currentUser.badgeType === 'blue';
+
+    const updates = {
+        lastCheckIn: today,
+        coins: (currentUser.coins || 0) + 0.25
+    };
+
+    if (isFirstCheckIn && !isAdminAccount && !hasHigherBadge) {
+        updates.badgeType = 'vip';
+    }
+
+    db.ref('users/' + currentUser.id).update(updates).then(() => {
+        if (updates.badgeType === 'vip') {
+            showToast('👑 Điểm danh lần đầu thành công! Nhận 0.25 Xu & mở khóa Tích VIP!');
+        } else {
+            showToast('🎁 Điểm danh thành công! Nhận ngay 0.25 Xu.');
+        }
+    }).catch(err => showToast('Lỗi điểm danh: ' + err.message));
+}
+
       function openAuthModal() { document.getElementById('authModal').classList.add('active'); }
 function closeAuthModal() { document.getElementById('authModal').classList.remove('active'); }
 function switchAuthMode() {
@@ -2085,7 +2129,7 @@ function handleLogin() {
                     });
                 }
                 const newId = (maxId + 1).toString().padStart(10, '0');
-                const newUser = { id: newId, username: user, password: pass, coins: 0, device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
+                const newUser = { id: newId, username: user, password: pass, coins: 0, badgeType: 'citizen', device: navigator.userAgent, createdAt: new Date().toLocaleString('vi-VN') };
                 db.ref('users/' + newId).set(newUser).then(() => { 
                     showToast('Đăng ký thành công!'); 
                     switchAuthMode(); 
@@ -2258,7 +2302,7 @@ function saveLinkData() {
 
 function generateAppCard(a) {
     const bannerUrl = a.banner || 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=800&auto=format&fit=crop&q=80';
-    const isSaved = savedApps.includes(a.id), isBaoTri = a.size === 'bảo trì';
+    const isSaved = isAppSaved(a.id), isBaoTri = a.size === 'bảo trì';
     const btnDownloadClass = isBaoTri ? 'btn-app-download disabled' : 'btn-app-download';
     const btnDownloadAttr = isBaoTri ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : `onclick="openModal('${a.id}')"`;
     return `
@@ -2283,10 +2327,32 @@ function generateAppCard(a) {
         </div>`;
 }
 
+function isAppSaved(id) {
+    return savedApps.some(item => String(item) === String(id));
+}
+
 function toggleSave(id) {
-    if (savedApps.includes(id)) savedApps = savedApps.filter(i => i !== id); else savedApps.push(id);
-    localStorage.setItem('yj_saved', JSON.stringify(savedApps));
-    renderStore(); renderSaved(); showToast(savedApps.includes(id) ? '⭐ Đã lưu!' : 'Đã bỏ lưu');
+    const strId = String(id);
+    if (isAppSaved(strId)) {
+        savedApps = savedApps.filter(item => String(item) !== strId);
+        localStorage.setItem('yj_saved', JSON.stringify(savedApps));
+        showToast('Đã bỏ lưu');
+    } else {
+        savedApps.push(strId);
+        localStorage.setItem('yj_saved', JSON.stringify(savedApps));
+        showToast('⭐ Đã lưu!');
+    }
+    renderStore();
+    renderSaved();
+}
+
+function renderSaved() {
+    const list = document.getElementById('savedList');
+    if (!list) return;
+    const filtered = apps.filter(a => isAppSaved(a.id));
+    list.innerHTML = filtered.length
+        ? filtered.map(generateAppCard).join('')
+        : `<p style="color: var(--text-muted); text-align: center;">Chưa lưu app nào. Bấm ⭐ trên card để lưu.</p>`;
 }
 
 function openModal(id) {
@@ -2345,12 +2411,6 @@ function hideRecent() { document.getElementById('recentSearches').classList.remo
 function removeRecent(keyword) { recentSearches = recentSearches.filter(s => s !== keyword); localStorage.setItem('yj_searches', JSON.stringify(recentSearches)); showRecent(); }
 function filterCategory(cat, btn) { currentCat = cat; document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active'); renderStore(); }
 function toggleNoti() { document.getElementById('notiDropdown').classList.toggle('active'); }
-
-function renderSaved() {
-    const list = document.getElementById('savedList'); if(!list) return;
-    let filtered = apps.filter(a => savedApps.includes(a.id));
-    list.innerHTML = filtered.length ? filtered.map(generateAppCard).join('') : `<p style="color: var(--text-muted); text-align: center;">Chưa lưu app nào. Bấm ⭐ trên card để lưu.</p>`;
-}
   
       function renderShop() {
     const list = document.getElementById('shopList'); if(!list) return;
@@ -2863,7 +2923,7 @@ function initClock() {
     }, 4000);
   }
 
-// === HÀM HIỂN THỊ HUY HIỆU TÍCH KZ / TÍCH XANH / TÍCH DÂN THƯỜNG ===
+// === HÀM HIỂN THỊ HUY HIỆU TÍCH KZ / TÍCH XANH / TÍCH VIP / TÍCH DÂN THƯỜNG ===
 function getUserBadgeHTML(userObj) {
     if (!userObj) return '';
 
@@ -2891,6 +2951,8 @@ function getUserBadgeHTML(userObj) {
                 <path fill="#38bdf8" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816z"/>
                 <path fill="#ffffff" d="M9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/>
             </svg>`;
+    } else if (type === 'vip') {
+        return `<span class="vip-shimmer" title="Thành viên VIP">VIP</span>`;
     } else if (type === 'citizen') {
         return `
             <span title="Tích Dân Thường" style="display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%; background:rgba(148,163,184,0.2); border:1px solid #94a3b8; color:#e2e8f0; margin-left:4px; vertical-align:middle; font-size:10px;">
@@ -2932,6 +2994,7 @@ function grantUserBadge() {
                 const labelMap = {
                     kz: 'Tích KZ',
                     blue: 'Tích Xanh',
+                    vip: 'Tích VIP',
                     citizen: 'Tích Dân Thường'
                 };
                 const label = labelMap[badgeType] || 'Tích';
